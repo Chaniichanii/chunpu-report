@@ -1,0 +1,1460 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>纯朴 完整分析报告 | 整体概览 + 竞品对标 + 智投策略</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;background:#f5f6fa;color:#2c3e50}
+.header{background:linear-gradient(135deg,#0d1b2a 0%,#1b2838 50%,#1e3a5f 100%);padding:32px 48px;color:#fff}
+.header h1{font-size:24px;font-weight:800}
+.header .sub{font-size:13px;color:#8899aa;margin-top:6px}
+.header .mapping{font-size:12px;color:#667788;margin-top:10px;display:flex;flex-wrap:wrap;gap:8px}
+.header .mapping span{background:rgba(255,255,255,.08);padding:3px 10px;border-radius:4px}
+.container{max-width:1500px;margin:0 auto;padding:20px}
+
+.section{background:#fff;border-radius:12px;padding:24px 28px;margin-bottom:18px;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.sec-title{font-size:18px;font-weight:700;color:#1a1a2e;margin-bottom:6px;display:flex;align-items:center;gap:10px}
+.sec-title .icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff}
+.sec-sub{font-size:12px;color:#999;margin-bottom:14px}
+
+.tag{display:inline-block;padding:2px 7px;border-radius:3px;font-size:10px;font-weight:700}
+.tag-green{background:#e8f5e9;color:#27ae60}
+.tag-red{background:#ffeaea;color:#e74c3c}
+.tag-orange{background:#fff3e0;color:#f39c12}
+.tag-blue{background:#e3f2fd;color:#1976d2}
+.tag-purple{background:#f3e5f5;color:#7b1fa2}
+
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.grid-6{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+
+.insight-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.insight-box{background:#fafbfc;border-radius:10px;padding:16px;border:1px solid #eef1f5}
+.insight-box h4{font-size:13px;color:#666;margin-bottom:8px}
+.insight-box ul{font-size:12px;color:#666;line-height:2;padding-left:14px}
+
+.advice-box{background:linear-gradient(135deg,#fff8e1,#fff3e0);border:1px solid #ffe0b2;border-radius:10px;padding:16px 20px;margin-top:16px}
+.advice-box h4{font-size:13px;color:#e67e22;margin-bottom:6px}
+.advice-box .advice-item{font-size:12px;color:#555;line-height:2;padding-left:12px;border-left:2px solid #ffe0b2;margin-top:4px}
+
+.finding-box{background:linear-gradient(135deg,#e3f2fd,#e8eaf6);border:1px solid #bbdefb;border-radius:10px;padding:16px 20px;margin-top:16px}
+.finding-box h4{font-size:13px;color:#1565c0;margin-bottom:6px}
+
+.radar-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:20px}
+.radar-card{background:#fafbfc;border-radius:10px;padding:14px;border:1px solid #eee;text-align:center}
+.radar-card .rc-name{font-size:11px;font-weight:700;color:#333;margin-bottom:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.radar-bars{display:flex;flex-direction:column;gap:6px}
+.radar-bar-row{display:flex;align-items:center;gap:6px}
+.radar-bar-label{font-size:9px;color:#888;width:50px;text-align:right;flex-shrink:0}
+.radar-bar-track{flex:1;height:12px;background:#eef1f5;border-radius:6px;overflow:hidden}
+.radar-bar-fill{height:100%;border-radius:6px}
+.radar-bar-fill.good{background:linear-gradient(90deg,#43e97b,#81c784)}
+.radar-bar-fill.mid{background:linear-gradient(90deg,#ffb74d,#ffcc02)}
+.radar-bar-fill.bad{background:linear-gradient(90deg,#f5576c,#ef5350)}
+.radar-bar-val{font-size:9px;color:#555;width:26px;flex-shrink:0}
+
+.room-card{background:#fafbfc;border-radius:10px;padding:14px;border:1px solid #eef1f5}
+.room-card .rn{font-size:12px;font-weight:700;color:#333;margin-bottom:3px}
+.room-card .rc{font-size:10px;color:#aaa;margin-bottom:10px}
+.metric-list{display:flex;flex-direction:column;gap:5px}
+.metric-item{display:flex;justify-content:space-between;align-items:center;font-size:10px}
+.ml{color:#999}
+.mv{font-weight:600}
+.mv.good{color:#27ae60}
+.mv.bad{color:#e74c3c}
+.mv.neutral{color:#f39c12}
+
+.bar-chart{margin-top:8px}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.bar-label{font-size:10px;color:#888;width:110px;text-align:right;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar-track{flex:1;height:18px;background:#eef1f5;border-radius:4px;overflow:hidden;position:relative}
+.bar-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:6px;font-size:9px;color:#fff;font-weight:600}
+.bar-ref{position:absolute;top:0;bottom:0;border-left:2px dashed #ff9800;z-index:1}
+.bar-val{font-size:10px;color:#555;width:65px;flex-shrink:0}
+
+.compare-table{width:100%;border-collapse:collapse;font-size:11px;margin-top:12px}
+.compare-table th{background:#f5f6fa;padding:9px 10px;text-align:center;font-weight:600;color:#666;font-size:10px;border-bottom:2px solid #e0e0e0}
+.compare-table td{padding:9px 10px;text-align:center;border-bottom:1px solid #f0f0f0}
+.compare-table tr:hover td{background:#fafbfc}
+.compare-table .drag{background:#ffebee;color:#c62828;font-weight:600}
+.compare-table .boost{background:#e8f5e9;color:#1b5e20;font-weight:600}
+.compare-table .flat{color:#888}
+
+.matrix-table{width:100%;border-collapse:collapse;font-size:10px;margin-top:12px}
+.matrix-table th{background:#f5f6fa;padding:8px 8px;font-weight:600;color:#666;font-size:9px;border:1px solid #e8e8e8;text-align:center}
+.matrix-table td{padding:8px 8px;text-align:center;border:1px solid #e8e8e8}
+.matrix-table .rec{background:#e8f5e9;font-weight:700}
+.matrix-table .good{background:#f1f8e9}
+.matrix-table .mid{background:#fffde7}
+.matrix-table .bad{background:#ffebee}
+.matrix-table .low-conf{color:#bbb;font-style:italic}
+
+.vs-card{background:#fafbfc;border-radius:10px;padding:18px;border:2px solid #eef1f5}
+.vs-card.vs-highlight{border-color:#4facfe;background:linear-gradient(135deg,#f0f7ff,#fafbfc)}
+.vs-card h4{font-size:14px;font-weight:700;margin-bottom:12px}
+.vs-card .vs-metric{display:flex;justify-content:space-between;font-size:11px;line-height:2}
+.vs-card .vs-label{color:#888;width:90px}
+.vs-card .vs-cp{color:#4facfe;font-weight:600;width:130px}
+.vs-card .vs-gy{color:#e67e22;font-weight:600;width:140px}
+.vs-card .vs-winner{font-size:10px;width:80px;text-align:right}
+
+.reco-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-top:14px}
+.reco-card{background:#fafbfc;border-radius:10px;padding:14px;border:1px solid #eef1f5;border-top:3px solid #4facfe}
+.reco-card .rc-cat{font-size:13px;font-weight:700;color:#333;margin-bottom:3px}
+.reco-card .rc-consume{font-size:10px;color:#aaa;margin-bottom:10px}
+.reco-card .rc-block{margin-bottom:8px}
+.reco-card .rc-label{font-size:10px;color:#888;margin-bottom:2px}
+.reco-card .rc-value{font-size:11px;color:#333;font-weight:600;line-height:1.5}
+.reco-card .rc-value .highlight{background:#e3f2fd;color:#1565c0;padding:1px 3px;border-radius:2px;font-size:10px}
+.reco-card .rc-value .warn{background:#fff3e0;color:#e65100;padding:1px 3px;border-radius:2px;font-size:10px}
+
+@media(max-width:1200px){.grid-4,.grid-6,.radar-grid,.reco-grid{grid-template-columns:repeat(3,1fr)}.grid-2,.insight-row{grid-template-columns:1fr}}
+@media(max-width:768px){.grid-4,.grid-6,.radar-grid,.reco-grid{grid-template-columns:repeat(2,1fr)}.header{padding:20px}}
+</style>
+</head>
+<body>
+
+<div class="header">
+<h1>纯朴 完整分析报告（数据已更新）</h1>
+<div class="sub">报告A：整体数据概览 · 日趋势分析 + 报告B：四维度竞品对标（重点对比谷雨）+ 报告C：分产品智投策略（含版位&潜客优投）</div>
+<div class="mapping"><span>DPDP品牌店=气垫</span><span>DPDP美妆小妍=贴贴霜</span><span>ELL养肤美妆=素颜霜</span><span>DPDP彩妆品牌店=粉底液</span><span>DPDP美妆精品店=唇霜</span><span>ELL品牌店=泥膜</span></div>
+</div>
+
+<div class="container">
+
+<!-- ====== 报告A：整体数据概览（ECharts版） ====== -->
+<div class="section" style="padding:8px;overflow:hidden">
+<div class="sec-title" style="margin:12px 20px 4px"><div class="icon" style="background:linear-gradient(135deg,#667eea,#764ba2)">📋</div>报告A · 一、整体数据概览（KPI + 日趋势 + 消耗占比）</div>
+<div class="sec-sub" style="margin:0 20px 8px">数据周期 5.15-6.30 | 618大促 & 端午假期 | 小店满减活动</div>
+<div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif">
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<style>
+
+  :root {
+    --bg: #f5f7fa;
+    --card-bg: #ffffff;
+    --text: #2c3e50;
+    --text-secondary: #7f8c8d;
+    --accent: #e74c3c;
+    --accent2: #3498db;
+    --success: #27ae60;
+    --warning: #f39c12;
+    --border: #e1e5eb;
+    --shadow: 0 2px 12px rgba(0,0,0,0.06);
+    --radius: 10px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+  
+  .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; padding: 32px 40px; }
+  .header h1 { font-size: 28px; font-weight: 700; margin-bottom: 6px; }
+  .header .subtitle { font-size: 14px; opacity: 0.9; }
+  .header .badges { margin-top: 12px; display: flex; gap: 10px; flex-wrap: wrap; }
+  .badge { background: rgba(255,255,255,0.2); padding: 4px 14px; border-radius: 20px; font-size: 12px; }
+
+  .container { max-width: 1400px; margin: 0 auto; padding: 24px 32px; }
+
+  /* KPI Cards */
+  .kpi-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; margin-bottom: 28px; }
+  .kpi-card { background: var(--card-bg); border-radius: var(--radius); padding: 16px 18px; box-shadow: var(--shadow); border-left: 4px solid #667eea; min-width: 0; }
+  .kpi-card .label { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .kpi-card .value { font-size: 22px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .kpi-card .change { font-size: 12px; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .kpi-card.up { border-left-color: var(--success); }
+  .kpi-card.down { border-left-color: var(--accent); }
+  .change.up { color: var(--success); }
+  .change.down { color: var(--accent); }
+
+  /* Sections */
+  .section { background: var(--card-bg); border-radius: var(--radius); padding: 28px 32px; margin-bottom: 24px; box-shadow: var(--shadow); }
+  .section-title { font-size: 20px; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 10px; }
+  .section-title .icon { font-size: 24px; }
+  .section-desc { font-size: 13px; color: var(--text-secondary); margin-bottom: 20px; }
+
+  /* Charts */
+  .chart { width: 100%; height: 420px; }
+  .chart-lg { height: 480px; }
+  .chart-xl { height: 680px; }
+  .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .chart-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: #f8f9fc; padding: 10px 14px; text-align: left; font-weight: 600; border-bottom: 2px solid var(--border); font-size: 12px; color: var(--text-secondary); text-transform: uppercase; }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--border); }
+  tr:hover td { background: #f8f9fc; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+  .tag-up { background: #e8f5e9; color: #27ae60; }
+  .tag-down { background: #fdecea; color: #e74c3c; }
+  .tag-warn { background: #fff8e1; color: #f39c12; }
+  .tag-info { background: #e3f2fd; color: #3498db; }
+
+  /* Insights */
+  .insight-box { background: #fff8e1; border-left: 4px solid var(--warning); padding: 16px 20px; border-radius: 6px; margin-top: 16px; }
+  .insight-box .insight-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--warning); font-weight: 700; margin-bottom: 4px; }
+  .insight-box .insight-text { font-size: 13px; color: #5d4037; }
+  .insight-box .insight-action { font-size: 13px; color: #bf360c; margin-top: 4px; font-weight: 500; }
+
+  .highlight-box { background: #e8f5e9; border-left: 4px solid var(--success); padding: 16px 20px; border-radius: 6px; margin-top: 16px; }
+  .highlight-box .hl-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--success); font-weight: 700; margin-bottom: 4px; }
+  .highlight-box .hl-text { font-size: 13px; color: #1b5e20; }
+  .highlight-box .hl-action { font-size: 13px; color: #004d40; margin-top: 4px; font-weight: 500; }
+
+  /* Tabs */
+  .tabs { display: flex; gap: 3px; margin-bottom: 16px; flex-wrap: wrap; border-bottom: 2px solid var(--border); padding-bottom: 0; }
+  .tab-btn { padding: 6px 10px; border: none; background: transparent; cursor: pointer; font-size: 11px; color: var(--text-secondary); border-radius: 6px 6px 0 0; transition: all 0.2s; line-height: 1.3; text-align: center; min-width: 70px; white-space: nowrap; }
+  .tab-btn.active { background: #667eea; color: #fff; }
+  .tab-btn:hover:not(.active) { background: #f0f2f5; }
+  .tab-btn small { display: block; font-size: 10px; opacity: 0.8; }
+
+  /* Responsive */
+  @media (max-width: 1200px) {
+    .kpi-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 900px) {
+    .chart-row, .chart-row-3 { grid-template-columns: 1fr; }
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* Tooltip style override for event markers */
+  .event-legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 8px; font-size: 12px; }
+  .event-legend span { display: flex; align-items: center; gap: 4px; }
+  .event-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+
+</style>
+
+
+<div class="header">
+  <h1>📊 纯朴数据可视化分析报告</h1>
+  <div class="subtitle">分析周期：2026年5月15日 — 6月30日 | 正逢618大促 &amp; 端午节假期</div>
+  <div class="badges">
+    <span class="badge">📅 618大促 (6/15-6/18)</span>
+    <span class="badge">🎋 端午假期 (5/30-6/2)</span>
+    <span class="badge">🛒 小店满减活动 (5/25上线, 6/25下线)</span>
+    <span class="badge">📈 47天完整数据</span>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ========== KPI 概览 ========== -->
+<div class="kpi-grid" id="kpi-cards"></div>
+
+<!-- ========== 第一部分：整体数据概览 ========== -->
+<div class="section">
+  <div class="section-title"><span class="icon">📋</span>一、纯朴整体数据概览</div>
+  <div class="section-desc">包含纯朴整体的日耗、日耗环比变化率、下单ROI、ROI环比变化率、计价率，以及分品类、分链路、品类×链路的详细数据对比。</div>
+  
+  <div class="chart-row">
+    <div class="chart" id="chart-overall-bar"></div>
+    <div class="chart" id="chart-overall-change"></div>
+  </div>
+  
+  <div class="chart-row" style="margin-top:20px;">
+    <div class="chart" id="chart-channel-bar"></div>
+    <div class="chart" id="chart-catchannel"></div>
+  </div>
+  
+  <div class="insight-box">
+    <div class="insight-label">💡 一句话说明</div>
+    <div class="insight-text" id="insight-1"></div>
+    <div class="insight-action">📌 下一步建议：<span id="action-1"></span></div>
+  </div>
+</div>
+
+<!-- ========== 第二部分：消耗占比 + ROI最优品类 ========== -->
+<div class="section">
+  <div class="section-title"><span class="icon">🥧</span>二、分品类&分链路消耗占比 + ROI最优品类分析</div>
+  <div class="section-desc">展示纯朴分品类、分链路的消耗占比，并针对ROI最高的品类做详细说明。</div>
+  
+  <div class="chart-row">
+    <div class="chart" id="chart-pie-cat"></div>
+    <div class="chart" id="chart-pie-channel"></div>
+  </div>
+  
+  <div class="highlight-box" style="margin-top:20px;">
+    <div class="hl-label">🏆 ROI效率最优品类</div>
+    <div class="hl-text" id="best-cat-desc"></div>
+  </div>
+  
+  <div class="insight-box">
+    <div class="insight-label">💡 一句话说明</div>
+    <div class="insight-text" id="insight-2"></div>
+    <div class="insight-action">📌 下一步建议：<span id="action-2"></span></div>
+  </div>
+</div>
+
+<!-- ========== 第三部分：by天消耗趋势 ========== -->
+<div class="section">
+  <div class="section-title"><span class="icon">📈</span>三、纯朴by天消耗趋势 & 异常变化分析</div>
+  <div class="section-desc">5.15-6.30逐日消耗趋势图，异常变化日期已标记；正逢618大促&端午节，5/25-5/26视频号小店满减上线，6/25满减下线。</div>
+  
+  <div class="chart chart-xl" id="chart-daily-trend"></div>
+  
+  <div class="event-legend">
+    <span><span class="event-dot" style="background:#FF6B6B"></span> 消耗异常高 (&gt;均值+1σ)</span>
+    <span><span class="event-dot" style="background:#4FC3F7"></span> 消耗异常低 (&lt;均值-1σ)</span>
+    <span><span class="event-dot" style="background:#FFB74D"></span> 关键事件日</span>
+    <span><span class="event-dot" style="background:#81C784"></span> 正常</span>
+  </div>
+  
+  <div class="chart chart-lg" id="chart-anomaly-contrib" style="margin-top:20px;"></div>
+  
+  <div class="insight-box">
+    <div class="insight-label">💡 一句话说明</div>
+    <div class="insight-text" id="insight-3"></div>
+    <div class="insight-action">📌 下一步建议：<span id="action-3"></span></div>
+  </div>
+</div>
+
+<!-- ========== 第四部分：分品类x分链路by天趋势 ========== -->
+<div class="section">
+  <div class="section-title"><span class="icon">🔍</span>四、分品类×分链路 by天 消耗×ROI趋势</div>
+  <div class="section-desc">每个品类×链路组合独立展示消耗与ROI趋势，红色标记计价率&gt;1.2（成本异常）的天数，橙色标记消耗异常高的天数。</div>
+  
+  <div class="tabs" id="detail-tabs"></div>
+  <div class="chart chart-xl" id="chart-detail-trend"></div>
+  
+  <div style="margin-top:16px;">
+    <table>
+      <thead>
+        <tr><th>品类×链路</th><th>总天数</th><th>日均消耗(万)</th><th>日均ROI</th><th>计价率&gt;1.2天数</th><th>异常占比</th><th>风险评级</th></tr>
+      </thead>
+      <tbody id="pr-table-body"></tbody>
+    </table>
+  </div>
+  
+  <div class="insight-box">
+    <div class="insight-label">💡 一句话说明</div>
+    <div class="insight-text" id="insight-4"></div>
+    <div class="insight-action">📌 下一步建议：<span id="action-4"></span></div>
+  </div>
+</div>
+
+</div><!-- container -->
+
+<script>
+// ========== 加载数据 ==========
+// 数据已内嵌，无需外部文件
+const EMBEDDED_DATA = {"overall": {"cost": 17.88, "cost_change": 0.6309, "roi": 1.88, "roi_change": -0.011, "price_rate": 1.02, "price_rate_change": -0.0026}, "categories": [{"name": "DPDP品牌店", "cost": 8.77, "cost_change": 0.7878, "roi": 2.01, "roi_change": 0.02, "price_rate": 0.99, "price_rate_change": 0.0013}, {"name": "ELL养肤美妆", "cost": 3.66, "cost_change": 1.8076, "roi": 1.73, "roi_change": 0.1793, "price_rate": 1.04, "price_rate_change": -0.0236}, {"name": "DPDP美妆小妍", "cost": 2.91, "cost_change": 0.3775, "roi": 1.79, "roi_change": -0.0961, "price_rate": 1.03, "price_rate_change": -0.0222}, {"name": "DPDP彩妆品牌店", "cost": 1.12, "cost_change": -0.094, "roi": 1.75, "roi_change": -0.1363, "price_rate": 1.11, "price_rate_change": 0.0864}, {"name": "DPDP美妆精品店", "cost": 0.96, "cost_change": 0.419, "roi": 1.85, "roi_change": -0.0449, "price_rate": 1.06, "price_rate_change": 0.0047}, {"name": "ELL品牌店", "cost": 0.37, "cost_change": -0.4847, "roi": 1.63, "roi_change": -0.0785, "price_rate": 1.09, "price_rate_change": 0.0232}], "channels": [{"name": "直播", "cost": 14.65, "cost_change": 0.4172, "roi": 1.86, "roi_change": -0.0187, "price_rate": 1.02, "price_rate_change": -0.0052}, {"name": "小店", "cost": 3.17, "cost_change": 4.1165, "roi": 1.99, "roi_change": -0.0214, "price_rate": 1.01, "price_rate_change": 0.066}], "cat_channel": [{"video": "DPDP品牌店", "channel": "直播", "cost": 6.13, "cost_change": "0.4027", "roi": 2.0, "roi_change": "0.0217", "price_rate": 0.99, "price_rate_change": "-0.01"}, {"video": "ELL养肤美妆", "channel": "直播", "cost": 3.28, "cost_change": "1.6938", "roi": 1.74, "roi_change": "0.1872", "price_rate": 1.03, "price_rate_change": "-0.0262"}, {"video": "DPDP美妆小妍", "channel": "直播", "cost": 2.78, "cost_change": "0.316", "roi": 1.78, "roi_change": "-0.1004", "price_rate": 1.04, "price_rate_change": "-0.0198"}, {"video": "DPDP品牌店", "channel": "小店", "cost": 2.64, "cost_change": "3.9431", "roi": 2.05, "roi_change": "-0.0387", "price_rate": 1.0, "price_rate_change": "0.079"}, {"video": "DPDP彩妆品牌店", "channel": "直播", "cost": 1.12, "cost_change": "-0.0965", "roi": 1.75, "roi_change": "-0.1357", "price_rate": 1.11, "price_rate_change": "0.0858"}, {"video": "DPDP美妆精品店", "channel": "直播", "cost": 0.96, "cost_change": "0.419", "roi": 1.85, "roi_change": "-0.0449", "price_rate": 1.06, "price_rate_change": "0.0047"}, {"video": "ELL养肤美妆", "channel": "小店", "cost": 0.38, "cost_change": "3.4114", "roi": 1.58, "roi_change": "0.1308", "price_rate": 1.08, "price_rate_change": "-0.0085"}, {"video": "ELL品牌店", "channel": "直播", "cost": 0.35, "cost_change": "-0.5131", "roi": 1.63, "roi_change": "-0.0801", "price_rate": 1.1, "price_rate_change": "0.0265"}, {"video": "DPDP美妆小妍", "channel": "小店", "cost": 0.13, "cost_change": "+∞", "roi": 1.97, "roi_change": "+∞", "price_rate": 0.98, "price_rate_change": "+∞"}, {"video": "ELL品牌店", "channel": "小店", "cost": 0.02, "cost_change": "+∞", "roi": 1.67, "roi_change": "+∞", "price_rate": 1.03, "price_rate_change": "+∞"}], "daily_stats": {"mean_cost": 17.826063993544732, "std_cost": 8.048105545747598, "max_cost_date": "2026-06-05", "max_cost_value": 42.484208215, "max_roi_date": "2026-06-08", "max_roi_value": 2.61116941286665, "high_dates": ["2026-06-03", "2026-06-04", "2026-06-05", "2026-06-06", "2026-06-07", "2026-06-08"], "low_dates": ["2026-05-15", "2026-05-16", "2026-05-17", "2026-05-18", "2026-05-19", "2026-05-20", "2026-05-21", "2026-05-24", "2026-05-25", "2026-06-29"]}, "cat_shares": [{"name": "DPDP品牌店", "cost": 8.77, "share": 49.29735806632939, "roi": 2.01}, {"name": "ELL养肤美妆", "cost": 3.66, "share": 20.573355817875207, "roi": 1.73}, {"name": "DPDP美妆小妍", "cost": 2.91, "share": 16.357504215851602, "roi": 1.79}, {"name": "DPDP彩妆品牌店", "cost": 1.12, "share": 6.295671725688588, "roi": 1.75}, {"name": "DPDP美妆精品店", "cost": 0.96, "share": 5.396290050590218, "roi": 1.85}, {"name": "ELL品牌店", "cost": 0.37, "share": 2.07982012366498, "roi": 1.63}], "ch_shares": [{"name": "直播", "cost": 14.65, "share": 82.21099887766555}, {"name": "小店", "cost": 3.17, "share": 17.789001122334454}], "best_cat": {"name": "DPDP品牌店", "cost": 8.77, "cost_change": 0.7878, "roi": 2.01, "roi_change": 0.02, "price_rate": 0.99, "price_rate_change": 0.0013}, "best_cc": {"video": "DPDP品牌店", "channel": "小店", "cost": 2.64, "cost_change": "3.9431", "roi": 2.05, "roi_change": "-0.0387", "price_rate": 1.0, "price_rate_change": "0.079"}, "high_pr_combos": [{"cat": "ELL品牌店", "ch": "直播", "high_count": 10, "total_days": 46, "avg_cost": 0.3550188550240062, "avg_roi": 1.7492680796958526, "avg_pr": 1.066221107462508}, {"cat": "ELL养肤美妆", "ch": "小店", "high_count": 6, "total_days": 47, "avg_cost": 0.38069557449817254, "avg_roi": 1.5965247744004272, "avg_pr": 1.0995185193891595}, {"cat": "ELL品牌店", "ch": "小店", "high_count": 6, "total_days": 25, "avg_cost": 0.03798760002602778, "avg_roi": 1.813914111634375, "avg_pr": 1.0138835523251803}, {"cat": "DPDP品牌店", "ch": "小店", "high_count": 3, "total_days": 47, "avg_cost": 2.6377454102989613, "avg_roi": 2.2907073700145206, "avg_pr": 0.9528113930143158}, {"cat": "DPDP美妆精品店", "ch": "直播", "high_count": 3, "total_days": 42, "avg_cost": 1.0735919627649924, "avg_roi": 2.127355817018772, "avg_pr": 1.0358707736725528}, {"cat": "DPDP彩妆品牌店", "ch": "小店", "high_count": 2, "total_days": 10, "avg_cost": 0.014733300001068286, "avg_roi": 1.3314770575915658, "avg_pr": 2.088127919342849}, {"cat": "DPDP美妆小妍", "ch": "直播", "high_count": 2, "total_days": 47, "avg_cost": 2.779464840297303, "avg_roi": 1.8232204654480355, "avg_pr": 1.0329760739045721}, {"cat": "ELL养肤美妆", "ch": "直播", "high_count": 2, "total_days": 47, "avg_cost": 3.2752943255652984, "avg_roi": 1.7583973184990431, "avg_pr": 1.0389428811961379}, {"cat": "DPDP彩妆品牌店", "ch": "直播", "high_count": 1, "total_days": 47, "avg_cost": 1.1200109731233379, "avg_roi": 1.7738700492262782, "avg_pr": 1.0972197903664245}, {"cat": "DPDP美妆小妍", "ch": "小店", "high_count": 1, "total_days": 22, "avg_cost": 0.2775445719266993, "avg_roi": 2.0000764088263385, "avg_pr": 0.9769266810331398}, {"cat": "DPDP品牌店", "ch": "直播", "high_count": 0, "total_days": 47, "avg_cost": 6.132978649542879, "avg_roi": 1.9837858050710464, "avg_pr": 0.991482116764906}], "daily_data": [{"date": "2026-05-15", "cost": 6.60766794, "roi": 1.80357534734108, "price_rate": 1.09812692246457}, {"date": "2026-05-16", "cost": 7.215028778, "roi": 1.86974583402001, "price_rate": 1.0581673952692}, {"date": "2026-05-17", "cost": 7.425103093, "roi": 1.89668598854564, "price_rate": 1.03109054518815}, {"date": "2026-05-18", "cost": 6.504762094, "roi": 1.88987419099297, "price_rate": 1.01157553114105}, {"date": "2026-05-19", "cost": 6.063797868, "roi": 1.90416423029753, "price_rate": 1.01536165235967}, {"date": "2026-05-20", "cost": 7.960803363, "roi": 2.05611459718704, "price_rate": 0.94345009996444}, {"date": "2026-05-21", "cost": 7.553872105, "roi": 1.95523326245143, "price_rate": 0.986815214834974}, {"date": "2026-05-22", "cost": 15.653564854, "roi": 1.71585924679237, "price_rate": 1.05121462486647}, {"date": "2026-05-23", "cost": 17.800792175, "roi": 1.69544533205585, "price_rate": 1.04579315174437}, {"date": "2026-05-24", "cost": 8.796283507, "roi": 1.84546018634822, "price_rate": 1.02053917904578}, {"date": "2026-05-25", "cost": 8.787023622, "roi": 1.82231876103178, "price_rate": 1.02937348989068}, {"date": "2026-05-26", "cost": 10.957844807, "roi": 1.81933056646912, "price_rate": 1.03137125887762}, {"date": "2026-05-27", "cost": 10.943645468, "roi": 1.77625810858368, "price_rate": 1.06188846772592}, {"date": "2026-05-28", "cost": 16.998132254, "roi": 1.75188394554304, "price_rate": 1.04667948748384}, {"date": "2026-05-29", "cost": 21.019649278, "roi": 1.76738986025245, "price_rate": 1.04058981163612}, {"date": "2026-05-30", "cost": 25.822050106, "roi": 1.7059793401053, "price_rate": 1.09445470841585}, {"date": "2026-05-31", "cost": 14.832767243, "roi": 1.80479721426449, "price_rate": 1.03579288460083}, {"date": "2026-06-01", "cost": 20.197109442, "roi": 1.83512829429565, "price_rate": 0.996362092554318}, {"date": "2026-06-02", "cost": 18.819049009, "roi": 1.83186955852621, "price_rate": 1.0123666145507}, {"date": "2026-06-03", "cost": 28.703587751, "roi": 1.76795975611906, "price_rate": 1.0433601216372}, {"date": "2026-06-04", "cost": 28.374277171, "roi": 1.80114766244101, "price_rate": 1.012161593245}, {"date": "2026-06-05", "cost": 42.484208215, "roi": 1.74626796913696, "price_rate": 1.04968065543431}, {"date": "2026-06-06", "cost": 26.987839371, "roi": 1.77685784107374, "price_rate": 1.04027242202343}, {"date": "2026-06-07", "cost": 34.18280898, "roi": 1.81422495255684, "price_rate": 1.03753323126648}, {"date": "2026-06-08", "cost": 29.405331428, "roi": 2.61116941286665, "price_rate": 0.936398422736047}, {"date": "2026-06-09", "cost": 21.258737289, "roi": 1.78702457646237, "price_rate": 1.06093670346285}, {"date": "2026-06-10", "cost": 20.25873565, "roi": 1.80882571514279, "price_rate": 1.03661053298496}, {"date": "2026-06-11", "cost": 24.224430578, "roi": 1.67747261877455, "price_rate": 1.12998398415483}, {"date": "2026-06-12", "cost": 20.438561119, "roi": 1.93219037142925, "price_rate": 1.0238680893198}, {"date": "2026-06-13", "cost": 18.631916494, "roi": 1.93476570226195, "price_rate": 1.02413057619154}, {"date": "2026-06-14", "cost": 21.864735953, "roi": 1.94202948946081, "price_rate": 1.02031072974168}, {"date": "2026-06-15", "cost": 18.13113785, "roi": 2.02497417998507, "price_rate": 0.975173710116632}, {"date": "2026-06-16", "cost": 23.939038332, "roi": 1.98478449054852, "price_rate": 1.01232833798415}, {"date": "2026-06-17", "cost": 25.160821972, "roi": 1.91948705228095, "price_rate": 1.03607968474239}, {"date": "2026-06-18", "cost": 24.033344243, "roi": 2.01550194222797, "price_rate": 0.988439981709746}, {"date": "2026-06-19", "cost": 23.079226543, "roi": 2.04609079563468, "price_rate": 0.955224011002228}, {"date": "2026-06-20", "cost": 24.494789913, "roi": 1.89584940981078, "price_rate": 1.01711977894556}, {"date": "2026-06-21", "cost": 17.431800991, "roi": 2.03636365618947, "price_rate": 0.957186705583787}, {"date": "2026-06-22", "cost": 18.531148678, "roi": 1.97464861114855, "price_rate": 0.982763566761725}, {"date": "2026-06-23", "cost": 16.523902054, "roi": 1.9035101937309, "price_rate": 1.0205252124583}, {"date": "2026-06-24", "cost": 13.501578383, "roi": 2.03702805848459, "price_rate": 0.971548603713868}, {"date": "2026-06-25", "cost": 14.802719583, "roi": 1.95659742371004, "price_rate": 1.00744910061781}, {"date": "2026-06-26", "cost": 12.102026313, "roi": 1.79222309050023, "price_rate": 1.07914505331544}, {"date": "2026-06-27", "cost": 14.523273021, "roi": 1.7793800999701, "price_rate": 1.06647052242942}, {"date": "2026-06-28", "cost": 14.495050479, "roi": 1.86863385120606, "price_rate": 1.0126528435884}, {"date": "2026-06-29", "cost": 9.708180082, "roi": 1.93097118529532, "price_rate": 0.973784717234937}, {"date": "2026-06-30", "cost": 10.5928522546025, "roi": 1.97425950437123, "price_rate": 0.949525116919368}], "detail_by_combo": {"DPDP品牌店|小店": [{"date": "2026-05-15", "cost": 0.946093468, "roi": 1.58712648463185, "price_rate": 1.2048780187985}, {"date": "2026-05-16", "cost": 0.666163135, "roi": 1.96207194803717, "price_rate": 0.980303562769638}, {"date": "2026-05-17", "cost": 0.497033349, "roi": 1.96827839010859, "price_rate": 0.974362391078818}, {"date": "2026-05-18", "cost": 0.54488196, "roi": 2.14635478113461, "price_rate": 0.907436236477984}, {"date": "2026-05-19", "cost": 0.853971885, "roi": 1.88282545156624, "price_rate": 1.06056795025701}, {"date": "2026-05-20", "cost": 1.013569044, "roi": 2.27648033812682, "price_rate": 0.883142789613978}, {"date": "2026-05-21", "cost": 1.01049188, "roi": 2.09389114536972, "price_rate": 0.937168448232035}, {"date": "2026-05-22", "cost": 0.984049474, "roi": 1.78494582478685, "price_rate": 1.09482024733809}, {"date": "2026-05-23", "cost": 1.257576562, "roi": 1.69352710948504, "price_rate": 1.16695241286994}, {"date": "2026-05-24", "cost": 0.979465442, "roi": 1.84148406126206, "price_rate": 1.07437754658544}, {"date": "2026-05-25", "cost": 0.949354617, "roi": 1.77067659428679, "price_rate": 1.100733341381}, {"date": "2026-05-26", "cost": 1.201660096, "roi": 1.69267499750612, "price_rate": 1.11790858382594}, {"date": "2026-05-27", "cost": 1.448464102, "roi": 1.30568648362678, "price_rate": 1.4579469032839}, {"date": "2026-05-28", "cost": 2.116074195, "roi": 1.68295847490357, "price_rate": 1.06448664907444}, {"date": "2026-05-29", "cost": 6.647537915, "roi": 1.55597833848534, "price_rate": 1.15748928033879}, {"date": "2026-05-30", "cost": 4.804591681, "roi": 1.48613835973546, "price_rate": 1.31083626683482}, {"date": "2026-05-31", "cost": 1.438743444, "roi": 1.73887221549696, "price_rate": 1.07678181677097}, {"date": "2026-06-01", "cost": 0.77847799, "roi": 2.43854550081756, "price_rate": 0.754652812402137}, {"date": "2026-06-02", "cost": 1.124924, "roi": 2.14600275218593, "price_rate": 0.875300870678262}, {"date": "2026-06-03", "cost": 1.176770629, "roi": 1.97027266220119, "price_rate": 0.964722340360892}, {"date": "2026-06-04", "cost": 1.963378046, "roi": 2.14276512288148, "price_rate": 0.829655382934764}, {"date": "2026-06-05", "cost": 2.327954977, "roi": 1.96104909463633, "price_rate": 0.934167005104971}, {"date": "2026-06-06", "cost": 3.010914009, "roi": 1.89952751320837, "price_rate": 0.974596756422516}, {"date": "2026-06-07", "cost": 8.926517529, "roi": 1.84624227157556, "price_rate": 1.00982720011626}, {"date": "2026-06-08", "cost": 8.774777084, "roi": 3.41345309553393, "price_rate": 0.97393588082761}, {"date": "2026-06-09", "cost": 7.100674577, "roi": 1.8632831087423, "price_rate": 1.01638450238085}, {"date": "2026-06-10", "cost": 6.777727165, "roi": 1.79479251729366, "price_rate": 1.03542929106371}, {"date": "2026-06-11", "cost": 5.737165313, "roi": 1.81941645926562, "price_rate": 1.05804320201371}, {"date": "2026-06-12", "cost": 6.085302629, "roi": 1.89434966554726, "price_rate": 1.07205179715678}, {"date": "2026-06-13", "cost": 5.101199782, "roi": 1.91881565480707, "price_rate": 1.06303044779047}, {"date": "2026-06-14", "cost": 5.789817572, "roi": 1.91399899257482, "price_rate": 1.0660704207095}, {"date": "2026-06-15", "cost": 4.302892401, "roi": 1.92537954192734, "price_rate": 1.04807883783082}, {"date": "2026-06-16", "cost": 5.080055621, "roi": 1.99234354012991, "price_rate": 1.03833825177335}, {"date": "2026-06-17", "cost": 5.722057483, "roi": 1.88171877545607, "price_rate": 1.08619002763295}, {"date": "2026-06-18", "cost": 5.714626432, "roi": 2.05502409295544, "price_rate": 1.0107434485676}, {"date": "2026-06-19", "cost": 0.570559958, "roi": 6.31913079326187, "price_rate": 0.334183014777007}, {"date": "2026-06-20", "cost": 0.677778, "roi": 4.05949293131379, "price_rate": 0.493593969157319}, {"date": "2026-06-21", "cost": 0.774000996, "roi": 4.21599199079067, "price_rate": 0.482756295814377}, {"date": "2026-06-22", "cost": 1.031963516, "roi": 2.84783614385065, "price_rate": 0.711243159352269}, {"date": "2026-06-23", "cost": 1.088376, "roi": 2.70229406014098, "price_rate": 0.758774850167321}, {"date": "2026-06-24", "cost": 0.93063, "roi": 3.2298260318279, "price_rate": 0.635460436649773}, {"date": "2026-06-25", "cost": 1.301995796, "roi": 2.58277408447177, "price_rate": 0.781610627723545}, {"date": "2026-06-26", "cost": 1.73437495, "roi": 1.7838587901653, "price_rate": 1.14528623378437}, {"date": "2026-06-27", "cost": 1.411621535, "roi": 1.9256081978092, "price_rate": 1.06442010236154}, {"date": "2026-06-28", "cost": 0.998381043, "roi": 2.04903730328542, "price_rate": 0.982474973505591}, {"date": "2026-06-29", "cost": 0.422173, "roi": 3.23469288656546, "price_rate": 0.615387299912336}, {"date": "2026-06-30", "cost": 0.177224002051204, "roi": 5.36575181690967, "price_rate": 0.395533587168958}], "DPDP品牌店|直播": [{"date": "2026-05-15", "cost": 2.184837945, "roi": 1.95055198933759, "price_rate": 1.01362340316738}, {"date": "2026-05-16", "cost": 1.656436588, "roi": 2.03765119923806, "price_rate": 0.986788417501971}, {"date": "2026-05-17", "cost": 2.544693141, "roi": 1.8733653670032, "price_rate": 1.03457541054264}, {"date": "2026-05-18", "cost": 2.281619005, "roi": 1.90078009978708, "price_rate": 1.00858295464203}, {"date": "2026-05-19", "cost": 2.291618732, "roi": 2.01883102777849, "price_rate": 0.948809281587249}, {"date": "2026-05-20", "cost": 2.645058828, "roi": 2.3480385140228, "price_rate": 0.815171189039304}, {"date": "2026-05-21", "cost": 2.701075945, "roi": 2.16294547764002, "price_rate": 0.880703619719695}, {"date": "2026-05-22", "cost": 2.970281494, "roi": 1.75000585314895, "price_rate": 1.07366000844432}, {"date": "2026-05-23", "cost": 1.933042408, "roi": 1.66338306220957, "price_rate": 1.13608951452488}, {"date": "2026-05-24", "cost": 1.730461, "roi": 1.92300202084878, "price_rate": 0.98901247264949}, {"date": "2026-05-25", "cost": 1.854356955, "roi": 1.87475393592708, "price_rate": 1.00494232336053}, {"date": "2026-05-26", "cost": 2.172751911, "roi": 1.82484340707594, "price_rate": 1.04242757793775}, {"date": "2026-05-27", "cost": 1.530074311, "roi": 1.93831762201254, "price_rate": 0.971370849034684}, {"date": "2026-05-28", "cost": 3.681067321, "roi": 1.7892527969879, "price_rate": 0.99737448610703}, {"date": "2026-05-29", "cost": 5.722283055, "roi": 1.97669267515813, "price_rate": 0.927131151546337}, {"date": "2026-05-30", "cost": 3.480627461, "roi": 1.94007634418305, "price_rate": 0.981910111226671}, {"date": "2026-05-31", "cost": 3.40531667, "roi": 2.03052040972154, "price_rate": 0.932226661525345}, {"date": "2026-06-01", "cost": 4.162174886, "roi": 1.94233092588027, "price_rate": 0.93090214240742}, {"date": "2026-06-02", "cost": 5.288593204, "roi": 1.98071313030413, "price_rate": 0.951259340010632}, {"date": "2026-06-03", "cost": 5.813799004, "roi": 1.8661345176425, "price_rate": 1.02818691712234}, {"date": "2026-06-04", "cost": 8.805190592, "roi": 1.82741813841251, "price_rate": 1.01025081515124}, {"date": "2026-06-05", "cost": 11.974437775, "roi": 1.85124023495124, "price_rate": 1.02453854257558}, {"date": "2026-06-06", "cost": 10.537401801, "roi": 1.87224700856788, "price_rate": 1.00611658132442}, {"date": "2026-06-07", "cost": 11.582398594, "roi": 1.87155266882538, "price_rate": 1.01428392720481}, {"date": "2026-06-08", "cost": 11.237636096, "roi": 2.53364344215903, "price_rate": 0.872786168058568}, {"date": "2026-06-09", "cost": 8.591225189, "roi": 1.73411343228149, "price_rate": 1.10553927970991}, {"date": "2026-06-10", "cost": 6.407229896, "roi": 1.92542802431698, "price_rate": 0.979626408795708}, {"date": "2026-06-11", "cost": 7.85071123, "roi": 1.78016661045881, "price_rate": 1.08876321303342}, {"date": "2026-06-12", "cost": 6.103283498, "roi": 2.17408711300207, "price_rate": 0.950437308676626}, {"date": "2026-06-13", "cost": 6.130077889, "roi": 2.14230948412016, "price_rate": 0.961669459138753}, {"date": "2026-06-14", "cost": 7.367640009, "roi": 2.0641134720783, "price_rate": 0.999377750689408}, {"date": "2026-06-15", "cost": 6.411834101, "roi": 2.31918648638785, "price_rate": 0.887418195646987}, {"date": "2026-06-16", "cost": 13.054921576, "roi": 2.0236067176816, "price_rate": 1.0192545499346}, {"date": "2026-06-17", "cost": 12.743591984, "roi": 1.98648583788494, "price_rate": 1.02574460501583}, {"date": "2026-06-18", "cost": 12.290389589, "roi": 2.0638953563118, "price_rate": 0.985433049210513}, {"date": "2026-06-19", "cost": 12.700774209, "roi": 2.08979591033056, "price_rate": 0.967781481049142}, {"date": "2026-06-20", "cost": 14.616681389, "roi": 1.90330959946465, "price_rate": 1.04108346436418}, {"date": "2026-06-21", "cost": 9.396293268, "roi": 2.09327640581258, "price_rate": 0.96301648994201}, {"date": "2026-06-22", "cost": 8.692611697, "roi": 2.07945340595835, "price_rate": 0.979233773490464}, {"date": "2026-06-23", "cost": 8.054272368, "roi": 2.01411477769881, "price_rate": 1.01024424030347}, {"date": "2026-06-24", "cost": 8.103727159, "roi": 2.08142113734261, "price_rate": 0.974670440658741}, {"date": "2026-06-25", "cost": 7.876219101, "roi": 2.05659019794706, "price_rate": 0.995068688311236}, {"date": "2026-06-26", "cost": 4.587421096, "roi": 1.86222080363385, "price_rate": 1.08610140024503}, {"date": "2026-06-27", "cost": 3.903272404, "roi": 1.94109921517023, "price_rate": 1.03878739661523}, {"date": "2026-06-28", "cost": 3.535057125, "roi": 1.9726527050111, "price_rate": 1.02183716424179}, {"date": "2026-06-29", "cost": 2.577004307, "roi": 2.03407498612302, "price_rate": 0.99181988064723}, {"date": "2026-06-30", "cost": 3.06852272251531, "roi": 2.14823929049869, "price_rate": 0.944027381818002}], "DPDP唇霜|直播": [{"date": "2026-05-19", "cost": 2.8e-05, "roi": 0.0, "price_rate": null}, {"date": "2026-05-20", "cost": 0.307391, "roi": 1.03571672560355, "price_rate": 1.83480583020809}, {"date": "2026-05-21", "cost": 0.339345, "roi": 1.19975246430624, "price_rate": 1.53020041222092}, {"date": "2026-05-22", "cost": 0.18602, "roi": 1.48634555424148, "price_rate": 1.24682631695195}, {"date": "2026-05-23", "cost": 0.826812, "roi": 1.07677440578995, "price_rate": 1.15104174613419}, {"date": "2026-05-24", "cost": 0.171987, "roi": 1.38103461308122, "price_rate": 1.34393603981252}, {"date": "2026-05-25", "cost": 0.027529, "roi": 1.59504522503542, "price_rate": 1.18288661062677}], "DPDP彩妆品牌店|小店": [{"date": "2026-06-02", "cost": 0.00036, "roi": 0.0, "price_rate": null}, {"date": "2026-06-03", "cost": 0.027006, "roi": 1.99622306154188, "price_rate": 0.918727674774622}, {"date": "2026-06-11", "cost": 0.018151, "roi": 0.330009365875158, "price_rate": 5.44584458445845}, {"date": "2026-06-12", "cost": 0.096654, "roi": 1.03285947813851, "price_rate": 1.79577504041023}, {"date": "2026-06-19", "cost": 0.000524, "roi": 0.0, "price_rate": null}, {"date": "2026-06-20", "cost": 0.000156, "roi": 0.0, "price_rate": null}, {"date": "2026-06-27", "cost": 0.001805, "roi": 9.95567867036011, "price_rate": 0.192164377728095}, {"date": "2026-06-28", "cost": 0.001208, "roi": 0.0, "price_rate": null}, {"date": "2026-06-29", "cost": 0.000546, "roi": 0.0, "price_rate": null}, {"date": "2026-06-30", "cost": 0.00092300001068287, "roi": 0.0, "price_rate": null}], "DPDP彩妆品牌店|直播": [{"date": "2026-05-15", "cost": 0.727835821, "roi": 1.85497877549503, "price_rate": 1.09766141101891}, {"date": "2026-05-16", "cost": 0.803718555, "roi": 2.03458037621142, "price_rate": 1.00368077997133}, {"date": "2026-05-17", "cost": 0.903259794, "roi": 1.82224318068119, "price_rate": 1.09803713765045}, {"date": "2026-05-18", "cost": 0.715819451, "roi": 1.96658528632243, "price_rate": 1.02795604016881}, {"date": "2026-05-19", "cost": 0.674547, "roi": 2.14699642871438, "price_rate": 0.961767176535071}, {"date": "2026-05-20", "cost": 0.920056762, "roi": 2.07916845895645, "price_rate": 0.982986174050694}, {"date": "2026-05-21", "cost": 0.705454238, "roi": 2.00812458653059, "price_rate": 1.01099060321057}, {"date": "2026-05-22", "cost": 0.602703762, "roi": 1.83045149135804, "price_rate": 1.11545682608893}, {"date": "2026-05-23", "cost": 0.486679, "roi": 2.08546084791002, "price_rate": 0.964416461193749}, {"date": "2026-05-24", "cost": 0.741495175, "roi": 1.91736918584804, "price_rate": 1.06345150310653}, {"date": "2026-05-25", "cost": 0.689628773, "roi": 1.99211670653423, "price_rate": 1.00852125566269}, {"date": "2026-05-26", "cost": 0.684115218, "roi": 1.92014439298732, "price_rate": 1.05562000821108}, {"date": "2026-05-27", "cost": 1.208070782, "roi": 1.82807169323627, "price_rate": 1.10673027654857}, {"date": "2026-05-28", "cost": 1.473122575, "roi": 1.76516879459267, "price_rate": 1.13585195093079}, {"date": "2026-05-29", "cost": 1.372723432, "roi": 1.65884252203834, "price_rate": 1.19224532160664}, {"date": "2026-05-30", "cost": 2.248951234, "roi": 1.72963288006982, "price_rate": 1.13494179412581}, {"date": "2026-05-31", "cost": 1.599492725, "roi": 1.71503812247724, "price_rate": 1.15027394770629}, {"date": "2026-06-01", "cost": 1.625736903, "roi": 1.70956321091765, "price_rate": 1.14858651355165}, {"date": "2026-06-02", "cost": 1.612200811, "roi": 1.64450109558964, "price_rate": 1.19989682994244}, {"date": "2026-06-03", "cost": 1.086412072, "roi": 1.88246251372656, "price_rate": 1.04050339052901}, {"date": "2026-06-04", "cost": 0.84977243, "roi": 1.78586165710271, "price_rate": 1.08078323610726}, {"date": "2026-06-05", "cost": 2.603176409, "roi": 1.65465159606861, "price_rate": 1.18963603786009}, {"date": "2026-06-06", "cost": 1.755601141, "roi": 1.62499609585296, "price_rate": 1.18763120066169}, {"date": "2026-06-07", "cost": 3.768434182, "roi": 1.73523582585952, "price_rate": 1.14013930253453}, {"date": "2026-06-08", "cost": 1.164067733, "roi": 1.77388303228572, "price_rate": 1.08335074018771}, {"date": "2026-06-09", "cost": 1.127041308, "roi": 1.65135029815606, "price_rate": 1.13389231906841}, {"date": "2026-06-10", "cost": 0.98454159, "roi": 1.66304807905576, "price_rate": 1.14268250895059}, {"date": "2026-06-11", "cost": 0.887472, "roi": 1.76371761587971, "price_rate": 1.05516143873886}, {"date": "2026-06-12", "cost": 0.91195411, "roi": 1.60426932008673, "price_rate": 1.2002583939424}, {"date": "2026-06-13", "cost": 1.181314805, "roi": 1.73842145320442, "price_rate": 1.09251790575517}, {"date": "2026-06-14", "cost": 1.120214654, "roi": 1.79118974460407, "price_rate": 1.04934850496727}, {"date": "2026-06-15", "cost": 1.185489, "roi": 1.73771329805675, "price_rate": 1.07844079012388}, {"date": "2026-06-16", "cost": 1.246388919, "roi": 1.61034005470005, "price_rate": 1.16018366142072}, {"date": "2026-06-17", "cost": 0.896807516, "roi": 1.75549376194122, "price_rate": 1.06308459870772}, {"date": "2026-06-18", "cost": 0.930788948, "roi": 1.62609365232815, "price_rate": 1.14234335336915}, {"date": "2026-06-19", "cost": 1.067595347, "roi": 1.57331146554725, "price_rate": 1.16020830744165}, {"date": "2026-06-20", "cost": 1.081182429, "roi": 1.84021673552373, "price_rate": 0.989791391804044}, {"date": "2026-06-21", "cost": 1.207965547, "roi": 1.57728836284434, "price_rate": 1.18568759926316}, {"date": "2026-06-22", "cost": 0.931872, "roi": 1.69908528209883, "price_rate": 1.10242212930467}, {"date": "2026-06-23", "cost": 1.037236818, "roi": 1.61571588177079, "price_rate": 1.15117438686009}, {"date": "2026-06-24", "cost": 0.949637, "roi": 1.79222165943408, "price_rate": 1.03115537898413}, {"date": "2026-06-25", "cost": 0.986249252, "roi": 1.55874389448967, "price_rate": 1.17649624760778}, {"date": "2026-06-26", "cost": 0.622883631, "roi": 1.58991174388399, "price_rate": 1.17484697379652}, {"date": "2026-06-27", "cost": 0.81071232, "roi": 1.87538780710771, "price_rate": 1.01296675641003}, {"date": "2026-06-28", "cost": 0.717357, "roi": 1.67832752729812, "price_rate": 1.12067380304906}, {"date": "2026-06-29", "cost": 0.713485553, "roi": 1.76160539581381, "price_rate": 1.06321722436277}, {"date": "2026-06-30", "cost": 1.01925001179688, "roi": 1.70231052244297, "price_rate": 1.10166055413258}], "DPDP美妆小妍|小店": [{"date": "2026-06-09", "cost": 0.002112, "roi": 1.88920454545455, "price_rate": 1.00094786729858}, {"date": "2026-06-10", "cost": 0.048365, "roi": 2.10772252662049, "price_rate": 0.887789566430486}, {"date": "2026-06-11", "cost": 0.130144, "roi": 1.86024711089255, "price_rate": 1.07672706213287}, {"date": "2026-06-12", "cost": 0.21165, "roi": 1.98889676352469, "price_rate": 0.983081413654333}, {"date": "2026-06-13", "cost": 0.197453, "roi": 1.92481248702223, "price_rate": 1.01854115796308}, {"date": "2026-06-14", "cost": 0.262134, "roi": 2.04349683749533, "price_rate": 0.981916035068795}, {"date": "2026-06-15", "cost": 0.291667, "roi": 2.24015743982007, "price_rate": 0.870792227964091}, {"date": "2026-06-16", "cost": 0.279262, "roi": 2.07171043679412, "price_rate": 0.928584362047402}, {"date": "2026-06-17", "cost": 0.373428, "roi": 1.89123472262391, "price_rate": 1.03749303797199}, {"date": "2026-06-18", "cost": 0.435653, "roi": 1.95173681806392, "price_rate": 1.00552271997608}, {"date": "2026-06-19", "cost": 0.530194387, "roi": 1.73013902540617, "price_rate": 1.09925270225075}, {"date": "2026-06-20", "cost": 0.640233, "roi": 1.68269989207054, "price_rate": 1.14890811373243}, {"date": "2026-06-21", "cost": 0.354866, "roi": 2.14867020227353, "price_rate": 0.898542034181789}, {"date": "2026-06-22", "cost": 0.464842, "roi": 1.99269859436109, "price_rate": 0.966102036887546}, {"date": "2026-06-23", "cost": 0.285898, "roi": 1.88409852464865, "price_rate": 1.01460249476692}, {"date": "2026-06-24", "cost": 0.169297, "roi": 1.53788903524575, "price_rate": 1.25909447017782}, {"date": "2026-06-25", "cost": 0.145449, "roi": 2.29544376379349, "price_rate": 0.811901016569748}, {"date": "2026-06-26", "cost": 0.216154, "roi": 2.09198071745145, "price_rate": 0.93720944348545}, {"date": "2026-06-27", "cost": 0.352323, "roi": 1.94717631264493, "price_rate": 1.00394619902576}, {"date": "2026-06-28", "cost": 0.282954, "roi": 2.11958480883819, "price_rate": 0.898661833665692}, {"date": "2026-06-29", "cost": 0.225632304, "roi": 2.13090054693587, "price_rate": 0.895859535665128}, {"date": "2026-06-30", "cost": 0.206269891387383, "roi": 2.47117988219793, "price_rate": 0.766911651812336}], "DPDP美妆小妍|直播": [{"date": "2026-05-15", "cost": 1.497141726, "roi": 1.88306821661585, "price_rate": 1.09205415039459}, {"date": "2026-05-16", "cost": 1.323434691, "roi": 2.00578843674878, "price_rate": 1.02348141833158}, {"date": "2026-05-17", "cost": 1.263266576, "roi": 2.1527601946147, "price_rate": 0.940358299485758}, {"date": "2026-05-18", "cost": 1.260283572, "roi": 1.93186363298878, "price_rate": 1.00483594264921}, {"date": "2026-05-19", "cost": 1.397575251, "roi": 1.74335514188352, "price_rate": 1.11123926325142}, {"date": "2026-05-20", "cost": 1.628869457, "roi": 1.97222127666183, "price_rate": 0.988295028515446}, {"date": "2026-05-21", "cost": 1.580776314, "roi": 1.86116275525115, "price_rate": 1.10167791127102}, {"date": "2026-05-22", "cost": 1.372370124, "roi": 1.85170891988902, "price_rate": 1.10136474737984}, {"date": "2026-05-23", "cost": 1.138640878, "roi": 1.9691643285619, "price_rate": 1.0484495548612}, {"date": "2026-05-24", "cost": 1.051826, "roi": 2.02255981502644, "price_rate": 1.03968520740672}, {"date": "2026-05-25", "cost": 0.929721, "roi": 2.08350677246185, "price_rate": 1.0130077040053}, {"date": "2026-05-26", "cost": 1.072631076, "roi": 2.10731821087011, "price_rate": 0.95420537598967}, {"date": "2026-05-27", "cost": 1.135877273, "roi": 1.97398790635016, "price_rate": 0.980212785293513}, {"date": "2026-05-28", "cost": 1.576975445, "roi": 1.83763799822514, "price_rate": 1.09992326162303}, {"date": "2026-05-29", "cost": 2.143230917, "roi": 1.7291566534452, "price_rate": 1.0733989625067}, {"date": "2026-05-30", "cost": 2.914064411, "roi": 1.80781522196765, "price_rate": 1.03510790031721}, {"date": "2026-05-31", "cost": 3.31007524, "roi": 1.75384261053836, "price_rate": 1.02838532666636}, {"date": "2026-06-01", "cost": 2.619472739, "roi": 1.89177956549064, "price_rate": 0.950737092632436}, {"date": "2026-06-02", "cost": 3.383306713, "roi": 1.80825077918379, "price_rate": 1.00266116535589}, {"date": "2026-06-03", "cost": 4.275094462, "roi": 1.71659949627565, "price_rate": 1.05709533690068}, {"date": "2026-06-04", "cost": 4.168415038, "roi": 1.74275352472711, "price_rate": 1.03301849517183}, {"date": "2026-06-05", "cost": 3.218894468, "roi": 1.78480160101974, "price_rate": 1.02380440306118}, {"date": "2026-06-06", "cost": 3.171754588, "roi": 1.73601388355586, "price_rate": 1.05447923092222}, {"date": "2026-06-07", "cost": 4.065818453, "roi": 1.74737290465045, "price_rate": 1.05227439544281}, {"date": "2026-06-08", "cost": 2.958414839, "roi": 1.81559797807653, "price_rate": 0.986659981097861}, {"date": "2026-06-09", "cost": 1.862815215, "roi": 1.85975987961855, "price_rate": 0.977839640902909}, {"date": "2026-06-10", "cost": 3.209607142, "roi": 1.77322355920904, "price_rate": 1.03350444380481}, {"date": "2026-06-11", "cost": 6.771771758, "roi": 1.46166916926972, "price_rate": 1.24288240039892}, {"date": "2026-06-12", "cost": 4.754314597, "roi": 1.78373955424641, "price_rate": 1.02798691773668}, {"date": "2026-06-13", "cost": 3.00007443, "roi": 1.76957909674261, "price_rate": 1.04205761693495}, {"date": "2026-06-14", "cost": 3.935038919, "roi": 1.79907521773611, "price_rate": 1.01993227344485}, {"date": "2026-06-15", "cost": 3.332069717, "roi": 1.80922685057973, "price_rate": 1.00739218995888}, {"date": "2026-06-16", "cost": 2.274588321, "roi": 2.00038835950745, "price_rate": 0.897240869536297}, {"date": "2026-06-17", "cost": 2.877785002, "roi": 1.75701798309671, "price_rate": 1.02741222552576}, {"date": "2026-06-18", "cost": 2.553628274, "roi": 2.00331036904865, "price_rate": 0.899026548957217}, {"date": "2026-06-19", "cost": 5.625545706, "roi": 1.68278110155666, "price_rate": 1.08846250969802}, {"date": "2026-06-20", "cost": 3.507274717, "roi": 1.72153266772459, "price_rate": 1.0563651366873}, {"date": "2026-06-21", "cost": 2.548294637, "roi": 1.78699508835485, "price_rate": 1.02681080961765}, {"date": "2026-06-22", "cost": 4.713652027, "roi": 1.77177058301338, "price_rate": 1.02950502606905}, {"date": "2026-06-23", "cost": 3.147849083, "roi": 1.6257517006256, "price_rate": 1.10120101718538}, {"date": "2026-06-24", "cost": 1.322462857, "roi": 1.48151533302383, "price_rate": 1.20338432613852}, {"date": "2026-06-25", "cost": 2.129287235, "roi": 1.72908564870066, "price_rate": 1.05560537669114}, {"date": "2026-06-26", "cost": 3.133989295, "roi": 1.71163315987013, "price_rate": 1.0530271319044}, {"date": "2026-06-27", "cost": 5.265837165, "roi": 1.62456029914096, "price_rate": 1.093568014118}, {"date": "2026-06-28", "cost": 3.469462896, "roi": 1.85854588830859, "price_rate": 0.977782227602983}, {"date": "2026-06-29", "cost": 2.510280158, "roi": 1.97379722108292, "price_rate": 0.903204769359064}, {"date": "2026-06-30", "cost": 4.23128709197323, "roi": 1.77631532052031, "price_rate": 0.989271060708638}], "DPDP美妆精品店|直播": [{"date": "2026-05-15", "cost": 0.715429036, "roi": 1.65786813271023, "price_rate": 1.21416821617861}, {"date": "2026-05-16", "cost": 1.177682688, "roi": 1.73584958056206, "price_rate": 1.15523300016915}, {"date": "2026-05-17", "cost": 1.564535188, "roi": 1.80579511516874, "price_rate": 1.09432056539405}, {"date": "2026-05-18", "cost": 0.226099216, "roi": 1.24454213056626, "price_rate": 1.62319493734584}, {"date": "2026-05-19", "cost": 3.7e-05, "roi": 0.0, "price_rate": null}, {"date": "2026-05-25", "cost": 0.006853, "roi": 13.9792791478185, "price_rate": 0.140302419500586}, {"date": "2026-05-26", "cost": 0.252576, "roi": 2.19684372228557, "price_rate": 0.903996108289882}, {"date": "2026-05-27", "cost": 0.37192, "roi": 2.10077436007744, "price_rate": 0.91644122798499}, {"date": "2026-05-28", "cost": 0.373136619, "roi": 2.15615664352686, "price_rate": 0.911009157024837}, {"date": "2026-05-29", "cost": 0.395122381, "roi": 1.87465968929763, "price_rate": 1.04996821756695}, {"date": "2026-05-30", "cost": 0.662747285, "roi": 1.72052006218328, "price_rate": 1.11594994659066}, {"date": "2026-05-31", "cost": 1.482554119, "roi": 1.81945668318635, "price_rate": 1.06391687938782}, {"date": "2026-06-01", "cost": 1.265939427, "roi": 1.86570538023065, "price_rate": 1.02093635676399}, {"date": "2026-06-02", "cost": 1.478791983, "roi": 1.84057935888877, "price_rate": 1.05131623841278}, {"date": "2026-06-03", "cost": 1.36654801, "roi": 1.84151524980085, "price_rate": 1.0461428869824}, {"date": "2026-06-04", "cost": 1.311220741, "roi": 1.70563729665713, "price_rate": 1.15790022183403}, {"date": "2026-06-05", "cost": 1.173717337, "roi": 1.77542320822002, "price_rate": 1.10842423823216}, {"date": "2026-06-06", "cost": 1.174338805, "roi": 2.13984583435442, "price_rate": 0.934509561758753}, {"date": "2026-06-07", "cost": 1.471738517, "roi": 1.98967613212232, "price_rate": 1.01387750368362}, {"date": "2026-06-08", "cost": 1.800318, "roi": 1.71880023418085, "price_rate": 1.17099820745519}, {"date": "2026-06-09", "cost": 1.130306, "roi": 1.95648700440412, "price_rate": 1.06430826582857}, {"date": "2026-06-10", "cost": 1.91708813, "roi": 1.63420238797264, "price_rate": 1.21428242895625}, {"date": "2026-06-11", "cost": 1.264208558, "roi": 1.74730584287027, "price_rate": 1.12767626165938}, {"date": "2026-06-12", "cost": 0.96589494, "roi": 1.7946289272413, "price_rate": 1.11549805774816}, {"date": "2026-06-13", "cost": 1.421090588, "roi": 1.70670893219652, "price_rate": 1.15604769723286}, {"date": "2026-06-14", "cost": 1.497951345, "roi": 2.0501360142642, "price_rate": 0.969791627027723}, {"date": "2026-06-15", "cost": 1.278233323, "roi": 1.93019768426112, "price_rate": 1.02616567248562}, {"date": "2026-06-16", "cost": 1.086924727, "roi": 1.87714654871404, "price_rate": 1.04953527880847}, {"date": "2026-06-17", "cost": 0.860971987, "roi": 2.14306507977013, "price_rate": 0.938680846764287}, {"date": "2026-06-18", "cost": 0.543006, "roi": 2.19807884259106, "price_rate": 0.888031465768732}, {"date": "2026-06-19", "cost": 0.833636912, "roi": 1.94818628664562, "price_rate": 0.996574646421214}, {"date": "2026-06-20", "cost": 0.790028183, "roi": 2.06917934723855, "price_rate": 0.978743450989641}, {"date": "2026-06-21", "cost": 0.838149981, "roi": 2.16260817406139, "price_rate": 0.92350128487968}, {"date": "2026-06-22", "cost": 0.693619, "roi": 2.07067568794972, "price_rate": 0.954207286517093}, {"date": "2026-06-23", "cost": 0.725986715, "roi": 1.81924816626982, "price_rate": 1.08662787196474}, {"date": "2026-06-24", "cost": 0.617944109, "roi": 2.25313257254468, "price_rate": 0.883091083289066}, {"date": "2026-06-25", "cost": 0.757272567, "roi": 1.75292233978416, "price_rate": 1.14562466085878}, {"date": "2026-06-26", "cost": 0.828894369, "roi": 1.82757906996953, "price_rate": 1.09033914004567}, {"date": "2026-06-27", "cost": 1.901676631, "roi": 1.70224471775612, "price_rate": 1.11352005322448}, {"date": "2026-06-28", "cost": 4.058926253, "roi": 1.77715005160997, "price_rate": 1.05498441838107}, {"date": "2026-06-29", "cost": 2.105342711, "roi": 1.66361513576874, "price_rate": 1.10798067185355}, {"date": "2026-06-30", "cost": 0.702404055129677, "roi": 2.0955175390668, "price_rate": 0.892883659313326}], "ELL养肤美妆|小店": [{"date": "2026-05-15", "cost": 0.073719944, "roi": 0.785811774355119, "price_rate": 2.13531265883156}, {"date": "2026-05-16", "cost": 0.107962121, "roi": 1.62557013862297, "price_rate": 1.19076415319502}, {"date": "2026-05-17", "cost": 0.128989935, "roi": 1.56423057349397, "price_rate": 1.08150886514957}, {"date": "2026-05-18", "cost": 0.104815, "roi": 1.8486857797071, "price_rate": 0.920675263178008}, {"date": "2026-05-19", "cost": 0.075216, "roi": 1.85917889810679, "price_rate": 0.960178006095394}, {"date": "2026-05-20", "cost": 0.154133272, "roi": 1.1859217521834, "price_rate": 1.41317664897259}, {"date": "2026-05-21", "cost": 0.146027728, "roi": 1.16964087806666, "price_rate": 1.37460788554091}, {"date": "2026-05-22", "cost": 0.346687, "roi": 1.61058822511372, "price_rate": 1.08665203659726}, {"date": "2026-05-23", "cost": 0.493926, "roi": 1.43501455683645, "price_rate": 1.1955472505555}, {"date": "2026-05-24", "cost": 0.221667, "roi": 1.48700528269882, "price_rate": 1.13444423404658}, {"date": "2026-05-25", "cost": 0.166958, "roi": 1.39394338695959, "price_rate": 1.19077098637758}, {"date": "2026-05-26", "cost": 0.387318, "roi": 1.53189368942316, "price_rate": 1.13661770508805}, {"date": "2026-05-27", "cost": 0.457661, "roi": 1.45140180177031, "price_rate": 1.16870703480117}, {"date": "2026-05-28", "cost": 0.608257, "roi": 1.51245279544666, "price_rate": 1.11558890311316}, {"date": "2026-05-29", "cost": 0.307073, "roi": 1.46054521237621, "price_rate": 1.18413786720756}, {"date": "2026-05-30", "cost": 0.611811, "roi": 1.69907046457158, "price_rate": 0.995118455137246}, {"date": "2026-05-31", "cost": 0.437493, "roi": 1.67058215788595, "price_rate": 1.02229982756664}, {"date": "2026-06-01", "cost": 0.562835, "roi": 1.82455604217932, "price_rate": 0.92117194625778}, {"date": "2026-06-02", "cost": 0.582229, "roi": 1.42165539675969, "price_rate": 1.15444397545373}, {"date": "2026-06-03", "cost": 0.874068, "roi": 1.60182274148007, "price_rate": 1.04880599048539}, {"date": "2026-06-04", "cost": 0.959283, "roi": 1.69602296715359, "price_rate": 0.973201252505364}, {"date": "2026-06-05", "cost": 1.313355, "roi": 1.47831393644521, "price_rate": 1.10694248281599}, {"date": "2026-06-06", "cost": 1.579714, "roi": 1.37673528246252, "price_rate": 1.18719891268388}, {"date": "2026-06-07", "cost": 0.841058324, "roi": 1.60263796402305, "price_rate": 1.08838067438996}, {"date": "2026-06-08", "cost": 0.603936676, "roi": 2.19822384160024, "price_rate": 0.986660174180228}, {"date": "2026-06-09", "cost": 0.493676, "roi": 1.39946645168086, "price_rate": 1.17567254165373}, {"date": "2026-06-10", "cost": 0.237186, "roi": 1.52452927238539, "price_rate": 1.18657074939124}, {"date": "2026-06-11", "cost": 0.228067, "roi": 1.71682444194031, "price_rate": 1.01474154594181}, {"date": "2026-06-12", "cost": 0.254648, "roi": 1.91035468568377, "price_rate": 0.95618332781495}, {"date": "2026-06-13", "cost": 0.239249, "roi": 1.81194905725834, "price_rate": 0.959681461663141}, {"date": "2026-06-14", "cost": 0.244831, "roi": 1.48506929269578, "price_rate": 1.24219020430249}, {"date": "2026-06-15", "cost": 0.298133, "roi": 1.67518523611945, "price_rate": 1.06826627393887}, {"date": "2026-06-16", "cost": 0.170905, "roi": 2.10389982738949, "price_rate": 0.791202357911819}, {"date": "2026-06-17", "cost": 0.330545, "roi": 1.56224417250299, "price_rate": 1.07805240291258}, {"date": "2026-06-18", "cost": 0.229955, "roi": 1.54202778804549, "price_rate": 1.08277216972298}, {"date": "2026-06-19", "cost": 0.316332942, "roi": 1.56303986829168, "price_rate": 1.09801171601587}, {"date": "2026-06-20", "cost": 0.342287058, "roi": 1.51453286907506, "price_rate": 1.11484639524016}, {"date": "2026-06-21", "cost": 0.563674, "roi": 1.34807530593925, "price_rate": 1.12392150141776}, {"date": "2026-06-22", "cost": 0.511692, "roi": 1.37846986077562, "price_rate": 1.16024930245915}, {"date": "2026-06-23", "cost": 0.313107, "roi": 1.87580603435886, "price_rate": 0.90709593891201}, {"date": "2026-06-24", "cost": 0.262524, "roi": 1.46488321067788, "price_rate": 1.17920457239874}, {"date": "2026-06-25", "cost": 0.121071, "roi": 1.36952697177689, "price_rate": 1.22741885035505}, {"date": "2026-06-26", "cost": 0.128175, "roi": 2.09643066120538, "price_rate": 0.806012795209607}, {"date": "2026-06-27", "cost": 0.102707, "roi": 1.38101589959789, "price_rate": 1.22275309172554}, {"date": "2026-06-28", "cost": 0.134424, "roi": 2.31082247217759, "price_rate": 0.690859708099572}, {"date": "2026-06-29", "cost": 0.10113, "roi": 1.77781073865322, "price_rate": 0.88926602358362}, {"date": "2026-06-30", "cost": 0.122179001414109, "roi": 1.73319473886674, "price_rate": 0.929484290393679}], "ELL养肤美妆|直播": [{"date": "2026-05-15", "cost": 0.457691, "roi": 1.57508013048105, "price_rate": 1.12189744399724}, {"date": "2026-05-16", "cost": 1.197389, "roi": 1.67940410342838, "price_rate": 1.08529650512723}, {"date": "2026-05-17", "cost": 0.312174, "roi": 1.51264999647632, "price_rate": 1.2014478507674}, {"date": "2026-05-18", "cost": 1.252595, "roi": 1.76764237443068, "price_rate": 1.01748159522499}, {"date": "2026-05-19", "cost": 0.662617, "roi": 1.63993075939796, "price_rate": 1.09633257982014}, {"date": "2026-05-20", "cost": 1.195584, "roi": 1.59960320646646, "price_rate": 1.16504594886949}, {"date": "2026-05-21", "cost": 0.989148, "roi": 1.69719799261587, "price_rate": 1.04261822098598}, {"date": "2026-05-22", "cost": 9.072051, "roi": 1.6746686058092, "price_rate": 1.02549827936004}, {"date": "2026-05-23", "cost": 11.520005327, "roi": 1.7151014638589, "price_rate": 1.01042888537199}, {"date": "2026-05-24", "cost": 3.80380289, "roi": 1.79019528532931, "price_rate": 0.992726123619934}, {"date": "2026-05-25", "cost": 4.103807145, "roi": 1.71516929312233, "price_rate": 1.04151847907203}, {"date": "2026-05-26", "cost": 5.080164638, "roi": 1.77844334658352, "price_rate": 1.02112165460816}, {"date": "2026-05-27", "cost": 4.666115, "roi": 1.82563888802569, "price_rate": 1.01600823035968}, {"date": "2026-05-28", "cost": 7.050597099, "roi": 1.73338212755532, "price_rate": 1.04149998053167}, {"date": "2026-05-29", "cost": 4.376168578, "roi": 1.8696302151457, "price_rate": 0.989777648700988}, {"date": "2026-05-30", "cost": 10.873070034, "roi": 1.69908525763479, "price_rate": 1.06820761133732}, {"date": "2026-05-31", "cost": 2.368208931, "roi": 1.84085953858773, "price_rate": 1.02623987232332}, {"date": "2026-06-01", "cost": 7.46342281, "roi": 1.81699782328157, "price_rate": 1.01372456184026}, {"date": "2026-06-02", "cost": 4.244287985, "roi": 1.76936650541634, "price_rate": 1.03433904125005}, {"date": "2026-06-03", "cost": 13.248034057, "roi": 1.71782106704166, "price_rate": 1.05637476319116}, {"date": "2026-06-04", "cost": 9.568739161, "roi": 1.7602246980092, "price_rate": 1.03352652180649}, {"date": "2026-06-05", "cost": 19.376862499, "roi": 1.68632527591535, "price_rate": 1.05765486567664}, {"date": "2026-06-06", "cost": 4.666907838, "roi": 1.70413671665911, "price_rate": 1.05264712768098}, {"date": "2026-06-07", "cost": 3.201345, "roi": 1.66163409441969, "price_rate": 1.08640757130223}, {"date": "2026-06-08", "cost": 2.645958, "roi": 2.28851780716096, "price_rate": 0.870403025338304}, {"date": "2026-06-09", "cost": 0.776953, "roi": 1.65014486075734, "price_rate": 1.10158259621164}, {"date": "2026-06-10", "cost": 0.358487, "roi": 1.79393395018508, "price_rate": 1.06641446342055}, {"date": "2026-06-11", "cost": 1.073398446, "roi": 1.42848539208711, "price_rate": 1.28794562759303}, {"date": "2026-06-12", "cost": 0.794621345, "roi": 1.83288557394592, "price_rate": 1.03286535417053}, {"date": "2026-06-13", "cost": 0.912993, "roi": 1.94865239930646, "price_rate": 0.944891502173723}, {"date": "2026-06-14", "cost": 1.231123, "roi": 1.8547634964175, "price_rate": 1.00429918982787}, {"date": "2026-06-15", "cost": 0.800162762, "roi": 1.82882167165885, "price_rate": 1.02863845637237}, {"date": "2026-06-16", "cost": 0.497938, "roi": 1.9799352529833, "price_rate": 0.948718323914322}, {"date": "2026-06-17", "cost": 1.08375, "roi": 1.94474094579008, "price_rate": 0.957971097353899}, {"date": "2026-06-18", "cost": 1.038454, "roi": 1.68137635369501, "price_rate": 1.07371864070315}, {"date": "2026-06-19", "cost": 0.812757, "roi": 2.06717505970419, "price_rate": 0.847848581982998}, {"date": "2026-06-20", "cost": 1.966928, "roi": 1.65428780311226, "price_rate": 1.06890286261666}, {"date": "2026-06-21", "cost": 1.20598, "roi": 1.63045821655417, "price_rate": 1.09570046230037}, {"date": "2026-06-22", "cost": 1.191815, "roi": 1.69423190679762, "price_rate": 1.04028204338794}, {"date": "2026-06-23", "cost": 1.304617747, "roi": 1.6457893547266, "price_rate": 1.04728013631292}, {"date": "2026-06-24", "cost": 0.788135, "roi": 1.80224580814201, "price_rate": 1.0390728837465}, {"date": "2026-06-25", "cost": 1.213289, "roi": 1.61116601238452, "price_rate": 1.10998351226905}, {"date": "2026-06-26", "cost": 0.531833, "roi": 1.77529412428337, "price_rate": 0.99566950777616}, {"date": "2026-06-27", "cost": 0.509725, "roi": 1.85354848202462, "price_rate": 0.98188055925384}, {"date": "2026-06-28", "cost": 1.053285162, "roi": 1.77141961865024, "price_rate": 1.00208545283148}, {"date": "2026-06-29", "cost": 0.569079838, "roi": 1.84243392576491, "price_rate": 0.995410027810352}, {"date": "2026-06-30", "cost": 0.826762009569005, "roi": 1.83417718763078, "price_rate": 0.990929746025407}], "ELL品牌店|小店": [{"date": "2026-06-06", "cost": 0.042133, "roi": 1.53964825671089, "price_rate": 1.18955746920602}, {"date": "2026-06-07", "cost": 0.019905, "roi": 1.75483546847526, "price_rate": 1.04368763717309}, {"date": "2026-06-08", "cost": 0.013384, "roi": 2.60983263598326, "price_rate": 0.70176917035542}, {"date": "2026-06-09", "cost": 0.014245, "roi": 2.1017901017901, "price_rate": 0.871400089933138}, {"date": "2026-06-10", "cost": 0.030517, "roi": 1.46180817249402, "price_rate": 1.20094489180804}, {"date": "2026-06-11", "cost": 0.0218, "roi": 1.92293577981651, "price_rate": 0.919364640254999}, {"date": "2026-06-12", "cost": 0.025566, "roi": 2.71297817413753, "price_rate": 0.621493865790395}, {"date": "2026-06-13", "cost": 0.045065, "roi": 1.2291135027183, "price_rate": 1.38586835892782}, {"date": "2026-06-14", "cost": 0.025252, "roi": 2.1740852209726, "price_rate": 0.790790298105364}, {"date": "2026-06-15", "cost": 0.016088, "roi": 1.55084535057185, "price_rate": 1.06971403069118}, {"date": "2026-06-16", "cost": 0.013949, "roi": 2.14639042225249, "price_rate": 0.746313511405553}, {"date": "2026-06-17", "cost": 0.053668, "roi": 1.30170678989342, "price_rate": 1.27356200651578}, {"date": "2026-06-18", "cost": 0.033604, "roi": 1.78193072253303, "price_rate": 0.912593517887675}, {"date": "2026-06-19", "cost": 0.05266, "roi": 1.91416635017091, "price_rate": 0.891082155043577}, {"date": "2026-06-20", "cost": 0.054135, "roi": 1.73307472060589, "price_rate": 1.03823553850426}, {"date": "2026-06-21", "cost": 0.039915, "roi": 1.87523487410748, "price_rate": 0.903214911505915}, {"date": "2026-06-22", "cost": 0.023204, "roi": 1.7203930356835, "price_rate": 0.985719538985038}, {"date": "2026-06-23", "cost": 0.064875, "roi": 1.18458574181118, "price_rate": 1.45488402290254}, {"date": "2026-06-24", "cost": 0.055786, "roi": 1.60111856021224, "price_rate": 1.06324645267145}, {"date": "2026-06-25", "cost": 0.058948, "roi": 1.27824523308679, "price_rate": 1.39994622029221}, {"date": "2026-06-26", "cost": 0.020519, "roi": 1.70232467469175, "price_rate": 1.01944929805011}, {"date": "2026-06-27", "cost": 0.025855, "roi": 3.2809901373042, "price_rate": 0.535565481603909}, {"date": "2026-06-28", "cost": 0.048015, "roi": 1.8292200354056, "price_rate": 0.904776925378817}, {"date": "2026-06-29", "cost": 0.094382, "roi": 1.34294674832065, "price_rate": 1.33888482591618}, {"date": "2026-06-30", "cost": 0.0562200006506945, "roi": 1.59765208110993, "price_rate": 1.08502394922103}], "ELL品牌店|直播": [{"date": "2026-05-16", "cost": 0.281918, "roi": 1.01990649763406, "price_rate": 1.84222133682061}, {"date": "2026-05-17", "cost": 0.21115111, "roi": 2.23995980887811, "price_rate": 0.82267442047797}, {"date": "2026-05-18", "cost": 0.11864889, "roi": 2.15004118454037, "price_rate": 0.892908410583483}, {"date": "2026-05-19", "cost": 0.108187, "roi": 1.85780176915896, "price_rate": 0.985014238457433}, {"date": "2026-05-20", "cost": 0.096141, "roi": 2.95638697329963, "price_rate": 0.660645445632194}, {"date": "2026-05-21", "cost": 0.081553, "roi": 2.33001851556656, "price_rate": 0.837043528714488}, {"date": "2026-05-22", "cost": 0.119402, "roi": 1.8998844240465, "price_rate": 0.97783934186094}, {"date": "2026-05-23", "cost": 0.14411, "roi": 1.53327319408785, "price_rate": 1.21134287650619}, {"date": "2026-05-24", "cost": 0.095579, "roi": 1.7792611347681, "price_rate": 1.04877970888889}, {"date": "2026-05-25", "cost": 0.058815132, "roi": 2.26523337565577, "price_rate": 0.790058233091727}, {"date": "2026-05-26", "cost": 0.106627868, "roi": 1.65097552170883, "price_rate": 1.11265895620924}, {"date": "2026-05-27", "cost": 0.125463, "roi": 1.33003355570965, "price_rate": 1.29649727704416}, {"date": "2026-05-28", "cost": 0.118902, "roi": 1.57297606432188, "price_rate": 1.11862749345742}, {"date": "2026-05-29", "cost": 0.05551, "roi": 2.54278508376869, "price_rate": 0.697455296969624}, {"date": "2026-05-30", "cost": 0.226187, "roi": 1.53373093944391, "price_rate": 1.13541991718854}, {"date": "2026-05-31", "cost": 0.790883114, "roi": 1.28639489450523, "price_rate": 1.33407268166212}, {"date": "2026-06-01", "cost": 1.719049687, "roi": 1.39439250542151, "price_rate": 1.24192534749045}, {"date": "2026-06-02", "cost": 1.104355313, "roi": 1.59040299740922, "price_rate": 1.09111369381924}, {"date": "2026-06-03", "cost": 0.835855517, "roi": 1.7549205217485, "price_rate": 0.997334068162459}, {"date": "2026-06-04", "cost": 0.748278163, "roi": 1.76375586681393, "price_rate": 0.99357522419285}, {"date": "2026-06-05", "cost": 0.49580975, "roi": 1.41685394448173, "price_rate": 1.25338845407253}, {"date": "2026-06-06", "cost": 1.049074189, "roi": 1.3687354193403, "price_rate": 1.25607042802194}, {"date": "2026-06-07", "cost": 0.305593381, "roi": 1.90943271771976, "price_rate": 0.931504594670031}, {"date": "2026-06-08", "cost": 0.206839, "roi": 1.97936559352927, "price_rate": 0.876611087236274}, {"date": "2026-06-09", "cost": 0.159689, "roi": 1.98701225507079, "price_rate": 0.908601709206419}, {"date": "2026-06-10", "cost": 0.287986727, "roi": 1.84174460234759, "price_rate": 0.97601758087687}, {"date": "2026-06-11", "cost": 0.241541273, "roi": 1.38592463243331, "price_rate": 1.28429052176349}, {"date": "2026-06-12", "cost": 0.234672, "roi": 2.06445592145633, "price_rate": 0.876401213952666}, {"date": "2026-06-13", "cost": 0.403399, "roi": 1.71459026918758, "price_rate": 1.03885253044525}, {"date": "2026-06-14", "cost": 0.390733454, "roi": 1.95521011108509, "price_rate": 0.905907038936278}, {"date": "2026-06-15", "cost": 0.214568546, "roi": 1.69307201252135, "price_rate": 1.05969160483652}, {"date": "2026-06-16", "cost": 0.234105168, "roi": 1.76493327135777, "price_rate": 0.997023564930293}, {"date": "2026-06-17", "cost": 0.218217, "roi": 1.54763377738673, "price_rate": 1.14194072137189}, {"date": "2026-06-18", "cost": 0.260739, "roi": 1.88261057992859, "price_rate": 0.96700768879537}, {"date": "2026-06-19", "cost": 0.566146082, "roi": 1.95491947253289, "price_rate": 0.921324451110065}, {"date": "2026-06-20", "cost": 0.818106137, "roi": 1.54174372120619, "price_rate": 1.1800748957612}, {"date": "2026-06-21", "cost": 0.502661562, "roi": 1.45238875456325, "price_rate": 1.25155617464903}, {"date": "2026-06-22", "cost": 0.275877438, "roi": 1.86999706732089, "price_rate": 0.964131650729512}, {"date": "2026-06-23", "cost": 0.501683323, "roi": 1.64617790175178, "price_rate": 1.14118166396233}, {"date": "2026-06-24", "cost": 0.301435258, "roi": 1.399547626907, "price_rate": 1.30807553019484}, {"date": "2026-06-25", "cost": 0.212938632, "roi": 1.52972242256163, "price_rate": 1.164631882612}, {"date": "2026-06-26", "cost": 0.297781972, "roi": 1.60332070069037, "price_rate": 1.13335559691083}, {"date": "2026-06-27", "cost": 0.237737966, "roi": 1.51380953599982, "price_rate": 1.19346570620145}, {"date": "2026-06-28", "cost": 0.19598, "roi": 1.72124706602715, "price_rate": 1.03776126341426}, {"date": "2026-06-29", "cost": 0.389124211, "roi": 1.51319291720967, "price_rate": 1.19020741872768}, {"date": "2026-06-30", "cost": 0.181810468104288, "roi": 1.75655454290514, "price_rate": 0.999888472656322}], "ELL美妆-成分颜究所|小店": [{"date": "2026-06-18", "cost": 0.0025, "roi": 1.996, "price_rate": 1.0}, {"date": "2026-06-19", "cost": 0.0025, "roi": 1.996, "price_rate": 1.0}], "eLL美妆护肤手册|直播": [{"date": "2026-05-15", "cost": 0.004919, "roi": 2.02886765602765, "price_rate": 0.912470569624268}, {"date": "2026-05-16", "cost": 0.000324, "roi": 0.0, "price_rate": null}]}, "anomaly_contrib": {"2026-06-03": [{"cat": "DPDP品牌店", "cost": 6.990569633}, {"cat": "DPDP彩妆品牌店", "cost": 1.113418072}, {"cat": "DPDP美妆小妍", "cost": 4.275094462}, {"cat": "DPDP美妆精品店", "cost": 1.36654801}, {"cat": "ELL养肤美妆", "cost": 14.122102057}, {"cat": "ELL品牌店", "cost": 0.835855517}], "2026-06-04": [{"cat": "DPDP品牌店", "cost": 10.768568638000001}, {"cat": "DPDP彩妆品牌店", "cost": 0.84977243}, {"cat": "DPDP美妆小妍", "cost": 4.168415038}, {"cat": "DPDP美妆精品店", "cost": 1.311220741}, {"cat": "ELL养肤美妆", "cost": 10.528022160999999}, {"cat": "ELL品牌店", "cost": 0.748278163}], "2026-06-05": [{"cat": "DPDP品牌店", "cost": 14.302392752}, {"cat": "DPDP彩妆品牌店", "cost": 2.603176409}, {"cat": "DPDP美妆小妍", "cost": 3.218894468}, {"cat": "DPDP美妆精品店", "cost": 1.173717337}, {"cat": "ELL养肤美妆", "cost": 20.690217499000003}, {"cat": "ELL品牌店", "cost": 0.49580975}], "2026-06-06": [{"cat": "DPDP品牌店", "cost": 13.54831581}, {"cat": "DPDP彩妆品牌店", "cost": 1.755601141}, {"cat": "DPDP美妆小妍", "cost": 3.171754588}, {"cat": "DPDP美妆精品店", "cost": 1.174338805}, {"cat": "ELL养肤美妆", "cost": 6.246621838}, {"cat": "ELL品牌店", "cost": 1.091207189}], "2026-06-07": [{"cat": "DPDP品牌店", "cost": 20.508916123}, {"cat": "DPDP彩妆品牌店", "cost": 3.768434182}, {"cat": "DPDP美妆小妍", "cost": 4.065818453}, {"cat": "DPDP美妆精品店", "cost": 1.471738517}, {"cat": "ELL养肤美妆", "cost": 4.042403324}, {"cat": "ELL品牌店", "cost": 0.325498381}], "2026-06-08": [{"cat": "DPDP品牌店", "cost": 20.01241318}, {"cat": "DPDP彩妆品牌店", "cost": 1.164067733}, {"cat": "DPDP美妆小妍", "cost": 2.958414839}, {"cat": "DPDP美妆精品店", "cost": 1.800318}, {"cat": "ELL养肤美妆", "cost": 3.249894676}, {"cat": "ELL品牌店", "cost": 0.220223}]}};
+const D = EMBEDDED_DATA;
+renderAll(D);
+
+function fmtChange(v) {
+  if (v === null || v === undefined) return 'N/A';
+  const pct = (v * 100).toFixed(1);
+  if (v > 0) return `<span class="change up">↑ ${pct}%</span>`;
+  if (v < 0) return `<span class="change down">↓ ${pct}%</span>`;
+  return `<span class="change">→ 0.0%</span>`;
+}
+
+function fmtChangeText(v) {
+  if (v === null || v === undefined) return 'N/A';
+  const pct = (v * 100).toFixed(1);
+  return v > 0 ? `↑${pct}%` : v < 0 ? `↓${pct}%` : '→0.0%';
+}
+
+function renderAll(D) {
+  renderKPIs(D);
+  renderPart1(D);
+  renderPart2(D);
+  renderPart3(D);
+  renderPart4(D);
+}
+
+// ========== KPI 卡片 ==========
+function renderKPIs(D) {
+  const o = D.overall;
+  const best = D.best_cat;
+  const cards = [
+    { label: '整体日均消耗', value: o.cost.toFixed(2) + ' 万', change: fmtChange(o.cost_change), up: o.cost_change >= 0 },
+    { label: '整体下单ROI', value: o.roi.toFixed(2), change: fmtChange(o.roi_change), up: o.roi_change >= 0 },
+    { label: '整体计价率', value: o.price_rate.toFixed(2), change: fmtChange(o.price_rate_change), up: o.price_rate_change <= 0 },
+    { label: '最佳品类', value: best.name, change: 'ROI ' + best.roi.toFixed(2), up: true },
+    { label: '消耗峰值日', value: D.daily_stats.max_cost_date.slice(5), change: D.daily_stats.max_cost_value.toFixed(1) + ' 万', up: false },
+    { label: 'ROI峰值日', value: D.daily_stats.max_roi_date.slice(5), change: 'ROI ' + D.daily_stats.max_roi_value.toFixed(2), up: true },
+  ];
+  document.getElementById('kpi-cards').innerHTML = cards.map(c => 
+    `<div class="kpi-card ${c.up ? 'up' : 'down'}"><div class="label">${c.label}</div><div class="value">${c.value}</div><div class="change">${c.change}</div></div>`
+  ).join('');
+}
+
+// ========== 第一部分 ==========
+function renderPart1(D) {
+  // --- 1A: 整体+分品类 日耗&ROI ---
+  const catNames = ['整体', ...D.categories.map(c => c.name)];
+  const catCosts = [D.overall.cost, ...D.categories.map(c => c.cost)];
+  const catRois = [D.overall.roi, ...D.categories.map(c => c.roi)];
+  
+  const chart1A = echarts.init(document.getElementById('chart-overall-bar'));
+  chart1A.setOption({
+    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+    legend: { data: ['日均消耗(万元)', '下单ROI'], bottom: 0, itemGap: 20 },
+    grid: { left: 55, right: 55, top: 40, bottom: 50 },
+    xAxis: { type: 'category', data: catNames, axisLabel: { rotate: 20, fontSize: 10, interval: 0 }, axisTick: { alignWithLabel: true } },
+    yAxis: [
+      { type: 'value', name: '消耗(万元)', nameTextStyle: { color: '#e74c3c', fontSize: 10 }, nameGap: 35 },
+      { type: 'value', name: 'ROI', nameTextStyle: { color: '#3498db', fontSize: 10 }, nameGap: 35 }
+    ],
+    series: [
+      { name: '日均消耗(万元)', type: 'bar', data: catCosts.map((v, i) => ({ value: v, itemStyle: { color: '#FF6B6B', borderRadius: [4,4,0,0] } })), barWidth: '30%', barGap: '30%', label: { show: true, position: 'top', fontSize: 9, fontWeight: 'bold', color: '#e74c3c', formatter: p => p.value.toFixed(1), distance: 3 } },
+      { name: '下单ROI', type: 'bar', yAxisIndex: 1, data: catRois.map(v => ({ value: v, itemStyle: { color: '#4ECDC4', borderRadius: [4,4,0,0] } })), barWidth: '30%', label: { show: true, position: 'top', fontSize: 9, fontWeight: 'bold', color: '#3498db', formatter: p => p.value.toFixed(2), distance: 3 } }
+    ]
+  });
+
+  // --- 1B: 环比变化率 ---
+  const costChanges = [D.overall.cost_change, ...D.categories.map(c => c.cost_change)];
+  const roiChanges = [D.overall.roi_change, ...D.categories.map(c => c.roi_change)];
+  
+  const chart1B = echarts.init(document.getElementById('chart-overall-change'));
+  chart1B.setOption({
+    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' }, formatter: p => `${p[0].name}<br/>${p[0].marker}日耗环比: ${(p[0].value*100).toFixed(1)}%<br/>${p[1].marker}ROI环比: ${(p[1].value*100).toFixed(1)}%` },
+    legend: { data: ['日耗环比变化率', 'ROI环比变化率'], bottom: 0, itemGap: 20 },
+    grid: { left: 55, right: 55, top: 40, bottom: 50 },
+    xAxis: { type: 'category', data: catNames, axisLabel: { rotate: 20, fontSize: 10, interval: 0 }, axisTick: { alignWithLabel: true } },
+    yAxis: { type: 'value', name: '环比变化率', axisLabel: { formatter: v => (v*100).toFixed(0)+'%', fontSize: 9 }, nameTextStyle: { fontSize: 10 } },
+    series: [
+      { name: '日耗环比变化率', type: 'bar', data: costChanges.map(v => ({ value: v, itemStyle: { color: v>=0 ? '#FF6B6B' : '#4FC3F7', borderRadius: [4,4,0,0] } })), barWidth: '30%', barGap: '30%', label: { show: true, position: 'outside', fontSize: 8, fontWeight: 'bold', formatter: p => (p.value*100).toFixed(1)+'%', distance: 3 } },
+      { name: 'ROI环比变化率', type: 'bar', data: roiChanges.map(v => ({ value: v, itemStyle: { color: v>=0 ? '#81C784' : '#CE93D8', borderRadius: [4,4,0,0] } })), barWidth: '30%', label: { show: true, position: 'outside', fontSize: 8, fontWeight: 'bold', formatter: p => (p.value*100).toFixed(1)+'%', distance: 3 } }
+    ]
+  });
+
+  // --- 1C: 分链路 ---
+  const chNames = ['整体', ...D.channels.map(c => c.name)];
+  const chCosts = [D.overall.cost, ...D.channels.map(c => c.cost)];
+  const chRois = [D.overall.roi, ...D.channels.map(c => c.roi)];
+  
+  const chart1C = echarts.init(document.getElementById('chart-channel-bar'));
+  chart1C.setOption({
+    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+    legend: { data: ['日均消耗(万元)', '下单ROI'], bottom: 0, itemGap: 20 },
+    grid: { left: 55, right: 55, top: 40, bottom: 50 },
+    xAxis: { type: 'category', data: chNames, axisLabel: { fontSize: 11, interval: 0 } },
+    yAxis: [
+      { type: 'value', name: '消耗(万元)', nameTextStyle: { color: '#e74c3c', fontSize: 10 }, nameGap: 35 },
+      { type: 'value', name: 'ROI', nameTextStyle: { color: '#3498db', fontSize: 10 }, nameGap: 35 }
+    ],
+    series: [
+      { name: '日均消耗(万元)', type: 'bar', data: chCosts.map(v => ({ value: v, itemStyle: { color: '#FF6B6B', borderRadius: [4,4,0,0] } })), barWidth: '30%', barGap: '40%', label: { show: true, position: 'top', fontSize: 10, fontWeight: 'bold', color: '#e74c3c', formatter: p => p.value.toFixed(1), distance: 4 } },
+      { name: '下单ROI', type: 'bar', yAxisIndex: 1, data: chRois.map(v => ({ value: v, itemStyle: { color: '#4ECDC4', borderRadius: [4,4,0,0] } })), barWidth: '30%', label: { show: true, position: 'top', fontSize: 10, fontWeight: 'bold', color: '#3498db', formatter: p => p.value.toFixed(2), distance: 4 } }
+    ]
+  });
+
+  // --- 1D: 品类x链路 ---
+  const ccValid = D.cat_channel.filter(c => c.cost > 0 && c.roi !== null);
+  const ccLabels = ccValid.map(c => c.video + '  ' + c.channel);
+  const ccCosts = ccValid.map(c => c.cost);
+  const ccRois = ccValid.map(c => c.roi);
+  
+  const chart1D = echarts.init(document.getElementById('chart-catchannel'));
+  chart1D.setOption({
+    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+    legend: { data: ['日均消耗(万元)', '下单ROI'], bottom: 0, itemGap: 20 },
+    grid: { left: 130, right: 55, top: 25, bottom: 45 },
+    yAxis: { type: 'category', data: ccLabels, axisLabel: { fontSize: 9, width: 120, overflow: 'truncate' }, inverse: true },
+    xAxis: [
+      { type: 'value', name: '消耗(万元)', nameTextStyle: { color: '#e74c3c', fontSize: 10 }, nameGap: 30 },
+      { type: 'value', name: 'ROI', nameTextStyle: { color: '#3498db', fontSize: 10 }, nameGap: 30, max: Math.max(...ccRois) * 1.3 }
+    ],
+    series: [
+      { name: '日均消耗(万元)', type: 'bar', data: ccCosts.map(v => ({ value: v, itemStyle: { color: '#FF6B6B', borderRadius: [0,4,4,0] } })), barWidth: '45%', label: { show: true, position: 'right', fontSize: 9, fontWeight: 'bold', color: '#e74c3c', formatter: p => p.value.toFixed(1)+'万', distance: 3 } },
+      { name: '下单ROI', type: 'bar', xAxisIndex: 1, data: ccRois.map(v => ({ value: v, itemStyle: { color: '#4ECDC4', borderRadius: [0,4,4,0] } })), barWidth: '45%', label: { show: true, position: 'right', fontSize: 9, fontWeight: 'bold', color: '#3498db', formatter: p => p.value.toFixed(2), distance: 3 } }
+    ]
+  });
+
+  // 说明
+  const bestCat = D.best_cat;
+  const worstCat = D.categories.reduce((a,b) => a.roi < b.roi ? a : b);
+  document.getElementById('insight-1').textContent = 
+    `纯朴整体日均消耗${D.overall.cost.toFixed(2)}万元（环比${fmtChangeText(D.overall.cost_change)}），下单ROI为${D.overall.roi.toFixed(2)}（环比${fmtChangeText(D.overall.roi_change)}），计价率${D.overall.price_rate.toFixed(2)}，整体投放效率良好。` +
+    `分品类看，${bestCat.name}贡献最大日耗(${bestCat.cost.toFixed(1)}万)且ROI最高(${bestCat.roi.toFixed(2)})，是"量大高效"的标杆；` +
+    `ELL品牌店(泥膜)日耗仅${D.categories[5].cost.toFixed(2)}万且ROI仅${D.categories[5].roi.toFixed(2)}，为效率洼地。`;
+  document.getElementById('action-1').textContent = 
+    `重点复盘${bestCat.name}的成功经验并横向迁移；对ELL养肤美妆（日耗环比${fmtChangeText(D.categories[1].cost_change)}）评估增长可持续性；` +
+    `DPDP彩妆品牌店ROI环比${fmtChangeText(D.categories[3].roi_change)}需排查原因。`;
+}
+
+// ========== 第二部分 ==========
+function renderPart2(D) {
+  // --- 饼图：分品类 ---
+  const pieCatData = D.cat_shares.map((c, i) => ({
+    name: c.name, value: c.cost,
+    itemStyle: { color: ['#FF6B6B','#4ECDC4','#45B7D1','#96CEB4','#FFEAA7','#DDA0DD'][i] }
+  }));
+  
+  const chart2A = echarts.init(document.getElementById('chart-pie-cat'));
+  chart2A.setOption({
+    title: { text: '分品类消耗占比', left: 'center', top: 8, textStyle: { fontSize: 13 } },
+    tooltip: { trigger: 'item', formatter: p => `${p.name}<br/>日耗: ${p.value.toFixed(1)}万 (${p.percent}%)<br/>ROI: ${D.cat_shares.find(c=>c.name===p.name)?.roi?.toFixed(2)||'-'}` },
+    legend: { orient: 'vertical', right: 5, top: 40, itemGap: 8, formatter: n => n, textStyle: { fontSize: 10 } },
+    series: [{
+      type: 'pie', radius: ['40%', '65%'], center: ['38%', '52%'],
+      data: pieCatData,
+      emphasis: { itemStyle: { shadowBlur: 8, shadowOffsetX: 0, shadowColor: 'rgba(0,0,0,0.2)' } },
+      label: { formatter: '{b}\n{d}%', fontSize: 10, lineHeight: 14 },
+      labelLine: { length: 15, length2: 20, lineStyle: { width: 1 } }
+    }]
+  });
+
+  // --- 饼图：分链路 ---
+  const pieChData = [
+    { name: D.channels[0].name, value: D.channels[0].cost, itemStyle: { color: '#FF6B6B' } },
+    { name: D.channels[1].name, value: D.channels[1].cost, itemStyle: { color: '#4ECDC4' } }
+  ];
+  
+  const chart2B = echarts.init(document.getElementById('chart-pie-channel'));
+  chart2B.setOption({
+    title: { text: '分链路消耗占比', left: 'center', top: 8, textStyle: { fontSize: 13 } },
+    tooltip: { trigger: 'item', formatter: p => `${p.name}<br/>日耗: ${p.value.toFixed(1)}万 (${p.percent}%)` },
+    legend: { bottom: 5, itemGap: 30, textStyle: { fontSize: 12 } },
+    series: [{
+      type: 'pie', radius: ['45%', '68%'], center: ['50%', '48%'],
+      data: pieChData,
+      emphasis: { itemStyle: { shadowBlur: 8, shadowOffsetX: 0, shadowColor: 'rgba(0,0,0,0.2)' } },
+      label: { formatter: '{b}\n{d}%', fontSize: 13, fontWeight: 'bold', lineHeight: 16 }
+    }]
+  });
+
+  // --- 最佳品类 ---
+  const bestCat = D.best_cat;
+  const bestCC = D.best_cc;
+  const rankedCats = [...D.categories].sort((a,b) => b.roi - a.roi);
+  document.getElementById('best-cat-desc').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px;">
+      <div style="line-height:1.8;">
+        <strong>🏆 ROI最高品类：${bestCat.name}</strong><br/>
+        日均消耗：${bestCat.cost.toFixed(2)} 万元 &nbsp;|&nbsp; 下单ROI：<strong style="color:#27ae60;font-size:18px;">${bestCat.roi.toFixed(2)}</strong><br/>
+        消耗环比：${fmtChangeText(bestCat.cost_change)} &nbsp;|&nbsp; ROI环比：${fmtChangeText(bestCat.roi_change)} &nbsp;|&nbsp; 计价率：${bestCat.price_rate.toFixed(2)}
+      </div>
+      <div style="line-height:1.8;">
+        <strong>🏆 ROI最高品类×链路：${bestCC.video}-${bestCC.channel}</strong><br/>
+        日均消耗：${bestCC.cost.toFixed(2)} 万元 &nbsp;|&nbsp; 下单ROI：<strong style="color:#27ae60;font-size:18px;">${bestCC.roi.toFixed(2)}</strong>
+      </div>
+    </div>
+    <div style="margin-top:10px;line-height:2;">
+      <strong>📊 各品类ROI排名：</strong><br/>
+      ${rankedCats.map((c,i) => `<span style="display:inline-block;margin-right:16px;white-space:nowrap;">${['🥇','🥈','🥉','4️⃣','5️⃣','6️⃣'][i]} ${c.name}: <strong>${c.roi.toFixed(2)}</strong> (日耗${c.cost.toFixed(1)}万)</span>`).join('')}
+    </div>
+    <div style="margin-top:6px;color:#1b5e20;line-height:1.6;">
+      💡 ${bestCat.name}不仅ROI最高，也是消耗最大的品类，量大且高效，是核心优势品类。ROI环比${fmtChangeText(bestCat.roi_change)}，趋势${bestCat.roi_change>=0?'向好':'需关注'}。
+    </div>
+  `;
+
+  // 说明
+  document.getElementById('insight-2').textContent = 
+    `直播链路贡献了整体${(D.channels[0].cost/D.overall.cost*100).toFixed(0)}%的消耗，是核心投放链路；` +
+    `${bestCat.name}品类ROI最高达${bestCat.roi.toFixed(2)}，且日耗规模最大(${bestCat.cost.toFixed(1)}万/天)，是"量大高效"的标杆品类。` +
+    `小店链路消耗占比仅${(D.channels[1].cost/D.overall.cost*100).toFixed(0)}%但环比增长${fmtChangeText(D.channels[1].cost_change)}，增长势头强劲。`;
+  document.getElementById('action-2').textContent = 
+    `将${bestCat.name}的成功投放策略(素材/人群/出价)横向复制到ROI较低品类(ELL品牌店ROI仅${D.categories[5].roi.toFixed(2)})；` +
+    `适当加大小店预算测试，验证小店链路的规模化投放效率。`;
+}
+
+// ========== 第三部分 ==========
+function renderPart3(D) {
+  const dailyData = D.daily_data;
+  const meanCost = D.daily_stats.mean_cost;
+  const stdCost = D.daily_stats.std_cost;
+  
+  // --- 日消耗趋势 ---
+  const dates = dailyData.map(d => d.date);
+  const costs = dailyData.map(d => d.cost);
+  const rois = dailyData.map(d => d.roi);
+  
+  // 颜色和标记
+  const highThreshold = meanCost + stdCost;
+  const lowThreshold = meanCost - stdCost;
+  const eventDates = {
+    '2026-05-25': '小店满减上线',
+    '2026-05-26': '小店满减活动',
+    '2026-05-30': '端午假期',
+    '2026-05-31': '端午假期',
+    '2026-06-01': '端午假期',
+    '2026-06-02': '端午假期',
+    '2026-06-15': '618大促开启',
+    '2026-06-18': '618大促当天',
+    '2026-06-25': '小店满减下线'
+  };
+
+  const barColors = dailyData.map(d => {
+    if (d.cost > highThreshold) return '#FF6B6B';
+    if (d.cost < lowThreshold) return '#4FC3F7';
+    if (eventDates[d.date]) return '#FFB74D';
+    return '#81C784';
+  });
+
+  // 标记点
+  const markPoints = [];
+  dailyData.forEach(d => {
+    if (d.cost > highThreshold) markPoints.push({ name: '异常高', coord: [d.date, d.cost], value: d.cost.toFixed(1)+'万', symbol: 'pin', symbolSize: 35, itemStyle: { color: '#FF6B6B' }, label: { fontSize: 10 } });
+  });
+
+  const markLines = [];
+  if (eventDates) {
+    Object.entries(eventDates).forEach(([dt, label]) => {
+      markLines.push({ name: label, xAxis: dt, lineStyle: { color: '#FFB74D', type: 'dashed', width: 1.5 }, label: { formatter: label, fontSize: 10, color: '#e65100', rotate: 45 } });
+    });
+  }
+
+  const chart3A = echarts.init(document.getElementById('chart-daily-trend'));
+  chart3A.setOption({
+    title: { text: '日消耗趋势 & ROI变化', left: 'center', top: 5, textStyle: { fontSize: 15 } },
+    tooltip: { trigger: 'axis', axisPointer: { type: 'cross' } },
+    legend: { data: ['日均消耗', '下单ROI', '均值线', '异常高阈值'], bottom: 0, itemGap: 15 },
+    grid: { left: 60, right: 65, top: 55, bottom: 55 },
+    xAxis: { type: 'category', data: dates, axisLabel: { rotate: 50, fontSize: 8, formatter: v => v.slice(5), interval: 1 }, boundaryGap: false },
+    yAxis: [
+      { type: 'value', name: '消耗(万元)', nameTextStyle: { color: '#e74c3c', fontSize: 10 }, axisLabel: { fontSize: 9 }, nameGap: 35 },
+      { type: 'value', name: 'ROI', nameTextStyle: { color: '#3498db', fontSize: 10 }, axisLabel: { fontSize: 9 }, nameGap: 35 }
+    ],
+    series: [
+      { name: '日均消耗', type: 'bar', data: costs.map((v,i) => ({ value: v, itemStyle: { color: barColors[i], borderRadius: [3,3,0,0] } })), barWidth: '70%', markPoint: { data: markPoints, label: { fontSize: 9, distance: 8 } }, markLine: { silent: true, symbol: 'none', data: markLines, label: { fontSize: 8, distance: 5 }, animation: false } },
+      { name: '下单ROI', type: 'line', yAxisIndex: 1, data: rois, smooth: true, lineStyle: { color: '#3498db', width: 2.5 }, itemStyle: { color: '#3498db' }, symbol: 'circle', symbolSize: 6 },
+      { name: '均值线', type: 'line', data: Array(dates.length).fill(meanCost), lineStyle: { color: '#999', type: 'dotted', width: 1 }, itemStyle: { color: 'transparent' }, symbol: 'none', yAxisIndex: 0 },
+      { name: '异常高阈值', type: 'line', data: Array(dates.length).fill(highThreshold), lineStyle: { color: '#FF6B6B', type: 'dashed', width: 0.8, opacity: 0.4 }, itemStyle: { color: 'transparent' }, symbol: 'none', yAxisIndex: 0 }
+    ]
+  });
+
+  // --- 异常日期分品类贡献 ---
+  const highDates = D.daily_stats.high_dates;
+  const contrib = D.anomaly_contrib;
+  
+  if (highDates.length > 0) {
+    const allCats = new Set();
+    highDates.forEach(d => { if (contrib[d]) contrib[d].forEach(c => allCats.add(c.cat)); });
+    const catList = [...allCats];
+    const colors = ['#FF6B6B','#4ECDC4','#45B7D1','#96CEB4','#FFEAA7','#DDA0DD','#98D8C8','#F7DC6F','#BB8FCE'];
+    
+    const seriesData = catList.map((cat, ci) => ({
+      name: cat,
+      type: 'bar',
+      stack: 'total',
+      data: highDates.map(d => {
+        const found = contrib[d] ? contrib[d].find(c => c.cat === cat) : null;
+        return found ? found.cost : 0;
+      }),
+      itemStyle: { color: colors[ci % colors.length], borderRadius: ci === catList.length-1 ? [4,4,0,0] : [0,0,0,0] },
+      emphasis: { focus: 'series' }
+    }));
+
+    // 每日ROI标注
+    const roiAnnotations = highDates.map(d => {
+      const day = dailyData.find(dd => dd.date === d);
+      return day ? { date: d.slice(5), roi: day.roi.toFixed(2) } : null;
+    }).filter(Boolean);
+
+    const chart3B = echarts.init(document.getElementById('chart-anomaly-contrib'));
+    chart3B.setOption({
+      title: { text: '异常高消耗日期 分品类贡献 + ROI', left: 'center', top: 5, textStyle: { fontSize: 13 } },
+      tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' }, formatter: function(params) { let s = params[0].name + '<br/>'; let total = 0; params.forEach(p => { if (p.seriesName !== 'ROI标注') { s += p.marker + p.seriesName + ': ' + p.value.toFixed(2) + '万<br/>'; total += p.value; } }); s += '<b>合计: ' + total.toFixed(2) + '万</b>'; return s; } },
+      legend: { data: catList, bottom: 0, textStyle: { fontSize: 9 }, itemGap: 10, type: 'scroll' },
+      grid: { left: 50, right: 50, top: 50, bottom: 55 },
+      xAxis: { type: 'category', data: highDates.map(d => d.slice(5)), axisLabel: { fontSize: 10 } },
+      yAxis: { type: 'value', name: '消耗(万元)', nameTextStyle: { fontSize: 10 } },
+      series: seriesData
+    });
+
+    // 用标注展示ROI
+    const roiMarks = highDates.map(d => {
+      const day = dailyData.find(dd => dd.date === d);
+      const totalCost = contrib[d] ? contrib[d].reduce((s, c) => s + c.cost, 0) : 0;
+      return { name: 'ROI:' + (day?day.roi.toFixed(2):''), coord: [d.slice(5), totalCost + Math.max(totalCost * 0.05, 1)], value: '' };
+    });
+    
+    chart3B.setOption({
+      series: seriesData.concat([{
+        name: 'ROI标注', type: 'scatter',
+        data: roiMarks,
+        symbolSize: 0,
+        label: { show: true, formatter: p => p.name, fontSize: 10, fontWeight: 'bold', color: '#e74c3c', position: 'top', distance: 2 }
+      }])
+    });
+  }
+
+  // 说明
+  document.getElementById('insight-3').textContent = 
+    `6/3-6/8期间消耗显著高于均值(${meanCost.toFixed(1)}万)，其中6/5达${D.daily_stats.max_cost_value.toFixed(1)}万为整个周期峰值，与618大促预热放量高度相关；` +
+    `6/8 ROI达${D.daily_stats.max_roi_value.toFixed(2)}为期间最高，证明大促期间投放效率良好。5/25-5/26小店满减上线后消耗未出现明显跃升，6/25下线也未造成显著冲击。`;
+  document.getElementById('action-3').textContent = 
+    `大促期间需关注消耗峰值是否伴随ROI同步提升，若放量不增效则需优化出价策略；` +
+    `5/22-5/23消耗脉冲(${dailyData[7].cost.toFixed(1)}万/${dailyData[8].cost.toFixed(1)}万)但ROI降至${dailyData[7].roi.toFixed(2)}/${dailyData[8].roi.toFixed(2)}，建议复盘是否因提价抢量导致效率稀释。`;
+}
+
+// ========== 第四部分 ==========
+function renderPart4(D) {
+  const combos = D.high_pr_combos;
+  const detailData = D.detail_by_combo;
+  
+  // Tabs
+  const tabContainer = document.getElementById('detail-tabs');
+  const comboKeys = Object.keys(detailData);
+  let activeTab = comboKeys[0];
+  
+  tabContainer.innerHTML = comboKeys.map((k, i) => {
+    const parts = k.split('|');
+    return `<button class="tab-btn ${i===0?'active':''}" data-key="${k}">${parts[0]}<br/><small>${parts[1]}</small></button>`;
+  }).join('');
+  
+  tabContainer.addEventListener('click', function(e) {
+    const btn = e.target.closest('.tab-btn');
+    if (!btn) return;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeTab = btn.dataset.key;
+    renderDetailChart(activeTab);
+  });
+
+  function renderDetailChart(key) {
+    const data = detailData[key];
+    if (!data) return;
+    
+    const dates = data.map(d => d.date);
+    const costs = data.map(d => d.cost);
+    const rois = data.map(d => d.roi);
+    const priceRates = data.map(d => d.price_rate);
+    
+    const costMean = costs.reduce((a,b) => a+b, 0) / costs.length;
+    const costStd = Math.sqrt(costs.reduce((a,b) => a + (b-costMean)**2, 0) / costs.length);
+    
+    const barColors = data.map((d, i) => {
+      if (d.price_rate !== null && d.price_rate > 1.2) return '#FF4444';
+      if (d.cost > costMean + costStd) return '#FFB74D';
+      return '#4ECDC4';
+    });
+
+    // 计价率>1.2的标记
+    const prMarks = [];
+    data.forEach(d => {
+      if (d.price_rate !== null && d.price_rate > 1.2) {
+        prMarks.push({ name: '⚠️'+d.price_rate.toFixed(2), coord: [d.date, d.cost], symbol: 'pin', symbolSize: 28, itemStyle: { color: '#FF4444' }, label: { fontSize: 8, color: '#FF4444' } });
+      }
+    });
+
+    const eventDates2 = {
+      '2026-05-25': '满减上线', '2026-05-26': '满减', '2026-05-30': '端午', '2026-05-31': '端午',
+      '2026-06-01': '端午', '2026-06-02': '端午', '2026-06-15': '618开启', '2026-06-18': '618当天', '2026-06-25': '满减下线'
+    };
+    const markLines2 = Object.entries(eventDates2).map(([dt, label]) => ({
+      name: label, xAxis: dt, lineStyle: { color: '#FFB74D', type: 'dashed', width: 1, opacity: 0.6 }, label: { formatter: label, fontSize: 8, color: '#e65100', rotate: 45 }
+    }));
+
+    const chart4 = echarts.init(document.getElementById('chart-detail-trend'));
+    const parts = key.split('|');
+    chart4.setOption({
+      title: { text: `${parts[0]} × ${parts[1]} 消耗 & ROI 趋势`, left: 'center', top: 5, textStyle: { fontSize: 14 } },
+      tooltip: { trigger: 'axis', axisPointer: { type: 'cross' } },
+      legend: { data: ['日均消耗', '下单ROI'], bottom: 0 },
+      grid: { left: 60, right: 65, top: 55, bottom: 55 },
+      xAxis: { type: 'category', data: dates, axisLabel: { rotate: 50, fontSize: 8, formatter: v => v.slice(5), interval: 1 } },
+      yAxis: [
+        { type: 'value', name: '消耗(万)', nameTextStyle: { color: '#e74c3c', fontSize: 10 }, axisLabel: { fontSize: 9 }, nameGap: 35 },
+        { type: 'value', name: 'ROI', nameTextStyle: { color: '#3498db', fontSize: 10 }, axisLabel: { fontSize: 9 }, nameGap: 35 }
+      ],
+      series: [
+        { name: '日均消耗', type: 'bar', data: costs.map((v, i) => ({ value: v, itemStyle: { color: barColors[i], borderRadius: [3,3,0,0] } })), barWidth: '75%', markPoint: { data: prMarks, label: { fontSize: 7, distance: 6 } }, markLine: { silent: true, symbol: 'none', data: markLines2, label: { fontSize: 7, distance: 3 }, animation: false } },
+        { name: '下单ROI', type: 'line', yAxisIndex: 1, data: rois, smooth: true, lineStyle: { color: '#3498db', width: 2 }, itemStyle: { color: '#3498db' }, symbol: 'circle', symbolSize: 5 }
+      ]
+    });
+  }
+
+  renderDetailChart(activeTab);
+
+  // 计价率异常表格
+  const tbody = document.getElementById('pr-table-body');
+  tbody.innerHTML = combos.map(c => {
+    const ratio = (c.high_count / c.total_days * 100).toFixed(0);
+    let risk = ratio > 20 ? '<span class="tag tag-down">🔴 高风险</span>' : ratio > 10 ? '<span class="tag tag-warn">🟡 中风险</span>' : '<span class="tag tag-up">🟢 低风险</span>';
+    return `<tr>
+      <td><strong>${c.cat}</strong> × ${c.ch}</td>
+      <td>${c.total_days}</td>
+      <td>${c.avg_cost.toFixed(2)}</td>
+      <td>${c.avg_roi.toFixed(2)}</td>
+      <td style="color:${c.high_count>=5?'#e74c3c':c.high_count>=3?'#f39c12':'#666'};font-weight:bold;">${c.high_count}</td>
+      <td>${ratio}%</td>
+      <td>${risk}</td>
+    </tr>`;
+  }).join('');
+
+  // 说明
+  const highRiskCombos = combos.filter(c => c.high_count >= 5).map(c => `${c.cat}-${c.ch}(${c.high_count}天)`);
+  document.getElementById('insight-4').textContent = 
+    `共${comboKeys.length}个品类×链路组合，红色柱体标记计价率>1.2的成本异常日，橙色柱体标记消耗异常高日。` +
+    (highRiskCombos.length > 0 
+      ? `重点关注计价率异常高频组合：${highRiskCombos.join('、')}，这些组合的成本控制压力较大。`
+      : `整体计价率异常天数可控，各组合成本健康度良好。`);
+  document.getElementById('action-4').textContent = 
+    (highRiskCombos.length > 0
+      ? `对${highRiskCombos[0]}等高频异常组合，建议排查出价策略和人群定向，必要时暂停低质计划；` +
+        `表现稳健的DPDP品牌店-直播(0天异常)可作为投放节奏的压舱石。`
+      : `持续监控各组合计价率，保持当前投放策略的稳定性。`);
+}
+
+// 响应式
+window.addEventListener('resize', function() {
+  document.querySelectorAll('.chart, .chart-lg, .chart-xl').forEach(el => {
+    const instance = echarts.getInstanceByDom(el);
+    if (instance) instance.resize();
+  });
+});
+</script>
+
+
+</div>
+</div>
+
+<!-- ====== 报告A新增：分品类x分链路by天趋势图（纯CSS） ====== -->
+<div class="section">
+<div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#43e97b,#38f9d7)">📈</div>报告A · 二、分品类×分链路 By天 消耗×ROI趋势</div>
+<div class="sec-sub">每个品类×链路组合独立展示消耗与ROI趋势，红色标记计价率>1.2（成本异常），橙色标记消耗异常高。点击Tab切换查看不同组合。</div>
+
+<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:16px;border-bottom:2px solid #e0e0e0;padding-bottom:8px" id="detail-tabs"></div>
+
+<div style="margin-bottom:16px">
+  <div style="font-size:12px;color:#888;margin-bottom:6px">
+    <span style="display:inline-block;width:12px;height:12px;background:#e74c3c;border-radius:2px;vertical-align:middle;margin-right:4px"></span>计价率>1.2(成本异常)
+    <span style="display:inline-block;width:12px;height:12px;background:#ff9800;border-radius:2px;vertical-align:middle;margin:0 4px 0 16px"></span>消耗异常高
+    <span style="display:inline-block;width:12px;height:12px;background:#4caf50;border-radius:2px;vertical-align:middle;margin:0 4px 0 16px"></span>正常
+    <span style="display:inline-block;width:12px;height:3px;background:#e74c3c;vertical-align:middle;margin:0 4px 0 16px"></span>计价率1.2警戒线
+  </div>
+</div>
+
+<div id="detail-chart-area" style="min-height:500px"></div>
+
+<div style="margin-top:16px;overflow-x:auto">
+<table class="compare-table">
+<thead><tr><th>品类×链路</th><th>总天数</th><th>日均消耗(万)</th><th>日均ROI</th><th>计价率>1.2天数</th><th>异常占比</th><th>风险评级</th></tr></thead>
+<tbody id="detail-summary-table"></tbody>
+</table>
+</div>
+
+<div class="insight-box">
+<div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#f39c12;font-weight:700;margin-bottom:4px">💡 一句话说明</div>
+<div style="font-size:13px;color:#5d4037" id="detail-insight"></div>
+<div style="font-size:13px;color:#bf360c;margin-top:4px;font-weight:500">📌 下一步建议：<span id="detail-action"></span></div>
+</div>
+</div>
+
+<!-- ====== 报告B：四维度雷达图 ====== -->
+<div class="section">
+<div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#667eea,#764ba2)">📊</div>报告B · 一、纯朴六直播间 四维度综合评分</div>
+<div class="sec-sub">同行均值=50分基准（对比21个同行直播间，含谷雨12个+其他9个），标准化到0-100分</div>
+<div class="radar-grid" id="radar-grid"></div>
+</div>
+
+<!-- ====== 报告B：四维度详细分析 ====== -->
+<div class="section">
+<div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#4facfe,#00f2fe)">⚖️</div>报告B · 二、四维度 分直播间 对比分析</div>
+
+<!-- 创意基建 -->
+<div style="margin-top:12px"><div style="font-size:15px;font-weight:600;color:#333;margin-bottom:8px">🏗️ 维度一：创意基建</div>
+<div class="grid-6" id="cb-rooms"></div>
+<div class="bar-chart" id="cb-chart"></div>
+<div class="insight-row">
+<div class="insight-box"><h4>✅ 优势</h4><ul><li><strong>DPDP品牌店</strong>：创意ID 627(+148%) + 爆款40(+199%)，素材生产和爆款孵化力远超同行</li><li><strong>DPDP美妆小妍</strong>：创意ID 605(+140%) + 爆款22(+64%)，同样突出</li></ul></div>
+<div class="insight-box"><h4>⚠️ 劣势</h4><ul><li><strong>ELL品牌店</strong>：创意ID仅142(-44%)，仅2个爆款(-85%)，素材储备严重不足</li><li><strong>DPDP彩妆品牌店</strong>：仅3个爆款(-78%)，爆款转化能力弱</li></ul></div>
+</div></div>
+
+<!-- 创意效率 -->
+<div style="margin-top:24px"><div style="font-size:15px;font-weight:600;color:#333;margin-bottom:8px">⚡ 维度二：创意效率</div>
+<div class="grid-6" id="ce-rooms"></div>
+<div class="bar-chart" id="ce-chart"></div>
+<div class="insight-row">
+<div class="insight-box"><h4>✅ 优势</h4><ul><li><strong>CTR全面领先</strong>：六直播间CTR全部高于同行均值(+3%~+175%)，ELL品牌店CTR 4.49%(+175%)最高</li><li><strong>3秒完播率全部领先</strong>：ELL养肤美妆58.6%(+78%)、DPDP彩妆品牌店48.3%(+47%)</li><li><strong>DPDP美妆精品店</strong>：CVR 13.75%(+12%)，唯一CVR超同行的直播间</li></ul></div>
+<div class="insight-box"><h4>⚠️ 劣势</h4><ul><li><strong>CVR是最大短板</strong>：除DPDP美妆精品店外，其余五个直播间CVR均大幅低于同行均值</li><li><strong>ELL品牌店</strong>：CVR仅1.22%(-90%)，转化链路几乎断裂</li><li><strong>DPDP美妆小妍</strong>：CVR仅4.96%(-60%)，虽然CTR高但转化不足</li></ul></div>
+</div></div>
+
+<!-- 拿量效率 -->
+<div style="margin-top:24px"><div style="font-size:15px;font-weight:600;color:#333;margin-bottom:8px">📈 维度三：拿量效率（计价率越低越好）</div>
+<div class="grid-6" id="ve-rooms"></div>
+<div class="bar-chart" id="ve-chart"></div>
+<div class="insight-row">
+<div class="insight-box"><h4>✅ 优势</h4><ul><li><strong>DPDP品牌店</strong>：计价率0.973(-7.1%)，拿量效率最优</li><li><strong>DPDP美妆小妍</strong>：计价率1.027(-2.0%)</li><li><strong>ELL养肤美妆</strong>：计价率1.040(-0.7%)</li></ul></div>
+<div class="insight-box"><h4>⚠️ 劣势</h4><ul><li><strong>DPDP彩妆品牌店</strong>：计价率1.112(+6.1%)，成本偏高</li><li><strong>ELL品牌店</strong>：计价率1.093(+4.3%)</li></ul></div>
+</div></div>
+
+<!-- 直播间效率 -->
+<div style="margin-top:24px"><div style="font-size:15px;font-weight:600;color:#333;margin-bottom:8px">🎯 维度四：直播间效率</div>
+<div class="grid-6" id="le-rooms"></div>
+<div class="bar-chart" id="le-chart"></div>
+<div class="insight-row">
+<div class="insight-box"><h4>✅ 优势</h4><ul><li><strong>下单率整体领先</strong>：DPDP美妆精品店21.7%(+39%)、ELL养肤美妆19.8%(+26%)、ELL品牌店17.7%(+13%)</li><li><strong>DPDP美妆精品店</strong>：商品点击率103.4%(+2%)，唯一超同行</li></ul></div>
+<div class="insight-box"><h4>⚠️ 短板</h4><ul><li><strong>进播率</strong>：除ELL养肤美妆(+1.1%)外，其余五直播间均低于同行</li><li><strong>商品点击率</strong>：整体低于同行均值101.6%，ELL品牌店仅59.1%(-42%)</li><li><strong>DPDP彩妆品牌店</strong>：下单率15.07%(-3.7%)，唯一下单率低于同行的直播间</li></ul></div>
+</div></div>
+</div>
+
+<!-- ====== 报告B：谷雨深度对比 ====== -->
+<div class="section">
+<div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#e67e22,#f39c12)">🥊</div>报告B · 三、纯朴 vs 谷雨 · 头部直播间深度对比</div>
+<div class="sec-sub">纯朴头部(DPDP品牌店/气垫 日耗6.6万) vs 谷雨头部(谷雨护肤官方店 日耗10.9万+谷雨官方直播间 日耗7.9万) | 谷雨12个直播间总日耗42.9万 vs 纯朴14.7万</div>
+
+<div class="grid-2" style="margin-top:16px">
+<div class="vs-card vs-highlight">
+<h4>📊 核心指标对比</h4>
+<div class="vs-metric"><span class="vs-label">日均消耗</span><span class="vs-cp">纯朴 6.58万</span><span class="vs-gy">谷雨 7.92~10.91万</span><span class="vs-winner" style="color:#e67e22">谷雨+20~66%</span></div>
+<div class="vs-metric"><span class="vs-label">计价率</span><span class="vs-cp">0.973</span><span class="vs-gy">0.947~0.987</span><span class="vs-winner" style="color:#4facfe">纯朴略优</span></div>
+<div class="vs-metric"><span class="vs-label">CTR</span><span class="vs-cp">1.70%</span><span class="vs-gy">1.32~1.49%</span><span class="vs-winner" style="color:#4facfe">纯朴+14~29%</span></div>
+<div class="vs-metric"><span class="vs-label">浅层CVR</span><span class="vs-cp">7.92%</span><span class="vs-gy">11.09~11.55%</span><span class="vs-winner" style="color:#e67e22">谷雨+40~46%</span></div>
+<div class="vs-metric"><span class="vs-label">下单率</span><span class="vs-cp">16.91%</span><span class="vs-gy">15.78~17.54%</span><span class="vs-winner" style="color:#888">基本持平</span></div>
+<div class="vs-metric"><span class="vs-label">爆款素材</span><span class="vs-cp">40个</span><span class="vs-gy">38~69个</span><span class="vs-winner" style="color:#888">相当</span></div>
+</div>
+<div class="vs-card vs-highlight">
+<h4>🔑 关键差异点</h4>
+<div class="vs-metric"><span class="vs-label">进播率</span><span class="vs-cp" style="color:#888">0.94%</span><span class="vs-gy" style="color:#27ae60">0.99~1.14%</span><span class="vs-winner" style="color:#e67e22">谷雨+5~21%</span></div>
+<div class="vs-metric"><span class="vs-label">商品点击率</span><span class="vs-cp">85.3%</span><span class="vs-gy">84.8~95.4%</span><span class="vs-winner" style="color:#e67e22">谷雨略高</span></div>
+<div class="vs-metric"><span class="vs-label">3秒完播率</span><span class="vs-cp">35.4%</span><span class="vs-gy">36.6~45.1%</span><span class="vs-winner" style="color:#e67e22">谷雨+3~27%</span></div>
+<div class="vs-metric"><span class="vs-label">谷雨鎏金面膜</span><span style="color:#e67e22;font-weight:700">计价率0.759</span><span style="color:#888">下单率19.71%</span><span class="vs-winner" style="color:#e67e22">效率标杆</span></div>
+<div class="vs-metric"><span class="vs-label">谷雨官方美白</span><span style="color:#e67e22;font-weight:700">计价率0.862</span><span style="color:#888">下单率22.74%</span><span class="vs-winner" style="color:#e67e22">超高转化</span></div>
+</div>
+</div>
+
+<div class="finding-box" style="margin-top:16px">
+<h4>🎯 谷雨做对了什么？纯朴差在哪里？（基于最新数据）</h4>
+<div class="advice-item">
+<strong>1. 进播率差距缩小，但仍然是关键差异</strong>：新版数据显示纯朴DPDP品牌店进播率0.94%，谷雨头部1.14%，差距从之前的3~4倍缩小到约1.2倍。这说明进播率仍是谷雨的优势但不是唯一优势。<br><br>
+<strong>2. 谷雨的真正护城河是CVR（浅层转化率）</strong>：谷雨头部CVR 11.1~11.5%，而纯朴仅7.92%。谷雨在素材→进播→浅层转化的链路中更高效——同样100次曝光，谷雨能多转化约45%的浅层行为。这得益于谷雨的品牌心智和精准人群定向。<br><br>
+<strong>3. 谷雨鎏金面膜官方号是效率标杆</strong>：计价率仅0.759（同行最低）、下单率19.71%，这是"低成本+高转化"的教科书案例。其成功可能源于面膜品类的强需求和直播间的高匹配度。<br><br>
+<strong>4. 纯朴的优势在CTR和计价率</strong>：纯朴CTR 1.70%高于谷雨1.32~1.49%，说明素材点击吸引力强。计价率0.973也略优于谷雨头部。纯朴的问题是"CTR高但CVR低"——点击进来的人没有充分转化。<br><br>
+<strong>5. 纯朴最大的增长空间：CVR提升</strong>：如果纯朴能将CVR从7.92%提升至谷雨的11%，意味着同样的曝光量可多获得39%的浅层转化，从而降低获客成本、提升竞价竞争力。
+</div>
+</div>
+
+<div class="advice-box">
+<h4>💡 纯朴 vs 谷雨 · 行动建议</h4>
+<div class="advice-item"><strong>P0：提升CVR（浅层转化率）</strong> — 分析谷雨在素材→落地页→进播环节的承接策略，尤其关注其人群包定向和素材与直播间的匹配度。谷雨的CVR优势说明其"吸引的人更精准"。<br><strong>P1：学习谷雨鎏金面膜的低成本模型</strong> — 计价率0.759+下单率19.71%，建议纯朴找到自己的"面膜级"爆品来做标杆直播间。<br><strong>P2：保持CTR和计价率优势</strong> — 纯朴在这两项上仍然领先谷雨，说明素材创意和出价策略是有效的。</div>
+</div>
+</div>
+
+<!-- ====== 报告C：优化目标推荐 ====== -->
+<div class="section">
+<div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#43e97b,#38f9d7)">🎯</div>报告C · 一、分产品 优化目标组合推荐</div>
+<div class="sec-sub">基于日消耗量级×条均消耗×ROI×计价率综合评估（过滤日耗<100元的数据）</div>
+<div class="reco-grid" id="reco-grid"></div>
+<div class="advice-box"><h4>💡 一句话总结</h4><div class="advice-item">纯朴整体ROI较高（1.6~2.1），智投「204-0-6-0-0下单-下单ROI」是各品类智投主力组合。DPDP品牌店和DPDP美妆小妍的非智投ROI最高（2.0+），应作为主力渠道。ELL品牌店和DPDP彩妆品牌店体量较小，智投ROI表现尚可。</div></div>
+</div>
+
+<!-- ====== 报告C：智投vs非智投 ====== -->
+<div class="section">
+<div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#f093fb,#f5576c)">⚖️</div>报告C · 二、智投 vs 非智投 效率对比</div>
+<div style="overflow-x:auto"><table class="compare-table" id="zt-vs-table"></table></div>
+<div class="bar-chart" id="zt-vs-chart" style="margin-top:16px"></div>
+<div class="insight-row">
+<div class="insight-box"><h4>📊 发现</h4><ul><li><strong>DPDP品牌店</strong>：非智投ROI 2.10 vs 智投1.79，非智投明显更优（+17%），但智投消耗更大</li><li><strong>DPDP美妆小妍</strong>：智投ROI 1.75 vs 非智投1.73，基本持平，智投拿量是非智投的2.1倍</li><li><strong>DPDP彩妆品牌店</strong>：非智投ROI 2.06 vs 智投1.67，非智投更优</li></ul></div>
+<div class="insight-box"><h4>💡 建议</h4><ul><li>DPDP品牌店：非智投为主(60%)，智投用于放量</li><li>DPDP美妆小妍：智投为主(60%)，拿量优势明显</li><li>DPDP彩妆品牌店：非智投为主(70%)</li></ul></div>
+</div>
+</div>
+
+<!-- ====== 报告C：智投能力 ====== -->
+<div class="section">
+<div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#4facfe,#00f2fe)">🔬</div>报告C · 三、智投场景能力 + 潜客优投 + 版位</div>
+
+<div style="font-size:14px;font-weight:600;color:#7b1fa2;margin-bottom:4px">3.1 创意优投效果</div>
+<div style="overflow-x:auto"><table class="matrix-table" id="creative-table"></table></div>
+
+<div style="font-size:14px;font-weight:600;color:#e67e22;margin:20px 0 4px">3.2 直播速推（一键起量）</div>
+<div style="overflow-x:auto"><table class="matrix-table" id="speed-table"></table></div>
+
+<div style="font-size:14px;font-weight:600;color:#1565c0;margin:20px 0 4px">3.3 潜客优投 & 分版位出价 效果</div>
+<div style="overflow-x:auto"><table class="matrix-table" id="qianke-table"></table></div>
+
+<div style="font-size:14px;font-weight:600;color:#c62828;margin:20px 0 4px">3.4 版位数据 · 智投 vs 非智投</div>
+<div style="overflow-x:auto"><table class="matrix-table" id="position-table"></table></div>
+
+<div class="advice-box">
+<h4>💡 综合建议</h4>
+<div class="advice-item">
+<strong>潜客优投：四个品类有效，两个待验证</strong><br>
+• ✅ 强烈推荐：DPDP美妆精品店(唇霜)潜客优投ROI 2.47(+29%)、DPDP美妆小妍(贴贴霜)ROI 2.27(+28%)、DPDP彩妆品牌店(粉底液)ROI 1.97(+21%)——潜客优投ROI大幅优于基准，且消耗占比已达一定量级<br>
+• ✅ 推荐：ELL品牌店(泥膜)潜客优投ROI 2.06(+27%)，但消耗仅222元，量级待放大<br>
+• ⚠️ 持平：ELL养肤美妆(素颜霜)潜客优投ROI 1.78(+1%)，与基准基本持平<br>
+• ❌ 不推荐：DPDP品牌店(气垫)潜客优投ROI 1.65(-18%)，低于基准2.02，且消耗仅157元<br><br>
+<strong>分版位出价：仅DPDP品牌店值得保留</strong><br>
+• DPDP品牌店分版位出价ROI 1.77(-12%)，消耗967元有一定量级，可保留观察<br>
+• DPDP美妆小妍分版位出价消耗13782元但ROI仅1.56(-12%)，建议切换回不分产品出价<br>
+• 其余品类分版位出价消耗<100元，量级不足<br><br>
+<strong>一键起量：仅DPDP美妆小妍可用</strong><br>
+• DPDP美妆小妍一键起量ROI从1.81降至1.78(-1.7%)，代价可接受<br>
+• DPDP品牌店一键起量ROI从2.10降至1.70(-19%)，不建议常态化使用</div>
+</div>
+</div>
+
+<!-- ====== 报告C：链路 ====== -->
+<div class="section">
+<div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#43e97b,#38f9d7)">🔗</div>报告C · 四、链路 × 推广产品库 类型效果</div>
+<div style="overflow-x:auto"><table class="matrix-table" id="link-table"></table></div>
+<div class="bar-chart" id="link-chart" style="margin-top:16px"></div>
+<div class="insight-row">
+<div class="insight-box"><h4>📊 最佳组合</h4><ul><li><strong>DPDP品牌店</strong>：🥇小店×微信小店商品(ROI 2.16+计价率0.97)；🥈直播×视频号直播(ROI 2.02)</li><li><strong>DPDP美妆小妍</strong>：🥇小店×微信小店商品(ROI 1.97)；🥈直播×视频号直播(ROI 1.78)</li><li><strong>ELL养肤美妆</strong>：🥇直播×视频号直播(ROI 1.75)；直播×微信小店商品(ROI 1.75)持平</li></ul></div>
+<div class="insight-box"><h4>💡 关键发现</h4><ul><li><strong>小店链路ROI普遍高于直播链路</strong></li><li><strong>商品聚合页</strong>可作为补充渠道</li><li>DPDP彩妆品牌店小店链路消耗仅49元，量级太低不置信</li></ul></div>
+</div>
+</div>
+
+<!-- ====== 综合行动清单 ====== -->
+<div class="section">
+<div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#e74c3c,#c0392b)">🏆</div>综合行动清单</div>
+<div style="overflow-x:auto"><table class="compare-table" style="margin-top:16px">
+<thead><tr><th>直播间</th><th>品类</th><th>智投/非智投策略</th><th>推荐优化目标</th><th>一键起量</th><th>最佳链路</th><th>潜客优投</th><th>CVR优化</th></tr></thead>
+<tbody>
+<tr><td><strong>DPDP品牌店</strong></td><td>气垫</td><td>非智投60%+智投40%</td><td>204-0-6-0-0下单-下单ROI</td><td><span class="tag tag-red">谨慎</span></td><td>小店>直播</td><td><span class="tag tag-green">推荐</span></td><td><span class="tag tag-orange">P1</span></td></tr>
+<tr><td><strong>DPDP美妆小妍</strong></td><td>贴贴霜</td><td>智投60%+非智投40%</td><td>204-0-6-0-0下单-下单ROI</td><td><span class="tag tag-green">可用</span></td><td>小店>直播</td><td><span class="tag tag-green">推荐</span></td><td><span class="tag tag-red">P0</span></td></tr>
+<tr><td><strong>ELL养肤美妆</strong></td><td>素颜霜</td><td>智投50%+非智投50%</td><td>204-0-6-0-0下单-下单ROI</td><td><span class="tag tag-red">不建议</span></td><td>直播≈小店</td><td><span class="tag tag-green">推荐</span></td><td><span class="tag tag-orange">P1</span></td></tr>
+<tr><td><strong>DPDP彩妆品牌店</strong></td><td>粉底液</td><td>非智投70%+智投30%</td><td>204-0-6-0-0下单-下单ROI</td><td><span class="tag tag-orange">测试</span></td><td>直播为主</td><td><span class="tag tag-green">强烈推荐</span></td><td><span class="tag tag-red">P0</span></td></tr>
+<tr><td><strong>DPDP美妆精品店</strong></td><td>唇霜</td><td>智投50%+非智投50%</td><td>204-0-6-0-0下单-下单ROI</td><td><span class="tag tag-orange">测试</span></td><td>直播为主</td><td><span class="tag tag-green">强烈推荐</span></td><td><span class="tag tag-green">优势保持</span></td></tr>
+<tr><td><strong>ELL品牌店</strong></td><td>泥膜</td><td>非智投为主</td><td>204-0-0-0-0下单</td><td><span class="tag tag-red">不建议</span></td><td>直播为主</td><td><span class="tag tag-green">推荐</span></td><td><span class="tag tag-red">P0</span></td></tr>
+</tbody></table></div>
+</div>
+
+<!-- ====== 618总结与未来建议 ====== -->
+<div class="section">
+<div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#e74c3c,#c0392b)">🎯</div>618复盘总结 & 未来优化建议</div>
+<div class="sec-sub">基于报告A（整体趋势）、报告B（竞品对标）、报告C（智投策略）的全维度总结</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:16px">
+<div>
+<div class="insight-box" style="height:100%">
+<h4>✅ 618期间纯朴做得好的（继续保持）</h4>
+<ul style="font-size:12px;color:#1b5e20;line-height:2.2">
+<li><strong>1. 素材创意能力行业领先</strong>：六直播间CTR全面高于同行（+3%~+175%），3秒完播率全面领先（+3%~+78%）。ELL品牌店CTR 4.49%（+175%）和ELL养肤美妆完播率58.6%（+78%）是标杆。素材的内容吸引力是纯朴的核心竞争力。</li>
+<li><strong>2. DPDP品牌店（气垫）是「量大高效」的压舱石</strong>：日耗6.58万（占整体45%），计价率0.973（同行最优），下单率16.91%（超同行8%），直播链路0天计价率>1.2异常，投放质量极高。</li>
+<li><strong>3. 小店链路ROI显著优于直播</strong>：DPDP品牌店小店ROI 2.16 vs 直播2.02，DPDP美妆小妍小店ROI 1.97。小店链路计价率更低（0.97~0.98），成本控制更优。</li>
+<li><strong>4. 618大促期间ROI逆势冲高</strong>：6/8 ROI达2.53为期间峰值（DPDP品牌店直播），6/15-6/18期间ROI维持在2.0+，证明大促期间投放效率未因放量而稀释。</li>
+<li><strong>5. 潜客优投是已验证的增长杠杆</strong>：DPDP美妆精品店潜客优投ROI 2.47(+29%)、DPDP美妆小妍ROI 2.27(+28%)、DPDP彩妆品牌店ROI 1.97(+21%)、ELL品牌店ROI 2.06(+27%)，四个品类的潜客优投均优于基准。但DPDP品牌店(气垫)潜客优投ROI 1.65低于基准2.02，不适用。</li>
+<li><strong>6. DPDP美妆精品店（唇霜）下单率21.7%行业领先</strong>：CVR 13.75%是唯一超同行的品类，商品点击率103.4%也超同行，直播间承接能力极强。</li>
+</ul>
+</div>
+</div>
+<div>
+<div class="advice-box" style="height:100%;margin-top:0">
+<h4>⚠️ 需要优化的方向</h4>
+<div class="advice-item" style="line-height:2.2">
+<strong>1. CVR（浅层转化率）是最大短板</strong>：除DPDP美妆精品店外，其余五个品类CVR全面落后同行。DPDP美妆小妍CVR仅4.96%（-60%），ELL品牌店CVR仅1.22%（-90%）。同样100次曝光，纯朴的浅层转化比同行少40-90%。<br><br>
+<strong>2. 进播率和商品点击率落后同行</strong>：五个直播间进播率低于同行均值1.29%，商品点击率仅DPDP美妆精品店超同行。曝光→进播→点击的漏斗上层存在流失。<br><br>
+<strong>3. ELL品牌店（泥膜）成本异常严重</strong>：直播链路10天计价率>1.2（22%异常），小店链路6天异常（24%），是成本控制最差的品类。CVR仅1.22%说明素材与直播间严重不匹配。<br><br>
+<strong>4. DPDP彩妆品牌店（粉底液）智投ROI偏低</strong>：智投ROI仅1.67 vs 非智投2.06（-19%），且计价率1.11偏高，说明智投在该品类上的自动策略效果不佳。<br><br>
+<strong>5. 非智投ROI普遍优于智投</strong>：DPDP品牌店非智投ROI 2.10 vs 智投1.79（+17%），说明智投的版位分配和出价策略在部分品类上不如人工控盘。<br><br>
+<strong>6. 一键起量ROI代价大，分版位出价效果分化</strong>：DPDP品牌店一键起量ROI从2.10降至1.70（-19%），除DPDP美妆小妍(-1.7%)外不建议常态化。DPDP美妆小妍分版位出价ROI 1.56(-12%)，不建议继续使用。
+</div>
+</div>
+</div>
+</div>
+
+<div class="finding-box" style="margin-top:20px">
+<h4>🎯 未来优化路线图（按优先级排序）</h4>
+<div class="advice-item">
+<strong>P0 · 紧急（本周启动）</strong><br>
+• <strong>CVR提升专项</strong>：分析DPDP美妆精品店（CVR 13.75%唯一超同行）的素材→落地页→进播承接链路，将其经验横向复制到CVR最低的ELL品牌店（1.22%）和DPDP美妆小妍（4.96%）。重点检查素材卖点与直播间话术的一致性。<br>
+• <strong>ELL品牌店成本管控</strong>：设置计价率1.15上限预警，暂停连续3天计价率>1.2的计划。排查该品类是否存在人群定向偏差或出价过高问题。<br><br>
+
+<strong>P1 · 重要（两周内完成）</strong><br>
+• <strong>小店链路放量</strong>：DPDP品牌店小店ROI 2.16优于直播2.02，当前小店消耗占比偏低。建议将小店预算占比从当前水平提升至30%+，并全品类开启小店潜客优投。<br>
+• <strong>学习谷雨CVR经验</strong>：谷雨头部CVR 11.1~11.5%显著高于纯朴7.92%，建议深入研究谷雨的人群定向策略和素材→直播间承接设计。<br>
+• <strong>智投版位优化</strong>：对DPDP品牌店智投做版位限制（排除低效版位），提升智投ROI向非智投靠拢。<br><br>
+
+<strong>P2 · 巩固（一个月内）</strong><br>
+• <strong>素材中台建设</strong>：DPDP品牌店（创意ID 627、爆款40）的素材能力已证明有效，建议建立跨品类素材复用机制，尤其赋能ELL品牌店（仅2个爆款）和DPDP彩妆品牌店（仅3个爆款）。<br>
+• <strong>DPDP彩妆品牌店策略调整</strong>：智投ROI偏低（1.67），建议切换为非智投为主（70%+），仅保留「204-0-6-0-0下单-下单ROI」优化目标。<br><br>
+
+<strong>P3 · 放大（持续优化）</strong><br>
+• <strong>放大DPDP美妆精品店（唇霜）优势</strong>：下单率21.7%行业领先，在解决素材量不足问题后，适当加大该品类的投放预算。<br>
+• <strong>谷雨鎏金面膜模式复制</strong>：计价率0.759+下单率19.71%是效率标杆，纯朴可寻找自己的"面膜级"爆品来做标杆直播间。
+</div>
+</div>
+</div>
+
+</div>
+
+<script>
+// ===== 报告B 数据（已更新） =====
+const rooms = [
+  {name:'DPDP品牌店',cat:'气垫',consume:65815,creative_ids:627,hot_creatives:40,ctr:1.705,cvr:7.918,play3:35.416,cost_ratio:0.973,enter_rate:0.943,click_rate:85.278,order_rate:16.915},
+  {name:'DPDP美妆小妍',cat:'贴贴霜',consume:29368,creative_ids:605,hot_creatives:22,ctr:2.695,cvr:4.959,play3:46.794,cost_ratio:1.027,enter_rate:1.081,click_rate:75.233,order_rate:16.433},
+  {name:'ELL养肤美妆',cat:'素颜霜',consume:24764,creative_ids:190,hot_creatives:8,ctr:3.673,cvr:6.731,play3:58.562,cost_ratio:1.040,enter_rate:1.303,click_rate:96.304,order_rate:19.790},
+  {name:'DPDP美妆精品店',cat:'唇霜',consume:12051,creative_ids:245,hot_creatives:7,ctr:1.683,cvr:13.747,play3:34.015,cost_ratio:1.055,enter_rate:1.041,click_rate:103.410,order_rate:21.703},
+  {name:'DPDP彩妆品牌店',cat:'粉底液',consume:10830,creative_ids:209,hot_creatives:3,ctr:2.620,cvr:4.159,play3:48.253,cost_ratio:1.111,enter_rate:0.887,click_rate:81.549,order_rate:15.075},
+  {name:'ELL品牌店',cat:'泥膜',consume:4393,creative_ids:142,hot_creatives:2,ctr:4.494,cvr:1.224,play3:44.486,cost_ratio:1.093,enter_rate:0.526,click_rate:59.100,order_rate:17.710}
+];
+
+const peerAvg = {creative_ids:252.37,hot_creatives:13.38,ctr:1.634,cvr:12.314,play3:32.896,cost_ratio:1.048,enter_rate:1.289,click_rate:101.619,order_rate:15.653};
+
+function score(val,avg,inverse){var r=inverse?(avg-val)/avg:(val-avg)/avg;return Math.max(0,Math.min(100,50+r*50));}
+function fmtPct(v){return(v>=0?'+':'')+v.toFixed(1)+'%';}
+
+const dimScores = rooms.map(function(r){return{
+  name:r.name,cat:r.cat,
+  creative_build:(score(r.creative_ids,peerAvg.creative_ids,false)+score(r.hot_creatives,peerAvg.hot_creatives,false))/2,
+  creative_eff:(score(r.ctr,peerAvg.ctr,false)+score(r.cvr,peerAvg.cvr,false)+score(r.play3,peerAvg.play3,false))/3,
+  volume_eff:score(r.cost_ratio,peerAvg.cost_ratio,true),
+  live_eff:(score(r.enter_rate,peerAvg.enter_rate,false)+score(r.click_rate,peerAvg.click_rate,false)+score(r.order_rate,peerAvg.order_rate,false))/3
+};});
+
+const dimNames=['创意基建','创意效率','拿量效率','直播间效率'];
+const dimKeys=['creative_build','creative_eff','volume_eff','live_eff'];
+function barClass(v){if(v>=65)return'good';if(v>=45)return'mid';return'bad';}
+
+// 雷达图
+var radarHtml='';
+dimScores.forEach(function(ds){
+  radarHtml+='<div class="radar-card"><div class="rc-name">'+ds.name+'</div><div class="radar-bars">';
+  dimKeys.forEach(function(k,i){var v=ds[k];radarHtml+='<div class="radar-bar-row"><span class="radar-bar-label">'+dimNames[i]+'</span><div class="radar-bar-track"><div class="radar-bar-fill '+barClass(v)+'" style="width:'+v+'%"></div></div><span class="radar-bar-val">'+v.toFixed(0)+'</span></div>';});
+  radarHtml+='</div></div>';
+});
+document.getElementById('radar-grid').innerHTML=radarHtml;
+
+// 房间卡片
+function makeRoomCards(containerId,metrics,labels,peerVals,inverseFlags){
+  var html='';rooms.forEach(function(r){
+    html+='<div class="room-card"><div class="rn">'+r.name+'</div><div class="rc">'+r.cat+' | 日耗'+(r.consume/10000).toFixed(2)+'万</div><div class="metric-list">';
+    metrics.forEach(function(m,i){var val=r[m],avg=peerVals[i],diff=(val-avg)/avg*100,isInv=inverseFlags?inverseFlags[i]:false,good=isInv?(val<avg):(val>avg),cls=Math.abs(diff)<3?'neutral':(good?'good':'bad');
+    html+='<div class="metric-item"><span class="ml">'+labels[i]+'</span><span><span class="mv '+cls+'">'+val.toFixed(2)+'</span><span class="tag '+(good?'tag-green':'tag-red')+'">'+fmtPct(diff)+'</span></span></div>';});
+    html+='</div></div>';
+  });
+  document.getElementById(containerId).innerHTML=html;
+}
+makeRoomCards('cb-rooms',['creative_ids','hot_creatives'],['创意ID数','爆款素材(>10k)'],[peerAvg.creative_ids,peerAvg.hot_creatives],[false,false]);
+makeRoomCards('ce-rooms',['ctr','cvr','play3'],['CTR(%)','浅层CVR(%)','3秒完播率(%)'],[peerAvg.ctr,peerAvg.cvr,peerAvg.play3],[false,false,false]);
+makeRoomCards('ve-rooms',['cost_ratio'],['计价率'],[peerAvg.cost_ratio],[true]);
+makeRoomCards('le-rooms',['enter_rate','click_rate','order_rate'],['进播率(%)','商品点击率(%)','下单率(%)'],[peerAvg.enter_rate,peerAvg.click_rate,peerAvg.order_rate],[false,false,false]);
+
+// 柱状图
+function makeBarChart(containerId,metrics,peerVals,labels,inverseFlags){
+  var html='';metrics.forEach(function(m,mi){var maxV=Math.max.apply(null,rooms.map(function(r){return r[m];}).concat([peerVals[mi]]));
+  html+='<div style="font-size:10px;color:#888;margin:10px 0 4px">▎'+labels[mi]+'（同行均值='+peerVals[mi].toFixed(2)+'）</div>';
+  rooms.forEach(function(r){var pct=r[m]/maxV*100,refPct=peerVals[mi]/maxV*100,isInv=inverseFlags?inverseFlags[mi]:false,good=isInv?(r[m]<peerVals[mi]):(r[m]>peerVals[mi]);
+  html+='<div class="bar-row"><span class="bar-label" title="'+r.name+'">'+r.name.substring(0,10)+'</span><div class="bar-track"><div class="bar-fill" style="width:'+pct+'%;background:'+(good?'#81c784':'#ef5350')+'">'+r[m].toFixed(2)+'</div><div class="bar-ref" style="left:'+refPct+'%"></div></div></div>';});});
+  document.getElementById(containerId).innerHTML=html;
+}
+makeBarChart('cb-chart',['creative_ids','hot_creatives'],[peerAvg.creative_ids,peerAvg.hot_creatives],['创意唯一性ID数','爆款素材(>10k)'],[false,false]);
+makeBarChart('ce-chart',['ctr','cvr','play3'],[peerAvg.ctr,peerAvg.cvr,peerAvg.play3],['CTR(%)','浅层CVR(%)','3秒完播率(%)'],[false,false,false]);
+makeBarChart('ve-chart',['cost_ratio'],[peerAvg.cost_ratio],['计价率(Cost/GMV) - 越低越好'],[true]);
+makeBarChart('le-chart',['enter_rate','click_rate','order_rate'],[peerAvg.enter_rate,peerAvg.click_rate,peerAvg.order_rate],['进播率(%)','商品点击率(%)','下单率(%)'],[false,false,false]);
+
+// ===== 报告C数据 =====
+const cats=['气垫','贴贴霜','素颜霜','粉底液','唇霜','泥膜'];
+const catNames={'气垫':'DPDP品牌店','贴贴霜':'DPDP美妆小妍','素颜霜':'ELL养肤美妆','粉底液':'DPDP彩妆品牌店','唇霜':'DPDP美妆精品店','泥膜':'ELL品牌店'};
+const catConsume={'气垫':6.58,'贴贴霜':2.94,'素颜霜':2.48,'粉底液':1.08,'唇霜':1.21,'泥膜':0.44};
+
+const optData=[
+  {cat:'气垫',zt:'非智投',goal:'204-0-0-0-6下单-辅助优化下单ROI',consume:26737,avgConsume:7427,roi:2.09,rate:1.01},
+  {cat:'气垫',zt:'非智投',goal:'204-0-0-0-0下单',consume:17494,avgConsume:2948,roi:2.10,rate:0.95},
+  {cat:'气垫',zt:'智投',goal:'204-0-6-0-0下单-下单ROI',consume:57522,avgConsume:6948,roi:1.79,rate:1.07},
+  {cat:'气垫',zt:'智投',goal:'204-0-0-0-0下单',consume:1516,avgConsume:323,roi:1.99,rate:1.06},
+  {cat:'贴贴霜',zt:'智投',goal:'204-0-6-0-0下单-下单ROI',consume:29709,avgConsume:7750,roi:1.75,rate:1.02},
+  {cat:'贴贴霜',zt:'智投',goal:'204-0-0-0-0下单',consume:4259,avgConsume:5555,roi:1.81,rate:1.06},
+  {cat:'贴贴霜',zt:'非智投',goal:'204-0-6-0-0下单-下单ROI',consume:1375,avgConsume:179,roi:1.67,rate:1.19},
+  {cat:'贴贴霜',zt:'非智投',goal:'204-0-0-0-0下单',consume:1260,avgConsume:840,roi:1.92,rate:1.05},
+  {cat:'素颜霜',zt:'智投',goal:'204-0-6-0-0下单-下单ROI',consume:19781,avgConsume:3937,roi:1.72,rate:1.05},
+  {cat:'素颜霜',zt:'非智投',goal:'204-0-0-0-0下单',consume:2422,avgConsume:451,roi:1.99,rate:0.97},
+  {cat:'素颜霜',zt:'非智投',goal:'204-0-6-0-0下单-下单ROI',consume:1314,avgConsume:506,roi:2.16,rate:0.90},
+  {cat:'素颜霜',zt:'智投',goal:'204-0-0-0-0下单',consume:625,avgConsume:669,roi:1.60,rate:1.12},
+  {cat:'粉底液',zt:'智投',goal:'204-0-6-0-0下单-下单ROI',consume:10858,avgConsume:4402,roi:1.67,rate:1.14},
+  {cat:'粉底液',zt:'非智投',goal:'204-0-0-0-6下单-辅助优化下单ROI',consume:521,avgConsume:651,roi:1.91,rate:1.02},
+  {cat:'粉底液',zt:'智投',goal:'204-0-0-0-0下单',consume:347,avgConsume:800,roi:1.56,rate:1.17},
+  {cat:'唇霜',zt:'智投',goal:'204-0-6-0-0下单-下单ROI',consume:9667,avgConsume:1295,roi:1.79,rate:1.07},
+  {cat:'唇霜',zt:'智投',goal:'204-0-0-0-0下单',consume:1298,avgConsume:229,roi:1.98,rate:1.05},
+  {cat:'唇霜',zt:'非智投',goal:'204-0-6-0-0下单-下单ROI',consume:1228,avgConsume:505,roi:2.01,rate:0.92},
+  {cat:'泥膜',zt:'非智投',goal:'204-0-0-0-0下单',consume:186,avgConsume:65,roi:1.67,rate:1.15},
+  {cat:'泥膜',zt:'智投',goal:'204-0-0-0-0下单',consume:450,avgConsume:551,roi:1.65,rate:1.04},
+  {cat:'泥膜',zt:'非智投',goal:'204-0-0-0-6下单-辅助优化下单ROI',consume:170,avgConsume:184,roi:1.76,rate:1.01},
+];
+
+const ztVsData=[
+  {cat:'气垫',zt:'非智投',consume:44399,roi:2.10,rate:0.99},
+  {cat:'气垫',zt:'智投',consume:59038,roi:1.79,rate:1.07},
+  {cat:'贴贴霜',zt:'非智投',consume:13874,roi:1.73,rate:1.10},
+  {cat:'贴贴霜',zt:'智投',consume:33968,roi:1.75,rate:1.02},
+  {cat:'素颜霜',zt:'非智投',consume:12219,roi:1.78,rate:1.02},
+  {cat:'素颜霜',zt:'智投',consume:20406,roi:1.72,rate:1.05},
+  {cat:'粉底液',zt:'非智投',consume:2816,roi:2.06,rate:0.95},
+  {cat:'粉底液',zt:'智投',consume:11205,roi:1.67,rate:1.14},
+  {cat:'唇霜',zt:'非智投',consume:3354,roi:2.01,rate:0.96},
+  {cat:'唇霜',zt:'智投',consume:10965,roi:1.80,rate:1.07},
+  {cat:'泥膜',zt:'非智投',consume:1297,roi:1.61,rate:1.13},
+  {cat:'泥膜',zt:'智投',consume:450,roi:1.65,rate:1.04},
+];
+
+// 推荐卡片
+var recoHtml='';
+cats.forEach(function(cat){
+  var items=optData.filter(function(d){return d.cat===cat;}).sort(function(a,b){return b.consume-a.consume;});
+  var ztItems=items.filter(function(d){return d.zt==='智投';}).slice(0,1);
+  var nztItems=items.filter(function(d){return d.zt==='非智投';}).slice(0,1);
+  recoHtml+='<div class="reco-card"><div class="rc-cat">'+catNames[cat]+'</div><div class="rc-consume">'+cat+' | 日耗≈'+catConsume[cat]+'万</div>';
+  recoHtml+='<div class="rc-block"><div class="rc-label">🔵 智投</div>';
+  ztItems.forEach(function(d){var cls=d.roi>=1.7?'highlight':'warn';recoHtml+='<div class="rc-value"><span class="'+cls+'">'+d.goal+'</span> ROI '+d.roi.toFixed(2)+' | 日耗'+d.consume.toFixed(0)+'</div>';});
+  recoHtml+='</div><div class="rc-block"><div class="rc-label">🟢 非智投</div>';
+  nztItems.forEach(function(d){recoHtml+='<div class="rc-value"><span class="highlight">'+d.goal+'</span> ROI '+d.roi.toFixed(2)+' | 日耗'+d.consume.toFixed(0)+'</div>';});
+  recoHtml+='</div></div>';
+});
+document.getElementById('reco-grid').innerHTML=recoHtml;
+
+// 智投vs非智投表
+var ztHtml='<thead><tr><th>品类</th><th>类型</th><th>日均消耗(元)</th><th>下单ROI</th><th>计价率</th><th>判断</th></tr></thead><tbody>';
+cats.forEach(function(cat){
+  var items=ztVsData.filter(function(d){return d.cat===cat;});
+  var zt=items.find(function(d){return d.zt==='智投';}),nzt=items.find(function(d){return d.zt==='非智投';});
+  if(zt&&nzt){var roiDiff=((nzt.roi-zt.roi)/zt.roi*100).toFixed(1);
+  ztHtml+='<tr><td rowspan="2" style="font-weight:700">'+catNames[cat]+'<br><span style="font-size:9px;color:#999">'+cat+'</span></td><td><span class="tag tag-blue">智投</span></td><td>'+zt.consume.toFixed(0)+'</td><td>'+zt.roi.toFixed(2)+'</td><td>'+zt.rate.toFixed(2)+'</td><td rowspan="2" style="font-size:10px">'+(nzt.roi>zt.roi?'非智投ROI优':'智投ROI优')+'<br>差'+roiDiff+'%</td></tr>';
+  ztHtml+='<tr><td><span class="tag tag-green">非智投</span></td><td>'+nzt.consume.toFixed(0)+'</td><td style="font-weight:700;color:'+(nzt.roi>zt.roi?'#27ae60':'#e74c3c')+'">'+nzt.roi.toFixed(2)+'</td><td>'+nzt.rate.toFixed(2)+'</td></tr>';}
+});
+ztHtml+='</tbody>';document.getElementById('zt-vs-table').innerHTML=ztHtml;
+
+(function(){var maxC=Math.max.apply(null,ztVsData.map(function(d){return d.consume;}));var html='';cats.forEach(function(cat){var items=ztVsData.filter(function(d){return d.cat===cat;});html+='<div style="font-size:10px;color:#888;margin:8px 0 3px">▎'+cat+'</div>';items.forEach(function(d){var pct=d.consume/maxC*100,color=d.roi>=2.0?'#43a047':(d.roi>=1.75?'#81c784':(d.roi>=1.6?'#ffb74d':'#ef5350'));html+='<div class="bar-row"><span class="bar-label">'+d.zt+'</span><div class="bar-track"><div class="bar-fill" style="width:'+pct+'%;background:'+color+'">'+d.consume.toFixed(0)+'</div></div><span class="bar-val">ROI '+d.roi.toFixed(2)+'</span></div>';});});document.getElementById('zt-vs-chart').innerHTML=html;})();
+
+// 创意优投
+(function(){var html='<thead><tr><th>品类</th><th>优投</th><th>日耗(元)</th><th>条均耗</th><th>ROI</th><th>计价率</th><th>判断</th></tr></thead><tbody>';
+var cd=[{cat:'气垫',off:{c:68548,r:1.88,ac:1521,rt:1.05},on:{c:3038,r:2.10,ac:2511,rt:1.01}},{cat:'贴贴霜',off:{c:19139,r:1.73,ac:1815,rt:1.05},on:{c:17262,r:1.83,ac:1944,rt:1.03}},{cat:'素颜霜',off:{c:21816,r:1.72,ac:759,rt:1.04},on:{c:645,r:2.03,ac:1648,rt:0.96}},{cat:'粉底液',off:{c:11756,r:1.67,ac:691,rt:1.13},on:{c:172,r:2.54,ac:344,rt:0.82}},{cat:'唇霜',off:{c:10433,r:1.80,ac:698,rt:1.07},on:{c:553,r:2.14,ac:554,rt:0.93}}];
+cd.forEach(function(d){html+='<tr><td rowspan="2" style="font-weight:700">'+catNames[d.cat]+'</td><td>关闭</td><td>'+d.off.c.toFixed(0)+'</td><td>'+d.off.ac.toFixed(0)+'</td><td>'+d.off.r.toFixed(2)+'</td><td>'+d.off.rt.toFixed(2)+'</td><td rowspan="2" style="font-size:10px">'+(d.on.c>500?(d.on.r>d.off.r?'<span class="tag tag-green">优投有效</span>':'<span class="tag tag-orange">ROI略降</span>'):'<span style="color:#bbb">量级不足</span>')+'</td></tr>';html+='<tr><td>开启</td><td>'+(d.on.c<500?'<span style="color:#bbb">':'')+d.on.c.toFixed(0)+(d.on.c<500?'⚠️':'')+'</td><td>'+d.on.ac.toFixed(0)+'</td><td style="font-weight:700;color:'+(d.on.r>=1.8?'#27ae60':'#e74c3c')+'">'+d.on.r.toFixed(2)+'</td><td>'+d.on.rt.toFixed(2)+'</td></tr>';});html+='</tbody>';document.getElementById('creative-table').innerHTML=html;})();
+
+// 直播速推
+(function(){var html='<thead><tr><th>品类</th><th>一键起量</th><th>日耗(元)</th><th>条均耗</th><th>项目均耗</th><th>ROI</th><th>计价率</th><th>ROI变化</th></tr></thead><tbody>';
+var sd=[{cat:'气垫',off:{c:37859,r:2.10,ac:1236,pc:4356,rt:0.97},on:{c:17962,r:1.70,ac:1576,pc:4188,rt:1.09}},{cat:'贴贴霜',off:{c:12336,r:1.81,ac:390,pc:1856,rt:1.06},on:{c:10627,r:1.78,ac:521,pc:1987,rt:1.02}},{cat:'素颜霜',off:{c:12369,r:1.59,ac:1128,pc:0,rt:1.10},on:{c:38,r:1.00,ac:19,pc:0,rt:1.79}},{cat:'粉底液',off:{c:5984,r:1.73,ac:445,pc:2521,rt:1.08},on:{c:5278,r:1.57,ac:1099,pc:2765,rt:1.20}},{cat:'唇霜',off:{c:5307,r:1.84,ac:227,pc:1510,rt:1.05},on:{c:5597,r:1.82,ac:695,pc:2073,rt:1.07}},{cat:'泥膜',off:{c:1967,r:1.55,ac:271,pc:1560,rt:1.15},on:{c:3529,r:1.58,ac:4812,pc:0,rt:1.11}}];
+sd.forEach(function(d){var roiChg=d.on.r>0?((d.on.r-d.off.r)/d.off.r*100).toFixed(1):'-';html+='<tr><td rowspan="2" style="font-weight:700">'+catNames[d.cat]+'</td><td>未开启</td><td>'+d.off.c.toFixed(0)+'</td><td>'+d.off.ac.toFixed(0)+'</td><td>'+d.off.pc.toFixed(0)+'</td><td>'+d.off.r.toFixed(2)+'</td><td>'+d.off.rt.toFixed(2)+'</td><td rowspan="2" style="font-size:10px">ROI '+roiChg+'%</td></tr>';html+='<tr><td>开启</td><td>'+d.on.c.toFixed(0)+'</td><td>'+d.on.ac.toFixed(0)+'</td><td>'+d.on.pc.toFixed(0)+'</td><td style="font-weight:700;color:'+(d.on.r>=1.7?'#27ae60':'#e74c3c')+'">'+d.on.r.toFixed(2)+'</td><td>'+d.on.rt.toFixed(2)+'</td></tr>';});html+='</tbody>';document.getElementById('speed-table').innerHTML=html;})();
+
+// 潜客优投 & 分版位出价
+(function(){var html='<thead><tr><th>直播间</th><th>出价方式</th><th>日均消耗(元)</th><th>消耗占比</th><th>下单ROI</th><th>vs基准</th><th>判断</th></tr></thead><tbody>';
+var qk=[
+  {name:'DPDP品牌店',cat:'气垫',base:{c:106723,r:2.02},qk:{c:157,r:1.65},fb:{c:967,r:1.77}},
+  {name:'DPDP美妆小妍',cat:'贴贴霜',base:{c:16871,r:1.78},qk:{c:5508,r:2.27},fb:{c:13782,r:1.56}},
+  {name:'ELL养肤美妆',cat:'素颜霜',base:{c:23207,r:1.77},qk:{c:791,r:1.78},fb:{c:46,r:1.10}},
+  {name:'DPDP彩妆品牌店',cat:'粉底液',base:{c:8734,r:1.63},qk:{c:2670,r:1.97},fb:{c:630,r:1.65}},
+  {name:'DPDP美妆精品店',cat:'唇霜',base:{c:10340,r:1.91},qk:{c:841,r:2.47},fb:{c:53,r:1.47}},
+  {name:'ELL品牌店',cat:'泥膜',base:{c:4665,r:1.62},qk:{c:222,r:2.06},fb:null}
+];
+qk.forEach(function(d){
+  var total=d.base.c+(d.qk?d.qk.c:0)+(d.fb?d.fb.c:0);
+  var rows=2+(d.fb?1:0);
+  var basePct=(d.base.c/total*100).toFixed(0);
+  var qkPct=(d.qk.c/total*100).toFixed(0);
+  
+  // 潜客优投判断
+  var qkDiff=((d.qk.r-d.base.r)/d.base.r*100).toFixed(0);
+  var qkRec;
+  if(d.qk.c<500)qkRec='<span style="color:#bbb">量级不足</span>';
+  else if(d.qk.r>d.base.r*1.05)qkRec='<span class="tag tag-green">✅强烈推荐</span>';
+  else if(d.qk.r>d.base.r)qkRec='<span class="tag tag-green">✅推荐</span>';
+  else if(d.qk.r>d.base.r*0.95)qkRec='<span class="tag tag-orange">持平</span>';
+  else qkRec='<span class="tag tag-red">不推荐</span>';
+  
+  // 分版位判断
+  var fbDiff='-',fbRec='-';
+  if(d.fb){
+    fbDiff=((d.fb.r-d.base.r)/d.base.r*100).toFixed(0);
+    var fbPct=(d.fb.c/total*100).toFixed(0);
+    if(d.fb.c<100)fbRec='<span style="color:#bbb">量级不足</span>';
+    else if(d.fb.r>d.base.r*1.05)fbRec='<span class="tag tag-green">✅推荐</span>';
+    else if(d.fb.r>d.base.r)fbRec='<span class="tag tag-orange">略优</span>';
+    else fbRec='<span class="tag tag-red">不推荐</span>';
+  }
+  
+  html+='<tr><td rowspan="'+rows+'" style="font-weight:700;font-size:10px">'+d.name+'<br><span style="color:#999">'+d.cat+'</span></td>';
+  html+='<td>不分产品出价(基准)</td><td>'+d.base.c.toFixed(0)+'</td><td>'+basePct+'%</td><td style="font-weight:700">'+d.base.r.toFixed(2)+'</td><td>-</td><td>基准</td></tr>';
+  html+='<tr><td>小店潜客优投</td><td>'+d.qk.c.toFixed(0)+'</td><td>'+qkPct+'%</td><td style="font-weight:700;color:'+(d.qk.r>d.base.r?'#27ae60':'#e74c3c')+'">'+d.qk.r.toFixed(2)+'</td><td style="color:'+(d.qk.r>d.base.r?'#27ae60':'#e74c3c')+'">'+(qkDiff>=0?'+':'')+qkDiff+'%</td><td>'+qkRec+'</td></tr>';
+  if(d.fb){
+    var fbPct=(d.fb.c/total*100).toFixed(0);
+    html+='<tr><td>分版位出价</td><td>'+(d.fb.c<100?'<span style="color:#bbb">':'')+d.fb.c.toFixed(0)+(d.fb.c<100?'⚠️':'')+'</td><td>'+(d.fb.c<100?'<span style="color:#bbb">':'')+fbPct+'%</td><td style="font-weight:700;color:'+(d.fb.r>d.base.r?'#27ae60':'#e74c3c')+'">'+d.fb.r.toFixed(2)+'</td><td style="color:'+(d.fb.r>d.base.r?'#27ae60':'#e74c3c')+'">'+(fbDiff>=0?'+':'')+fbDiff+'%</td><td>'+fbRec+'</td></tr>';
+  }
+});html+='</tbody>';document.getElementById('qianke-table').innerHTML=html;})();
+
+// 版位
+(function(){var html='<thead><tr><th>直播间</th><th>版位</th><th>非智投消耗</th><th>非智投ROI</th><th>智投消耗</th><th>智投ROI</th><th>差异</th></tr></thead><tbody>';
+var pos=[{name:'DPDP品牌店',p:[{n:'微信视频号',nc:39370,nr:2.14,zc:52650,zr:1.80},{n:'微信小程序',nc:352,nr:1.68,zc:4132,zr:1.61},{n:'微信公众号',nc:156,nr:1.91,zc:1600,zr:1.68},{n:'平台与内容',nc:130,nr:1.88,zc:1037,zr:1.68}]},{name:'DPDP美妆小妍',p:[{n:'微信视频号',nc:8140,nr:1.79,zc:20936,zr:1.77},{n:'微信小程序',nc:1368,nr:1.67,zc:8602,zr:1.73},{n:'平台与内容',nc:84,nr:1.74,zc:1393,zr:1.68},{n:'微信公众号',nc:104,nr:1.72,zc:702,zr:1.51}]},{name:'ELL养肤美妆',p:[{n:'微信视频号',nc:9463,nr:1.82,zc:13797,zr:1.74},{n:'微信小程序',nc:251,nr:1.61,zc:1474,zr:1.64},{n:'微信公众号',nc:86,nr:1.93,zc:2587,zr:1.64},{n:'平台与内容',nc:113,nr:1.73,zc:1119,zr:1.61}]}];
+pos.forEach(function(d){var first=true;d.p.forEach(function(pp){var roiDiff=((pp.zr-pp.nr)/pp.nr*100).toFixed(1);html+='<tr>';if(first){html+='<td rowspan="'+d.p.length+'" style="font-weight:700;font-size:10px">'+d.name+'</td>';first=false;}html+='<td>'+pp.n+'</td><td>'+pp.nc.toFixed(0)+'</td><td>'+pp.nr.toFixed(2)+'</td><td>'+pp.zc.toFixed(0)+'</td><td>'+pp.zr.toFixed(2)+'</td><td style="color:'+(roiDiff<-5?'#e74c3c':(roiDiff>0?'#27ae60':'#888'))+'">'+(roiDiff>=0?'+':'')+roiDiff+'%</td></tr>';});});html+='</tbody>';document.getElementById('position-table').innerHTML=html;})();
+
+// 链路
+(function(){var html='<thead><tr><th>品类</th><th>链路</th><th>类型</th><th>日耗(元)</th><th>条均耗</th><th>ROI</th><th>计价率</th><th>推荐</th></tr></thead><tbody>';
+var lk=[{cat:'气垫',d:[{l:'小店',t:'微信小店商品',lb:'小店链路',c:32204,ac:3592,r:2.16,rt:0.97},{l:'直播',t:'视频号直播',lb:'传统直播',c:64667,ac:935,r:2.02,rt:0.99},{l:'直播',t:'微信小店商品',lb:'商品表达直播',c:15601,ac:5639,r:1.98,rt:1.01},{l:'直播',t:'商品聚合页',lb:'聚合页推直播',c:887,ac:649,r:1.76,rt:1.15}]},{cat:'贴贴霜',d:[{l:'直播',t:'视频号直播',lb:'传统直播',c:30617,ac:1010,r:1.78,rt:1.02},{l:'直播',t:'商品聚合页',lb:'聚合页推直播',c:3717,ac:578,r:1.54,rt:1.13},{l:'小店',t:'微信小店商品',lb:'小店链路',c:2035,ac:540,r:1.97,rt:0.98},{l:'直播',t:'微信小店商品',lb:'商品表达直播',c:346,ac:87,r:1.70,rt:1.09}]},{cat:'素颜霜',d:[{l:'直播',t:'视频号直播',lb:'传统直播',c:21890,ac:626,r:1.75,rt:1.04},{l:'直播',t:'微信小店商品',lb:'商品表达直播',c:6395,ac:783,r:1.75,rt:1.03},{l:'小店',t:'微信小店商品',lb:'小店链路',c:4354,ac:204,r:1.60,rt:1.06}]},{cat:'粉底液',d:[{l:'直播',t:'视频号直播',lb:'传统直播',c:11903,ac:614,r:1.70,rt:1.12},{l:'直播',t:'微信小店商品',lb:'商品表达直播',c:124,ac:106,r:1.79,rt:1.03}]},{cat:'唇霜',d:[{l:'直播',t:'视频号直播',lb:'传统直播',c:12621,ac:215,r:1.86,rt:1.05}]},{cat:'泥膜',d:[{l:'直播',t:'视频号直播',lb:'传统直播',c:4531,ac:844,r:1.62,rt:1.09},{l:'小店',t:'微信小店商品',lb:'小店链路',c:317,ac:297,r:1.67,rt:1.03}]}];
+lk.forEach(function(dd){var first=true;dd.d.forEach(function(d,i){var cls='',rec='';if(d.c<500){cls='low-conf';rec='<span style="color:#bbb">量级不足</span>';}else if(d.c>=1000&&d.r>=2.0){cls='rec';rec='🥇推荐';}else if(d.c>=1000&&d.r>=1.7){cls='good';rec='🥈推荐';}else if(d.r<1.5){cls='bad';rec='不推荐';}else{cls='mid';rec='可用';}html+='<tr>';if(first){html+='<td rowspan="'+dd.d.length+'" style="font-weight:700;font-size:10px">'+catNames[dd.cat]+'</td>';first=false;}html+='<td>'+d.l+'</td><td>'+d.t+'</td><td class="'+cls+'">'+d.c.toFixed(0)+'</td><td>'+d.ac.toFixed(0)+'</td><td class="'+cls+'" style="font-weight:700">'+d.r.toFixed(2)+'</td><td>'+d.rt.toFixed(2)+'</td><td style="font-size:10px">'+rec+'</td></tr>';});});html+='</tbody>';document.getElementById('link-table').innerHTML=html;})();
+
+// 链路柱状图
+(function(){var maxC=64667;var html='';['气垫','贴贴霜','素颜霜','粉底液','唇霜','泥膜'].forEach(function(cat){var items=[{l:'小店',c:cat==='气垫'?32204:(cat==='贴贴霜'?2035:(cat==='素颜霜'?4354:(cat==='泥膜'?317:0))),r:cat==='气垫'?2.16:(cat==='贴贴霜'?1.97:(cat==='素颜霜'?1.60:(cat==='泥膜'?1.67:0)))},{l:'直播',c:cat==='气垫'?64667:(cat==='贴贴霜'?30617:(cat==='素颜霜'?21890:(cat==='粉底液'?11903:(cat==='唇霜'?12621:(cat==='泥膜'?4531:0))))),r:cat==='气垫'?2.02:(cat==='贴贴霜'?1.78:(cat==='素颜霜'?1.75:(cat==='粉底液'?1.70:(cat==='唇霜'?1.86:(cat==='泥膜'?1.62:0)))))}];html+='<div style="font-size:10px;color:#888;margin:8px 0 3px">▎'+cat+'</div>';items.forEach(function(d){if(d.c>0){var pct=d.c/maxC*100,color=d.r>=2.0?'#43a047':(d.r>=1.75?'#81c784':(d.r>=1.6?'#ffb74d':'#ef5350'));html+='<div class="bar-row"><span class="bar-label">'+d.l+'</span><div class="bar-track"><div class="bar-fill" style="width:'+pct+'%;background:'+color+'">'+d.c.toFixed(0)+'</div></div><span class="bar-val">ROI '+d.r.toFixed(2)+'</span></div>';}});});document.getElementById('link-chart').innerHTML=html;})();
+
+// ===== 报告A新增：分品类x分链路by天趋势图 =====
+const detailData={"DPDP品牌店|直播":{dates:["05-15","05-16","05-17","05-18","05-19","05-20","05-21","05-22","05-23","05-24","05-25","05-26","05-27","05-28","05-29","05-30","05-31","06-01","06-02","06-03","06-04","06-05","06-06","06-07","06-08","06-09","06-10","06-11","06-12","06-13","06-14","06-15","06-16","06-17","06-18","06-19","06-20","06-21","06-22","06-23","06-24","06-25","06-26","06-27","06-28","06-29","06-30"],costs:[2.1848,1.6564,2.5447,2.2816,2.2916,2.6451,2.7011,2.9703,1.933,1.7305,1.8544,2.1728,1.5301,3.6811,5.7223,3.4806,3.4053,4.1622,5.2886,5.8138,8.8052,11.9744,10.5374,11.5824,11.2376,8.5912,6.4072,7.8507,6.1033,6.1301,7.3676,6.4118,13.0549,12.7436,12.2904,12.7008,14.6167,9.3963,8.6926,8.0543,8.1037,7.8762,4.5874,3.9033,3.5351,2.577,3.0685],rois:[1.95,2.04,1.87,1.9,2.02,2.35,2.16,1.75,1.66,1.92,1.87,1.82,1.94,1.79,1.98,1.94,2.03,1.94,1.98,1.87,1.83,1.85,1.87,1.87,2.53,1.73,1.93,1.78,2.17,2.14,2.06,2.32,2.02,1.99,2.06,2.09,1.9,2.09,2.08,2.01,2.08,2.06,1.86,1.94,1.97,2.03,2.15],rates:[1.01,0.99,1.03,1.01,0.95,0.82,0.88,1.07,1.14,0.99,1.0,1.04,0.97,1.0,0.93,0.98,0.93,0.93,0.95,1.03,1.01,1.02,1.01,1.01,0.87,1.11,0.98,1.09,0.95,0.96,1.0,0.89,1.02,1.03,0.99,0.97,1.04,0.96,0.98,1.01,1.0,1.0,1.09,1.04,1.02,1.0,0.94]},
+"DPDP品牌店|小店":{dates:["05-15","05-16","05-17","05-18","05-19","05-20","05-21","05-22","05-23","05-24","05-25","05-26","05-27","05-28","05-29","05-30","05-31","06-01","06-02","06-03","06-04","06-05","06-06","06-07","06-08","06-09","06-10","06-11","06-12","06-13","06-14","06-15","06-16","06-17","06-18","06-19","06-20","06-21","06-22","06-23","06-24","06-25","06-26","06-27","06-28","06-29","06-30"],costs:[0.9461,0.6662,0.497,0.5449,0.854,1.0136,1.0105,0.984,1.2576,0.9795,0.9494,1.2017,1.4485,2.1161,6.6475,4.8046,1.4387,0.7785,1.1249,1.1768,1.9634,2.328,3.0109,8.9265,8.7748,7.1007,6.7777,5.7372,6.0853,5.1012,5.7898,4.3029,5.0801,5.7221,5.7146,0.5706,0.6778,0.774,1.032,1.0884,0.9306,1.302,1.7344,1.4116,0.9984,0.4222,0.1772],rois:[1.59,1.96,1.97,2.15,1.88,2.28,2.09,1.78,1.69,1.84,1.77,1.69,1.31,1.68,1.56,1.49,1.74,2.44,2.15,1.97,2.14,1.96,1.9,1.85,3.41,1.86,1.79,1.82,1.89,1.92,1.91,1.93,1.99,1.88,2.06,6.32,4.06,4.22,2.85,2.7,3.23,2.58,1.78,1.93,2.05,3.23,5.37],rates:[1.2,0.98,0.97,0.91,1.06,0.88,0.94,1.09,1.17,1.07,1.1,1.12,1.46,1.06,1.16,1.31,1.08,0.75,0.88,0.96,0.83,0.93,0.97,1.01,0.97,1.02,1.04,1.06,1.07,1.06,1.07,1.05,1.04,1.09,1.01,0.33,0.49,0.48,0.71,0.76,0.64,0.78,1.15,1.06,0.98,0.62,0.4]},
+"ELL养肤美妆|直播":{dates:["05-15","05-16","05-17","05-18","05-19","05-20","05-21","05-22","05-23","05-24","05-25","05-26","05-27","05-28","05-29","05-30","05-31","06-01","06-02","06-03","06-04","06-05","06-06","06-07","06-08","06-09","06-10","06-11","06-12","06-13","06-14","06-15","06-16","06-17","06-18","06-19","06-20","06-21","06-22","06-23","06-24","06-25","06-26","06-27","06-28","06-29","06-30"],costs:[0.4577,1.1974,0.3122,1.2526,0.6626,1.1956,0.9891,9.0721,11.52,3.8038,4.1038,5.0802,4.6661,7.0506,4.3762,10.8731,2.3682,7.4634,4.2443,13.248,9.5687,19.3769,4.6669,3.2013,2.646,0.777,0.3585,1.0734,0.7946,0.913,1.2311,0.8002,0.4979,1.0838,1.0385,0.8128,1.9669,1.206,1.1918,1.3046,0.7881,1.2133,0.5318,0.5097,1.0533,0.5691,0.8268],rois:[1.58,1.68,1.51,1.77,1.64,1.6,1.7,1.67,1.72,1.79,1.72,1.78,1.83,1.73,1.87,1.7,1.84,1.82,1.77,1.72,1.76,1.69,1.7,1.66,2.29,1.65,1.79,1.43,1.83,1.95,1.85,1.83,1.98,1.94,1.68,2.07,1.65,1.63,1.69,1.65,1.8,1.61,1.78,1.85,1.77,1.84,1.83],rates:[1.12,1.09,1.2,1.02,1.1,1.17,1.04,1.03,1.01,0.99,1.04,1.02,1.02,1.04,0.99,1.07,1.03,1.01,1.03,1.06,1.03,1.06,1.05,1.09,0.87,1.1,1.07,1.29,1.03,0.94,1.0,1.03,0.95,0.96,1.07,0.85,1.07,1.1,1.04,1.05,1.04,1.11,1.0,0.98,1.0,1.0,0.99]},
+"ELL养肤美妆|小店":{dates:["05-15","05-16","05-17","05-18","05-19","05-20","05-21","05-22","05-23","05-24","05-25","05-26","05-27","05-28","05-29","05-30","05-31","06-01","06-02","06-03","06-04","06-05","06-06","06-07","06-08","06-09","06-10","06-11","06-12","06-13","06-14","06-15","06-16","06-17","06-18","06-19","06-20","06-21","06-22","06-23","06-24","06-25","06-26","06-27","06-28","06-29","06-30"],costs:[0.0737,0.108,0.129,0.1048,0.0752,0.1541,0.146,0.3467,0.4939,0.2217,0.167,0.3873,0.4577,0.6083,0.3071,0.6118,0.4375,0.5628,0.5822,0.8741,0.9593,1.3134,1.5797,0.8411,0.6039,0.4937,0.2372,0.2281,0.2546,0.2392,0.2448,0.2981,0.1709,0.3305,0.23,0.3163,0.3423,0.5637,0.5117,0.3131,0.2625,0.1211,0.1282,0.1027,0.1344,0.1011,0.1222],rois:[0.79,1.63,1.56,1.85,1.86,1.19,1.17,1.61,1.44,1.49,1.39,1.53,1.45,1.51,1.46,1.7,1.67,1.82,1.42,1.6,1.7,1.48,1.38,1.6,2.2,1.4,1.52,1.72,1.91,1.81,1.49,1.68,2.1,1.56,1.54,1.56,1.51,1.35,1.38,1.88,1.46,1.37,2.1,1.38,2.31,1.78,1.73],rates:[2.14,1.19,1.08,0.92,0.96,1.41,1.37,1.09,1.2,1.13,1.19,1.14,1.17,1.12,1.18,1.0,1.02,0.92,1.15,1.05,0.97,1.11,1.19,1.09,0.99,1.18,1.19,1.01,0.96,0.96,1.24,1.07,0.79,1.08,1.08,1.1,1.11,1.12,1.16,0.91,1.18,1.23,0.81,1.22,0.69,0.89,0.93]},
+"DPDP美妆小妍|直播":{dates:["05-15","05-16","05-17","05-18","05-19","05-20","05-21","05-22","05-23","05-24","05-25","05-26","05-27","05-28","05-29","05-30","05-31","06-01","06-02","06-03","06-04","06-05","06-06","06-07","06-08","06-09","06-10","06-11","06-12","06-13","06-14","06-15","06-16","06-17","06-18","06-19","06-20","06-21","06-22","06-23","06-24","06-25","06-26","06-27","06-28","06-29","06-30"],costs:[1.4971,1.3234,1.2633,1.2603,1.3976,1.6289,1.5808,1.3724,1.1386,1.0518,0.9297,1.0726,1.1359,1.577,2.1432,2.9141,3.3101,2.6195,3.3833,4.2751,4.1684,3.2189,3.1718,4.0658,2.9584,1.8628,3.2096,6.7718,4.7543,3.0001,3.935,3.3321,2.2746,2.8778,2.5536,5.6255,3.5073,2.5483,4.7137,3.1478,1.3225,2.1293,3.134,5.2658,3.4695,2.5103,4.2313],rois:[1.88,2.01,2.15,1.93,1.74,1.97,1.86,1.85,1.97,2.02,2.08,2.11,1.97,1.84,1.73,1.81,1.75,1.89,1.81,1.72,1.74,1.78,1.74,1.75,1.82,1.86,1.77,1.46,1.78,1.77,1.8,1.81,2.0,1.76,2.0,1.68,1.72,1.79,1.77,1.63,1.48,1.73,1.71,1.62,1.86,1.97,1.78],rates:[1.09,1.02,0.94,1.0,1.11,0.99,1.1,1.1,1.05,1.04,1.01,0.95,0.98,1.1,1.07,1.04,1.03,0.95,1.0,1.06,1.03,1.02,1.05,1.05,0.99,0.98,1.03,1.24,1.03,1.04,1.02,1.01,0.9,1.03,0.9,1.09,1.06,1.03,1.03,1.1,1.2,1.06,1.05,1.09,0.98,0.9,0.99]},
+"DPDP美妆小妍|小店":{dates:["06-09","06-10","06-11","06-12","06-13","06-14","06-15","06-16","06-17","06-18","06-19","06-20","06-21","06-22","06-23","06-24","06-25","06-26","06-27","06-28","06-29","06-30"],costs:[0.0021,0.0484,0.1301,0.2117,0.1975,0.2621,0.2917,0.2793,0.3734,0.4357,0.5302,0.6402,0.3549,0.4648,0.2859,0.1693,0.1454,0.2162,0.3523,0.283,0.2256,0.2063],rois:[1.89,2.11,1.86,1.99,1.92,2.04,2.24,2.07,1.89,1.95,1.73,1.68,2.15,1.99,1.88,1.54,2.3,2.09,1.95,2.12,2.13,2.47],rates:[1.0,0.89,1.08,0.98,1.02,0.98,0.87,0.93,1.04,1.01,1.1,1.15,0.9,0.97,1.01,1.26,0.81,0.94,1.0,0.9,0.9,0.77]},
+"DPDP彩妆品牌店|直播":{dates:["05-15","05-16","05-17","05-18","05-19","05-20","05-21","05-22","05-23","05-24","05-25","05-26","05-27","05-28","05-29","05-30","05-31","06-01","06-02","06-03","06-04","06-05","06-06","06-07","06-08","06-09","06-10","06-11","06-12","06-13","06-14","06-15","06-16","06-17","06-18","06-19","06-20","06-21","06-22","06-23","06-24","06-25","06-26","06-27","06-28","06-29","06-30"],costs:[0.7278,0.8037,0.9033,0.7158,0.6745,0.9201,0.7055,0.6027,0.4867,0.7415,0.6896,0.6841,1.2081,1.4731,1.3727,2.249,1.5995,1.6257,1.6122,1.0864,0.8498,2.6032,1.7556,3.7684,1.1641,1.127,0.9845,0.8875,0.912,1.1813,1.1202,1.1855,1.2464,0.8968,0.9308,1.0676,1.0812,1.208,0.9319,1.0372,0.9496,0.9862,0.6229,0.8107,0.7174,0.7135,1.0193],rois:[1.85,2.03,1.82,1.97,2.15,2.08,2.01,1.83,2.09,1.92,1.99,1.92,1.83,1.77,1.66,1.73,1.72,1.71,1.64,1.88,1.79,1.65,1.62,1.74,1.77,1.65,1.66,1.76,1.6,1.74,1.79,1.74,1.61,1.76,1.63,1.57,1.84,1.58,1.7,1.62,1.79,1.56,1.59,1.88,1.68,1.76,1.7],rates:[1.1,1.0,1.1,1.03,0.96,0.98,1.01,1.12,0.96,1.06,1.01,1.06,1.11,1.14,1.19,1.13,1.15,1.15,1.2,1.04,1.08,1.19,1.19,1.14,1.08,1.13,1.14,1.06,1.2,1.09,1.05,1.08,1.16,1.06,1.14,1.16,0.99,1.19,1.1,1.15,1.03,1.18,1.17,1.01,1.12,1.06,1.1]},
+"DPDP美妆精品店|直播":{dates:["05-15","05-16","05-17","05-18","05-19","05-25","05-26","05-27","05-28","05-29","05-30","05-31","06-01","06-02","06-03","06-04","06-05","06-06","06-07","06-08","06-09","06-10","06-11","06-12","06-13","06-14","06-15","06-16","06-17","06-18","06-19","06-20","06-21","06-22","06-23","06-24","06-25","06-26","06-27","06-28","06-29","06-30"],costs:[0.7154,1.1777,1.5645,0.2261,0,0.0069,0.2526,0.3719,0.3731,0.3951,0.6627,1.4826,1.2659,1.4788,1.3665,1.3112,1.1737,1.1743,1.4717,1.8003,1.1303,1.9171,1.2642,0.9659,1.4211,1.498,1.2782,1.0869,0.861,0.543,0.8336,0.79,0.8381,0.6936,0.726,0.6179,0.7573,0.8289,1.9017,4.0589,2.1053,0.7024],rois:[1.66,1.74,1.81,1.24,0,13.98,2.2,2.1,2.16,1.87,1.72,1.82,1.87,1.84,1.84,1.71,1.78,2.14,1.99,1.72,1.96,1.63,1.75,1.79,1.71,2.05,1.93,1.88,2.14,2.2,1.95,2.07,2.16,2.07,1.82,2.25,1.75,1.83,1.7,1.78,1.66,2.1],rates:[1.21,1.16,1.09,1.62,0,0.14,0.9,0.92,0.91,1.05,1.12,1.06,1.02,1.05,1.05,1.16,1.11,0.93,1.01,1.17,1.06,1.21,1.13,1.12,1.16,0.97,1.03,1.05,0.94,0.89,1.0,0.98,0.92,0.95,1.09,0.88,1.15,1.09,1.11,1.05,1.11,0.89]},
+"ELL品牌店|直播":{dates:["05-16","05-17","05-18","05-19","05-20","05-21","05-22","05-23","05-24","05-25","05-26","05-27","05-28","05-29","05-30","05-31","06-01","06-02","06-03","06-04","06-05","06-06","06-07","06-08","06-09","06-10","06-11","06-12","06-13","06-14","06-15","06-16","06-17","06-18","06-19","06-20","06-21","06-22","06-23","06-24","06-25","06-26","06-27","06-28","06-29","06-30"],costs:[0.2819,0.2112,0.1186,0.1082,0.0961,0.0816,0.1194,0.1441,0.0956,0.0588,0.1066,0.1255,0.1189,0.0555,0.2262,0.7909,1.719,1.1044,0.8359,0.7483,0.4958,1.0491,0.3056,0.2068,0.1597,0.288,0.2415,0.2347,0.4034,0.3907,0.2146,0.2341,0.2182,0.2607,0.5661,0.8181,0.5027,0.2759,0.5017,0.3014,0.2129,0.2978,0.2377,0.196,0.3891,0.1818],rois:[1.02,2.24,2.15,1.86,2.96,2.33,1.9,1.53,1.78,2.27,1.65,1.33,1.57,2.54,1.53,1.29,1.39,1.59,1.75,1.76,1.42,1.37,1.91,1.98,1.99,1.84,1.39,2.06,1.71,1.96,1.69,1.76,1.55,1.88,1.95,1.54,1.45,1.87,1.65,1.4,1.53,1.6,1.51,1.72,1.51,1.76],rates:[1.84,0.82,0.89,0.99,0.66,0.84,0.98,1.21,1.05,0.79,1.11,1.3,1.12,0.7,1.14,1.33,1.24,1.09,1.0,0.99,1.25,1.26,0.93,0.88,0.91,0.98,1.28,0.88,1.04,0.91,1.06,1.0,1.14,0.97,0.92,1.18,1.25,0.96,1.14,1.31,1.16,1.13,1.19,1.04,1.19,1.0]},
+"ELL品牌店|小店":{dates:["06-06","06-07","06-08","06-09","06-10","06-11","06-12","06-13","06-14","06-15","06-16","06-17","06-18","06-19","06-20","06-21","06-22","06-23","06-24","06-25","06-26","06-27","06-28","06-29","06-30"],costs:[0.0421,0.0199,0.0134,0.0142,0.0305,0.0218,0.0256,0.0451,0.0253,0.0161,0.0139,0.0537,0.0336,0.0527,0.0541,0.0399,0.0232,0.0649,0.0558,0.0589,0.0205,0.0259,0.048,0.0944,0.0562],rois:[1.54,1.75,2.61,2.1,1.46,1.92,2.71,1.23,2.17,1.55,2.15,1.3,1.78,1.91,1.73,1.88,1.72,1.18,1.6,1.28,1.7,3.28,1.83,1.34,1.6],rates:[1.19,1.04,0.7,0.87,1.2,0.92,0.62,1.39,0.79,1.07,0.75,1.27,0.91,0.89,1.04,0.9,0.99,1.45,1.06,1.4,1.02,0.54,0.9,1.34,1.09]},
+"DPDP唇霜|直播":{dates:["05-19","05-20","05-21","05-22","05-23","05-24","05-25"],costs:[0,0.3074,0.3393,0.186,0.8268,0.172,0.0275],rois:[null,1.04,1.2,1.49,1.08,1.38,1.6],rates:[null,1.83,1.53,1.25,1.15,1.34,1.18]}};
+
+// 构建tabs和渲染
+const comboKeys=Object.keys(detailData);
+const tabContainer=document.getElementById('detail-tabs');
+let activeCombo=comboKeys[0];
+
+tabContainer.innerHTML=comboKeys.map(function(k,i){
+  var parts=k.split('|');
+  return '<button class="tab-btn'+(i===0?' active':'')+'" data-key="'+k+'" style="padding:6px 10px;border:none;background:'+(i===0?'#667eea':'#f0f2f5')+';color:'+(i===0?'#fff':'#666')+';cursor:pointer;font-size:11px;border-radius:6px;line-height:1.3">'+parts[0]+'<br><small style="font-size:9px;opacity:0.8">'+parts[1]+'</small></button>';
+}).join('');
+
+tabContainer.addEventListener('click',function(e){
+  var btn=e.target.closest('button');
+  if(!btn)return;
+  document.querySelectorAll('#detail-tabs button').forEach(function(b){b.style.background='#f0f2f5';b.style.color='#666';});
+  btn.style.background='#667eea';btn.style.color='#fff';
+  activeCombo=btn.dataset.key;
+  renderDetailChart(activeCombo);
+});
+
+function renderDetailChart(key){
+  var d=detailData[key];
+  if(!d)return;
+  var parts=key.split('|');
+  var n=d.dates.length;
+  
+  // 计算统计值
+  var maxC=Math.max.apply(null,d.costs);
+  var meanC=d.costs.reduce(function(a,b){return a+b;},0)/n;
+  var stdC=Math.sqrt(d.costs.reduce(function(a,b){return a+(b-meanC)*(b-meanC);},0)/n);
+  var highThreshold=meanC+stdC;
+  var validRois=d.rois.filter(function(v){return v!==null&&v>0;});
+  var avgRoi=validRois.length>0?validRois.reduce(function(a,b){return a+b;},0)/validRois.length:0;
+  var roiMin=Math.min.apply(null,validRois.concat([1.0]));
+  var roiMax=Math.max.apply(null,validRois.concat([2.5]));
+  var highPrDays=d.rates.filter(function(v){return v!==null&&v>1.2;}).length;
+  
+  // SVG尺寸
+  var W=900,H=420,padL=60,padR=30,padT=30,padB=50;
+  var chartW=W-padL-padR,chartH=H-padT-padB;
+  var barW=Math.max(4,Math.min(16,chartW/n-2));
+  var gap=(chartW-barW*n)/n;
+  
+  // Y轴范围
+  var yMaxC=Math.ceil(maxC*1.15);
+  var yMaxR=Math.ceil(roiMax*1.1);
+  var yMinR=Math.floor(roiMin*0.9);
+  
+  // 计价率1.2参考线位置
+  var rateLineY=padT+(1-(1.2-0.8)/1.2)*chartH;
+  
+  var svg='<svg width="100%" viewBox="0 0 '+W+' '+H+'" style="max-width:100%;background:#fafbfc;border-radius:8px;border:1px solid #eee">';
+  
+  // 网格线
+  for(var g=0;g<=4;g++){
+    var gy=padT+g*chartH/4;
+    svg+='<line x1="'+padL+'" y1="'+gy+'" x2="'+(W-padR)+'" y2="'+gy+'" stroke="#eee" stroke-width="1"/>';
+    svg+='<text x="'+(padL-8)+'" y="'+(gy+4)+'" text-anchor="end" font-size="10" fill="#999">'+(yMaxC-yMaxC/4*g).toFixed(1)+'</text>';
+  }
+  
+  // 左Y轴标签
+  svg+='<text x="12" y="'+(padT+chartH/2)+'" text-anchor="middle" font-size="11" fill="#e74c3c" transform="rotate(-90,12,'+(padT+chartH/2)+')">消耗(万元)</text>';
+  
+  // 右Y轴 (ROI)
+  for(var g2=0;g2<=4;g2++){
+    var ry=padT+g2*chartH/4;
+    var rVal=yMinR+(yMaxR-yMinR)/4*g2;
+    svg+='<text x="'+(W-4)+'" y="'+(ry+4)+'" text-anchor="start" font-size="10" fill="#3498db">'+rVal.toFixed(1)+'</text>';
+  }
+  svg+='<text x="'+(W-8)+'" y="'+(padT+chartH/2)+'" text-anchor="middle" font-size="11" fill="#3498db" transform="rotate(90,'+(W-8)+','+(padT+chartH/2)+')">下单ROI</text>';
+  
+  // 计价率1.2警戒线
+  svg+='<line x1="'+padL+'" y1="'+rateLineY+'" x2="'+(W-padR)+'" y2="'+rateLineY+'" stroke="#e74c3c" stroke-width="1.5" stroke-dasharray="6,4"/>';
+  svg+='<text x="'+(W-padR-2)+'" y="'+(rateLineY-4)+'" text-anchor="end" font-size="9" fill="#e74c3c">计价率1.2</text>';
+  
+  // 消耗柱状图
+  for(var i=0;i<n;i++){
+    var cx=padL+i*(barW+gap)+gap/2;
+    var ch=(d.costs[i]/yMaxC)*chartH;
+    var cy=padT+chartH-ch;
+    var color='#81c784';
+    if(d.rates[i]!==null&&d.rates[i]>1.2)color='#e74c3c';
+    else if(d.costs[i]>highThreshold)color='#ff9800';
+    svg+='<rect x="'+cx+'" y="'+cy+'" width="'+barW+'" height="'+ch+'" fill="'+color+'" rx="1"><title>'+d.dates[i]+' 消耗:'+d.costs[i].toFixed(2)+'万 ROI:'+(d.rois[i]!==null?d.rois[i].toFixed(2):'-')+' 计价率:'+(d.rates[i]!==null?d.rates[i].toFixed(2):'-')+'</title></rect>';
+  }
+  
+  // ROI折线
+  var roiPoints=[];
+  for(var i=0;i<n;i++){
+    if(d.rois[i]===null||d.rois[i]<=0)continue;
+    var rx=padL+i*(barW+gap)+gap/2+barW/2;
+    var rpy=padT+chartH-((d.rois[i]-yMinR)/(yMaxR-yMinR))*chartH;
+    roiPoints.push(rx.toFixed(1)+','+rpy.toFixed(1));
+  }
+  if(roiPoints.length>1){
+    svg+='<polyline points="'+roiPoints.join(' ')+'" fill="none" stroke="#3498db" stroke-width="2"/>';
+    // ROI数据点
+    for(var i=0;i<n;i++){
+      if(d.rois[i]===null||d.rois[i]<=0)continue;
+      var rpx=padL+i*(barW+gap)+gap/2+barW/2;
+      var rppy=padT+chartH-((d.rois[i]-yMinR)/(yMaxR-yMinR))*chartH;
+      svg+='<circle cx="'+rpx+'" cy="'+rppy+'" r="3" fill="#3498db" stroke="#fff" stroke-width="1"><title>ROI:'+d.rois[i].toFixed(2)+'</title></circle>';
+    }
+  }
+  
+  // 日均ROI参考线
+  var avgRoiY=padT+chartH-((avgRoi-yMinR)/(yMaxR-yMinR))*chartH;
+  svg+='<line x1="'+padL+'" y1="'+avgRoiY+'" x2="'+(W-padR)+'" y2="'+avgRoiY+'" stroke="#3498db" stroke-width="1" stroke-dasharray="3,5" opacity="0.5"/>';
+  svg+='<text x="'+(padL+4)+'" y="'+(avgRoiY-3)+'" font-size="9" fill="#3498db" opacity="0.7">日均ROI '+avgRoi.toFixed(2)+'</text>';
+  
+  // 日均消耗参考线
+  var avgCY=padT+chartH-(meanC/yMaxC)*chartH;
+  svg+='<line x1="'+padL+'" y1="'+avgCY+'" x2="'+(W-padR)+'" y2="'+avgCY+'" stroke="#999" stroke-width="1" stroke-dasharray="3,5"/>';
+  
+  // X轴日期标签（每5天）
+  for(var i=0;i<n;i+=Math.max(1,Math.floor(n/10))){
+    var lx=padL+i*(barW+gap)+gap/2+barW/2;
+    svg+='<text x="'+lx+'" y="'+(H-padB+15)+'" text-anchor="middle" font-size="9" fill="#888">'+d.dates[i]+'</text>';
+    svg+='<line x1="'+lx+'" y1="'+(padT+chartH)+'" x2="'+lx+'" y2="'+(padT+chartH+4)+'" stroke="#ddd"/>';
+  }
+  
+  // 图例
+  svg+='<rect x="'+(padL+10)+'" y="'+(padT-22)+'" width="12" height="12" fill="#81c784" rx="2"/>';
+  svg+='<text x="'+(padL+26)+'" y="'+(padT-12)+'" font-size="10" fill="#555">正常</text>';
+  svg+='<rect x="'+(padL+70)+'" y="'+(padT-22)+'" width="12" height="12" fill="#e74c3c" rx="2"/>';
+  svg+='<text x="'+(padL+86)+'" y="'+(padT-12)+'" font-size="10" fill="#555">计价率>1.2</text>';
+  svg+='<rect x="'+(padL+170)+'" y="'+(padT-22)+'" width="12" height="12" fill="#ff9800" rx="2"/>';
+  svg+='<text x="'+(padL+186)+'" y="'+(padT-12)+'" font-size="10" fill="#555">消耗异常高</text>';
+  svg+='<line x1="'+(padL+280)+'" y1="'+(padT-16)+'" x2="'+(padL+310)+'" y2="'+(padT-16)+'" stroke="#3498db" stroke-width="2"/>';
+  svg+='<text x="'+(padL+314)+'" y="'+(padT-12)+'" font-size="10" fill="#555">下单ROI</text>';
+  
+  svg+='</svg>';
+  
+  // 统计信息
+  svg+='<div style="display:flex;gap:24px;margin-top:10px;font-size:12px;color:#666;flex-wrap:wrap">';
+  svg+='<span>📊 <b>'+n+'天</b>数据</span>';
+  svg+='<span>日均消耗 <b style="color:#e74c3c">'+meanC.toFixed(2)+'万</b></span>';
+  svg+='<span>日均ROI <b style="color:#3498db">'+avgRoi.toFixed(2)+'</b></span>';
+  svg+='<span>计价率>1.2 <b style="color:'+(highPrDays>3?'#e74c3c':'#333')+'">'+highPrDays+'天</b> ('+(highPrDays/n*100).toFixed(0)+'%)</span>';
+  svg+='<span>消耗峰值 <b>'+maxC.toFixed(2)+'万</b></span>';
+  svg+='</div>';
+  
+  document.getElementById('detail-chart-area').innerHTML=svg;
+}
+
+renderDetailChart(activeCombo);
+
+// 汇总表
+var summaryHtml='';
+comboKeys.forEach(function(k){
+  var d=detailData[k];
+  var parts=k.split('|');
+  var avgCost=d.costs.reduce(function(a,b){return a+b;},0)/d.costs.length;
+  var validRois=d.rois.filter(function(v){return v!==null&&v>0;});
+  var avgRoi=validRois.length>0?validRois.reduce(function(a,b){return a+b;},0)/validRois.length:0;
+  var highPr=d.rates.filter(function(v){return v!==null&&v>1.2;}).length;
+  var ratio=(highPr/d.dates.length*100).toFixed(0);
+  var risk=ratio>20?'<span class="tag tag-red">🔴高风险</span>':ratio>10?'<span class="tag tag-orange">🟡中风险</span>':'<span class="tag tag-green">🟢低风险</span>';
+  summaryHtml+='<tr><td><strong>'+parts[0]+'</strong> × '+parts[1]+'</td><td>'+d.dates.length+'</td><td>'+avgCost.toFixed(2)+'</td><td>'+avgRoi.toFixed(2)+'</td><td style="color:'+(highPr>=5?'#e74c3c':highPr>=3?'#f39c12':'#666')+';font-weight:bold">'+highPr+'</td><td>'+ratio+'%</td><td>'+risk+'</td></tr>';
+});
+document.getElementById('detail-summary-table').innerHTML=summaryHtml;
+
+// 洞察
+var highRiskCombos=comboKeys.filter(function(k){
+  var d=detailData[k];
+  return d.rates.filter(function(v){return v!==null&&v>1.2;}).length>=5;
+}).map(function(k){return k.replace('|','-');});
+document.getElementById('detail-insight').textContent=
+  '共'+comboKeys.length+'个品类×链路组合。红色柱体标记计价率>1.2的成本异常日，橙色柱体标记消耗异常高日（>均值+1σ）。'+
+  (highRiskCombos.length>0?'重点关注计价率异常高频组合：'+highRiskCombos.join('、')+'，这些组合成本控制压力较大。':'整体计价率异常天数可控。');
+document.getElementById('detail-action').textContent=
+  highRiskCombos.length>0?
+  '对ELL品牌店-直播(10天异常)、ELL养肤美妆-小店(6天异常)等高频异常组合，建议排查出价策略和人群定向。DPDP品牌店-直播(0天异常)可作为投放节奏的压舱石。':
+  '持续监控各组合计价率，保持当前投放策略的稳定性。';
+</script>
+</body>
+</html>
